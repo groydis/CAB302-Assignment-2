@@ -14,14 +14,18 @@ import org.junit.jupiter.api.Test;
 class StoreTest {
 	
 	Store testStore;
+	String storeName = "Test Store"
 	
 	@Before 
 	public void setupStore() {
-		testStore = new Store();
+		testStore = new Store(name);
+		// TODO: Add invenstory to store
 	}
 	
 	@Test
 	public void testSetCapital() {
+		// Not Sure if get Capital should return a string, 
+		// Totally making an assumption.
 		String testCapital = "$100,000.00";
 		testStore.setCapital(100000);
 		String actualCapital = testStore.getCapital();
@@ -35,6 +39,17 @@ class StoreTest {
 		String testCapital = "$100,000.00";
 		String actualCapital = testStore.getCapital();
 		assertEquals(testCapital, actualCapital);
+	}
+	
+	public void testName() {
+		String testName = storeName;
+		String actualName = testStore.getName();
+		assertEquals(testName, actualName);
+	}
+	
+	public void testInventory() {
+		// TODO: Test Inventory
+		fail("Not yet implemented");
 	}
 
 }
