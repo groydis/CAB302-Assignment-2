@@ -8,26 +8,43 @@ import org.junit.jupiter.api.Test;
 
 /**
  * 
- * @author Greyden Scott
+ * @author Alex Holm
  *
  */
+
 class StoreTest {
 	
 	Store testStore;
 	String storeName = "Test Store";
+	String capital = "$100,000.00";
+	
 	
 	@Before 
 	public void setupStore() {
-		testStore = new Store(name);
+		testStore = null;
+	}
+	
+	@Test
+	public void testConstruction() {
+		testStore = new Store(storeName, capital);
 		// TODO: Add invenstory to store
+	}
+	
+	@Test
+	public void testName() {
+		testStore = new Store(storeName, capital);
+		String testName = storeName;
+		String actualName = testStore.getStoreName();
+		assertEquals(testName, actualName);
 	}
 	
 	@Test
 	public void testSetCapital() {
 		// Not Sure if get Capital should return a string, 
 		// Totally making an assumption.
+		testStore = new Store(storeName, capital);
 		String testCapital = "$100,000.00";
-		testStore.setCapital(100000);
+		testStore.setCapital("$100,000.00");
 		String actualCapital = testStore.getCapital();
 		assertEquals(testCapital, actualCapital);
 	}
@@ -36,15 +53,10 @@ class StoreTest {
 	public void testGetCapital() {
 		// Get capital should return a string in the following format
 		// $100,000.00
+		testStore = new Store(storeName, capital);
 		String testCapital = "$100,000.00";
 		String actualCapital = testStore.getCapital();
 		assertEquals(testCapital, actualCapital);
-	}
-	
-	public void testName() {
-		String testName = storeName;
-		String actualName = testStore.getName();
-		assertEquals(testName, actualName);
 	}
 	
 	public void testInventory() {
