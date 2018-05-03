@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 class ItemTest {
 	
 	Item testItem;
-	String name = "Test Item";
+	String itemName = "Test Item";
 	double manufacturingCost = 100.00;
 	double sellPrice = 150.00;
 	int reorderPoint = 5;
@@ -24,50 +24,60 @@ class ItemTest {
 	
 	@Before
 	public void setupItem() {
-		testItem = new Item(name, manufacturingCost, sellPrice, reorderPoint, reorderAmount, storageTemp);
-
+		testItem = null;
+		}
+	
+	@Test
+	public void testConstruction() {
+		testItem = new Item(itemName, manufacturingCost, sellPrice, reorderPoint, reorderAmount, storageTemp);
 	}
 	
 	@Test
-	public void testName() {
-		String testName = name;
-		String actualName = testItem.Name();
+	public void testitemName() {
+		testItem = new Item(itemName, manufacturingCost, sellPrice, reorderPoint, reorderAmount, storageTemp);
+		String testName = itemName;
+		String actualName = testItem.GetName();
 		assertEquals(testName, actualName);
 	}
 	
 	@Test
 	public void testManufacturingCost() {
+		testItem = new Item(itemName, manufacturingCost, sellPrice, reorderPoint, reorderAmount, storageTemp);
 		double testCost = manufacturingCost;
-		double actualCost = testItem.ManufacturingCost();
-		assertEquals(testCost, actualCost);
+		double actualCost = testItem.GetManufacturingCost();
+		assertEquals(testCost, actualCost, 0.0);
 	}
 	
 	@Test
 	public void testSellPrice() {
+		testItem = new Item(itemName, manufacturingCost, sellPrice, reorderPoint, reorderAmount, storageTemp);
 		double testSellPrice = sellPrice;
-		double actualSellPrice = testItem.SellPrice();
-		assertEquals(testSellPrice, actualSellPrice);
+		double actualSellPrice = testItem.GetSellPrice();
+		assertEquals(testSellPrice, actualSellPrice, 0.0);
 	}
 	
 	@Test
 	public void testReOrderPoint() {
+		testItem = new Item(itemName, manufacturingCost, sellPrice, reorderPoint, reorderAmount, storageTemp);
 		int testReOrderPoint = reorderPoint;
-		int actualReOrderPoint = testItem.ReOrderPoint();
+		int actualReOrderPoint = testItem.GetReorderPoint();
 		assertEquals(testReOrderPoint, actualReOrderPoint);
 	}
 	
 	@Test
 	public void testReOrderAmount() {
+		testItem = new Item(itemName, manufacturingCost, sellPrice, reorderPoint, reorderAmount, storageTemp);
 		int testReOrderAmount = reorderAmount;
-		int actualReOrderAmount = testItem.ReOrderAmount();
+		int actualReOrderAmount = testItem.GetReorderAmount();
 		assertEquals(testReOrderAmount, actualReOrderAmount);
 	}
 	
 	@Test
 	public void testStorageTemp() {
-		double testStorageTemp = storageTemp;
-		double actualStorageTemp = testItem.StorageTemp();
-		assertEquals(testStorageTemp, actualStorageTemp);
+		testItem = new Item(itemName, manufacturingCost, sellPrice, reorderPoint, reorderAmount, storageTemp);
+		float testStorageTemp = storageTemp;
+		float actualStorageTemp = testItem.GetstorageTemp();
+		assertEquals(testStorageTemp, actualStorageTemp, 0.0);
 	}
 
 }
