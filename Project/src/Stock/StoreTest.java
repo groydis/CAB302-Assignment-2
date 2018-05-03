@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 class StoreTest {
 	
 	Store testStore;
-	String storeName = "Test Store"
+	String storeName = "Test Store";
 	
 	@Before 
 	public void setupStore() {
