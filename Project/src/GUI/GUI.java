@@ -33,7 +33,26 @@ public class GUI extends JFrame implements Observer, ActionListener
 	JPanel storeTab = new JPanel(); 
 	//Inventory Variables
     JPanel inventoryTab  = new JPanel();
-    JTable inventoryTable = new JTable();
+    String[] inventoryColumnNames
+    = {"First Name",
+            "Last Name",
+            "Sport",
+            "# of Years",
+            "Vegetarian"};;
+    Object[][]data
+    = {
+    	    {"Kathy", "Smith",
+    	     "Snowboarding", new Integer(5), new Boolean(false)},
+    	    {"John", "Doe",
+    	     "Rowing", new Integer(3), new Boolean(true)},
+    	    {"Sue", "Black",
+    	     "Knitting", new Integer(2), new Boolean(false)},
+    	    {"Jane", "White",
+    	     "Speed reading", new Integer(20), new Boolean(true)},
+    	    {"Joe", "Brown",
+    	     "Pool", new Integer(10), new Boolean(false)}
+    	};;
+    JTable inventoryTable = new JTable(data, inventoryColumnNames);
     //Document Variables
     JPanel documentTab = new JPanel();
     
@@ -76,6 +95,7 @@ public class GUI extends JFrame implements Observer, ActionListener
 		
         pane.add("Inventory", inventoryTab);
         inventoryTab.add(new JLabel("Please load in item properties"));
+        inventoryTab.add(inventoryTable);
 
         pane.add("Documents", documentTab);
         
@@ -84,19 +104,17 @@ public class GUI extends JFrame implements Observer, ActionListener
         manifestTextArea.setEditable(false);
         salesTextArea.setEditable(false);
         
+        //This can change to files only or files and directories but i dunno what was a good choice
         propertiesChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		exportChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		manifestChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		salesChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		
-		
+		//Sets the directory of the file choosers to Home
 	    propertiesChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 	    exportChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 	    manifestChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         salesChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-	    //Make properties Text area and button to open file chooser
-	    
-
+	    //Make properties Text area and button to open file choose
         propertiesButton.addActionListener(this);
         manifestButton.addActionListener(this);
         exportButton.addActionListener(this);
