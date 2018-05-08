@@ -34,24 +34,12 @@ public class GUI extends JFrame implements Observer, ActionListener
 	//Inventory Variables
     JPanel inventoryTab  = new JPanel();
     String[] inventoryColumnNames
-    = {"First Name",
-            "Last Name",
-            "Sport",
-            "# of Years",
-            "Vegetarian"};;
-    Object[][]data
+    = {"Name", "Cost", "Price", "Reorder Point", "Reorder Amount", "Temperature"};
+   
+    public Object[][]data
     = {
-    	    {"Kathy", "Smith",
-    	     "Snowboarding", new Integer(5), new Boolean(false)},
-    	    {"John", "Doe",
-    	     "Rowing", new Integer(3), new Boolean(true)},
-    	    {"Sue", "Black",
-    	     "Knitting", new Integer(2), new Boolean(false)},
-    	    {"Jane", "White",
-    	     "Speed reading", new Integer(20), new Boolean(true)},
-    	    {"Joe", "Brown",
-    	     "Pool", new Integer(10), new Boolean(false)}
-    	};;
+    		{"Name", "Cost", "Price", "Reorder Point", "Reorder Amount", "Temperature"},
+    		};
     JTable inventoryTable = new JTable(data, inventoryColumnNames);
     //Document Variables
     JPanel documentTab = new JPanel();
@@ -94,8 +82,9 @@ public class GUI extends JFrame implements Observer, ActionListener
         storeTab.add(new JLabel("Tab 1"));
 		
         pane.add("Inventory", inventoryTab);
-        inventoryTab.add(new JLabel("Please load in item properties"));
+        //inventoryTab.add(new JLabel("Please load in item properties"));
         inventoryTab.add(inventoryTable);
+        inventoryTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
         pane.add("Documents", documentTab);
         
@@ -155,7 +144,6 @@ public class GUI extends JFrame implements Observer, ActionListener
         
         getContentPane().add(pane);
         
-		
 	}
 	
 	private void loadLayout() {
