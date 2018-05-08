@@ -1,8 +1,9 @@
 package GUI;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
@@ -13,7 +14,8 @@ import javax.swing.*;
  *@author Alex Holm
  *
  **/
-public class GUI extends JFrame implements Observer {
+public class GUI extends JFrame implements Observer, ActionListener
+{
 	
 	/**
 	 * I Have no idea what I've done but this is a generated serial 
@@ -21,44 +23,51 @@ public class GUI extends JFrame implements Observer {
 	**/
 	private static final long serialVersionUID = 4465181114406422996L;
 	
-	public static final int WIDTH = 400;
+	public static final int WIDTH = 500;
 
 	public static final int HEIGHT = 300;
 
-	
+	JFrame mainFrame = new JFrame();
+	JTabbedPane pane = new JTabbedPane();
+	//Store Variables
+	JPanel storeTab = new JPanel(); 
+	//Inventory Variables
+    JPanel inventoryTab  = new JPanel();
+    JTable inventoryTable = new JTable();
+    //Document Variables
+    JPanel documentTab = new JPanel();
+    
+    JTextArea propertiesTextArea = new JTextArea(1, 20);
+    JFileChooser propertiesChooser = new JFileChooser();
+    JButton propertiesButton = new JButton("Load Item Properties");
+    
+    JTextArea exportTextArea = new JTextArea(1, 20);
+    JFileChooser exportChooser = new JFileChooser();
+    JButton exportButton = new JButton("Export Manifest");
+    
+    JTextArea manifestTextArea = new JTextArea(1, 20);
+    JFileChooser manifestChooser = new JFileChooser();
+    JButton manifestButton = new JButton("Load Manifest");
+    
+    JTextArea salesTextArea = new JTextArea(1, 20);
+    JFileChooser salesChooser = new JFileChooser();
+    JButton salesButton = new JButton("Load Sales Logs");
+    
+    
 	public GUI() {
         super("Title");
         loadLayout();
 	}
 	
+
 	//this is to initialize components
 	
 	private void initComponents() {
-		JFrame mainFrame = new JFrame();
-		JTabbedPane pane = new JTabbedPane();
-		//Store Variables
-		JPanel storeTab = new JPanel(); 
-		//Inventory Varibles
-	    JPanel inventoryTab  = new JPanel();
-	    JTable inventoryTable = new JTable();
-	    //Document Variables
-	    JPanel documentTab = new JPanel();
-	    JTextArea propertiesTextArea = new JTextArea(1, 20);
-	    JTextArea manifestTextArea = new JTextArea(1, 20);
-	    JTextArea salesTextArea = new JTextArea(1, 20);
-	    JFileChooser propertiesChooser = new JFileChooser();
-	    JFileChooser manifestChooser = new JFileChooser();
-	    JFileChooser salesChooser = new JFileChooser();
-	    JButton propertiesButton = new JButton("Properties");
-	    JButton manifestButton = new JButton("Manifest");
-	    JButton salesButton = new JButton("Sales");
-
+		//THis can be directories only but CEEB'd doing that rn
+		
 		mainFrame = new JFrame("Title");
-		
-		mainFrame.setSize(WIDTH, HEIGHT);
-		
+		mainFrame.setSize(HEIGHT, WIDTH);		
 		mainFrame.setLayout(new GridBagLayout());
-		
 		mainFrame.add(pane);
 		
 
@@ -66,44 +75,66 @@ public class GUI extends JFrame implements Observer {
         storeTab.add(new JLabel("Tab 1"));
 		
         pane.add("Inventory", inventoryTab);
-        inventoryTab.add(new JLabel("Tab 2"));
-        
+        inventoryTab.add(new JLabel("Please load in item properties"));
+
         pane.add("Documents", documentTab);
+        
+        propertiesTextArea.setEditable(false);
+        exportTextArea.setEditable(false);
+        manifestTextArea.setEditable(false);
+        salesTextArea.setEditable(false);
+        
+        propertiesChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		exportChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		manifestChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		salesChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		
+		
+	    propertiesChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+	    exportChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+	    manifestChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        salesChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+	    //Make properties Text area and button to open file chooser
+	    
+
+        propertiesButton.addActionListener(this);
+        manifestButton.addActionListener(this);
+        exportButton.addActionListener(this);
+        salesButton.addActionListener(this);
+        
         documentTab.setLayout(new GridBagLayout());
         GridBagConstraints docuTabLayout = new GridBagConstraints();
         docuTabLayout.fill = GridBagConstraints.HORIZONTAL;
         docuTabLayout.anchor = GridBagConstraints.WEST;
-        docuTabLayout.gridy = 0;
-        
-        //Make properties Text area and button to open file chooser
-        docuTabLayout.gridx = 0;
-        documentTab.add(propertiesTextArea, docuTabLayout);
-        docuTabLayout.gridx = 1;
-        documentTab.add(propertiesButton, docuTabLayout);
         
         docuTabLayout.gridy = 1;
         
         docuTabLayout.gridx = 0;
         documentTab.add(propertiesTextArea, docuTabLayout);
-        docuTabLayout.gridx = 1;
+        docuTabLayout.gridx = 2;
         documentTab.add(propertiesButton, docuTabLayout);
         
         docuTabLayout.gridy = 2;
         
         docuTabLayout.gridx = 0;
-        documentTab.add(manifestTextArea, docuTabLayout);
-        docuTabLayout.gridx = 1;
-        documentTab.add(manifestButton, docuTabLayout);
-        
+        documentTab.add(exportTextArea, docuTabLayout);
+        docuTabLayout.gridx = 2;
+        documentTab.add(exportButton, docuTabLayout);
+
         docuTabLayout.gridy = 3;
         
         docuTabLayout.gridx = 0;
+        documentTab.add(manifestTextArea, docuTabLayout);
+        docuTabLayout.gridx = 2;
+        documentTab.add(manifestButton, docuTabLayout);
+        
+        docuTabLayout.gridy = 4;
+        
+        docuTabLayout.gridx = 0;
         documentTab.add(salesTextArea, docuTabLayout);
-        docuTabLayout.gridx = 1;
+        docuTabLayout.gridx = 2;
         documentTab.add(salesButton, docuTabLayout);
         
-        
-        documentTab.add(salesButton, docuTabLayout);
         getContentPane().add(pane);
         
 		
@@ -112,7 +143,7 @@ public class GUI extends JFrame implements Observer {
 	private void loadLayout() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         initComponents();
-        setPreferredSize(new Dimension(400, 300));
+        setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setLocation(new Point(100, 100));
         pack();
         setVisible(true);
@@ -125,6 +156,56 @@ public class GUI extends JFrame implements Observer {
         } else if(returnVal==JFileChooser.CANCEL_OPTION) {
         }*/
     }
+	
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == propertiesButton) {
+			int returnVal = propertiesChooser.showOpenDialog(GUI.this);
+
+		      if (returnVal == JFileChooser.APPROVE_OPTION) {
+		        File file = propertiesChooser.getSelectedFile();
+		        String filename = file.getAbsolutePath();
+		        propertiesTextArea.setText("");
+		        propertiesTextArea.append(filename);
+		      }
+		}
+		//this SAVES a file
+		else if (e.getSource() == exportButton) {
+		      int returnVal = exportChooser.showSaveDialog(GUI.this);
+		      if (returnVal == JFileChooser.APPROVE_OPTION) {
+		        File file = exportChooser.getSelectedFile();
+		      }
+		}
+		else if (e.getSource() == manifestButton) {
+			int returnVal = manifestChooser.showOpenDialog(GUI.this);
+
+		      if (returnVal == JFileChooser.APPROVE_OPTION) {
+		        File file = manifestChooser.getSelectedFile();
+		        String filename = file.getAbsolutePath();
+		        manifestTextArea.setText("");
+		        manifestTextArea.append(filename);
+		      }
+		}
+		else if (e.getSource() == salesButton) {
+			int returnVal = salesChooser.showOpenDialog(GUI.this);
+
+		      if (returnVal == JFileChooser.APPROVE_OPTION) {
+		        File file = salesChooser.getSelectedFile();
+		        String filename = file.getAbsolutePath();
+		        salesTextArea.setText("");
+		        salesTextArea.append(filename);
+		      }
+		}
+		
+
+		        //This is where a real application would save the file.
+		        /*
+		        log.append("Saving: " + file.getName() + "." + newline);
+		      } else {
+		        log.append("Save command cancelled by user." + newline);
+		      }
+		      log.setCaretPosition(log.getDocument().getLength());
+		    }*/
+	}
 	
 	  public static void main(String[] args) {
 	        JFrame.setDefaultLookAndFeelDecorated(true);
