@@ -7,11 +7,12 @@ public class Item {
 	 * 
 	 */
 	String itemName;
-	double manufacturingCost, sellPrice;
+	double manufacturingCost; 
+	double sellPrice;
 	int reorderPoint, reorderAmount;
-	float storageTemp;
+	double storageTemp;
 	
-	public Item(String itemName, double manufacturingCost, double sellPrice, int reorderPoint, int reorderAmount, float storageTemp) {
+	public Item(String itemName, double manufacturingCost, double sellPrice, int reorderPoint, int reorderAmount, double storageTemp) {
 		this.itemName = itemName;
 		this.manufacturingCost = manufacturingCost;
 		this.sellPrice = sellPrice;
@@ -40,8 +41,19 @@ public class Item {
 		return reorderAmount;
 	}
 	
-	public float GetstorageTemp() {
+	public double GetstorageTemp() {
 		return storageTemp;
+	}
+	
+	public String toString() {
+		String output = itemName + 
+		manufacturingCost +
+		sellPrice + 
+		reorderPoint + 
+		reorderAmount +
+		storageTemp;
+		return output;
+		
 	}
 	
 }
