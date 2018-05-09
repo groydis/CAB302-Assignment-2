@@ -12,17 +12,19 @@ public class RefrigeratedTruck extends Truck {
 	}
 	
 	@Override
-	public int GetCapacity() {
-		return 800;
-	}
-
-	@Override
 	public double GetCost() {
 		// TODO Cost in dollars equal to 900 + 200 × 0.7T/5 where T is the 
 		// truck’s temperature in °C.
 		double cost = 900 + (200 * (0.7 * (GetTemperature() / 5)));
 		return cost;
 	}
+
+	
+	@Override
+	public int GetCapacity() {
+		return 800;
+	}
+
 
 	@Override
 	public List<String> GetCargo() {
@@ -37,7 +39,7 @@ public class RefrigeratedTruck extends Truck {
 		
 	}
 	
-	private double GetTemperature() {
+	public double GetTemperature() {
 		return temperature;
 	}
 
