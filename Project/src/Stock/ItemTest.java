@@ -15,17 +15,20 @@ import org.junit.jupiter.api.Test;
 class ItemTest {
 	
 	Item testItem;
-	String itemName = "Test Item";
-	double manufacturingCost = 100.00;
-	double sellPrice = 150.00;
-	int reorderPoint = 5;
-	int reorderAmount = 10;
-	float storageTemp = 0;
+	String itemName = "rice";
+	double manufacturingCost = 2.0;
+	double sellPrice = 3.0;
+	int reorderPoint = 225;
+	int reorderAmount = 300;
+	double storageTemp = 0.0;
+	int quantity = 250;
+	
+	String itemRice[] = {"rice", "2.0", "3.0", "225", "300", "0.0"};
 	
 	@Before
 	public void setupItem() {
 		testItem = null;
-		}
+	}
 	
 	@Test
 	public void testConstruction() {
@@ -33,8 +36,15 @@ class ItemTest {
 	}
 	
 	@Test
-	public void testitemName() {
-		testItem = new Item(itemName, manufacturingCost, sellPrice, reorderPoint, reorderAmount, storageTemp);
+	public void testCreateItem() {
+		testItem = Item.createItem(itemRice);
+		Item actualItem = new Item(itemName, manufacturingCost, sellPrice, reorderPoint, reorderAmount, storageTemp);
+		assertEquals(testItem, actualItem);
+	}
+	
+	@Test
+	public void testItemName() {
+		testItem = Item.createItem(itemRice);
 		String testName = itemName;
 		String actualName = testItem.GetName();
 		assertEquals(testName, actualName);
@@ -42,7 +52,7 @@ class ItemTest {
 	
 	@Test
 	public void testManufacturingCost() {
-		testItem = new Item(itemName, manufacturingCost, sellPrice, reorderPoint, reorderAmount, storageTemp);
+		testItem = Item.createItem(itemRice);
 		double testCost = manufacturingCost;
 		double actualCost = testItem.GetManufacturingCost();
 		assertEquals(testCost, actualCost, 0.0);
@@ -50,7 +60,7 @@ class ItemTest {
 	
 	@Test
 	public void testSellPrice() {
-		testItem = new Item(itemName, manufacturingCost, sellPrice, reorderPoint, reorderAmount, storageTemp);
+		testItem = Item.createItem(itemRice);
 		double testSellPrice = sellPrice;
 		double actualSellPrice = testItem.GetSellPrice();
 		assertEquals(testSellPrice, actualSellPrice, 0.0);
@@ -58,7 +68,7 @@ class ItemTest {
 	
 	@Test
 	public void testReOrderPoint() {
-		testItem = new Item(itemName, manufacturingCost, sellPrice, reorderPoint, reorderAmount, storageTemp);
+		testItem = Item.createItem(itemRice);
 		int testReOrderPoint = reorderPoint;
 		int actualReOrderPoint = testItem.GetReorderPoint();
 		assertEquals(testReOrderPoint, actualReOrderPoint);
@@ -66,7 +76,7 @@ class ItemTest {
 	
 	@Test
 	public void testReOrderAmount() {
-		testItem = new Item(itemName, manufacturingCost, sellPrice, reorderPoint, reorderAmount, storageTemp);
+		testItem = Item.createItem(itemRice);
 		int testReOrderAmount = reorderAmount;
 		int actualReOrderAmount = testItem.GetReorderAmount();
 		assertEquals(testReOrderAmount, actualReOrderAmount);
@@ -74,10 +84,29 @@ class ItemTest {
 	
 	@Test
 	public void testStorageTemp() {
-		testItem = new Item(itemName, manufacturingCost, sellPrice, reorderPoint, reorderAmount, storageTemp);
-		float testStorageTemp = storageTemp;
-		float actualStorageTemp = testItem.GetstorageTemp();
+		testItem = Item.createItem(itemRice);
+		double testStorageTemp = storageTemp;
+		double actualStorageTemp = testItem.GetstorageTemp();
 		assertEquals(testStorageTemp, actualStorageTemp, 0.0);
+	}
+	
+	@Test
+	public void testToString() {
+		testItem = Item.createItem(itemRice);
+		String testString = testItem.toString();
+		String actualString = "rice 2.0 3.0 225 300 0.0";
+		assertEquals(testString, actualString);
+		
+	}
+	
+	@Test
+	public void testQuantity() {
+		testItem = Item.createItem(itemRice);
+		testItem.setQuantity(quantity);
+		int testQuanity = quantity;
+		int actualQuantity = testItem.getQuantity();
+		assertEquals(testQuanity, actualQuantity);
+		
 	}
 
 }

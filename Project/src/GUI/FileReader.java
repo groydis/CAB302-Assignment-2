@@ -15,16 +15,16 @@ import Stock.Item;
  * @author Greyden Scott
  *
  */
-public class ItemFileReader {
+public class FileReader {
 	
 	public static void main(String... args) throws IOException {
-		List<Item> items = test();
+		List<Item> items = ReadItemProperties();
 		for (Item i: items) {
 			System.out.println(i.toString());
 		}
 	}
 	
-	public static List<Item> test() throws IOException {
+	public static List<Item> ReadItemProperties() throws IOException {
 		String fileName = "./Files/item_properties.csv";
 		List<Item> items = new ArrayList<>();
 		
@@ -36,7 +36,7 @@ public class ItemFileReader {
 			
 			while (line != null) {
 				String[] attributes = line.split(",");
-				Item item = createItem(attributes);
+				Item item = Item.createItem(attributes);
 				items.add(item);
 				
 				line = br.readLine();
@@ -45,22 +45,6 @@ public class ItemFileReader {
 			ioe.printStackTrace();
 		}
 		return items;
-		
-		
-	}
-	private static Item createItem(String[] data) {
-
-		String itemName = data[0];
-		double manufacturingCost = Double.parseDouble(data[1]);
-		double sellPrice = Double.parseDouble(data[2]);
-		int reorderPoint = Integer.parseInt(data[3]);
-		int reorderAmount = Integer.parseInt(data[4]);
-		double storageTemp = 0;
-		if (data.length == 6) {
-			storageTemp = Double.parseDouble(data[5]);
-		}
-		
-		return new Item(itemName, manufacturingCost, sellPrice, reorderPoint, reorderAmount, storageTemp);
 	}
 	
 }

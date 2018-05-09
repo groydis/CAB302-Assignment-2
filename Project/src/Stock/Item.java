@@ -6,11 +6,12 @@ public class Item {
 	 * @author Alex Holm
 	 * 
 	 */
-	String itemName;
-	double manufacturingCost; 
-	double sellPrice;
-	int reorderPoint, reorderAmount;
-	double storageTemp;
+	private String itemName;
+	private double manufacturingCost; 
+	private double sellPrice;
+	private int reorderPoint, reorderAmount;
+	private double storageTemp;
+	private int quantity;
 	
 	public Item(String itemName, double manufacturingCost, double sellPrice, int reorderPoint, int reorderAmount, double storageTemp) {
 		this.itemName = itemName;
@@ -19,6 +20,22 @@ public class Item {
 		this.reorderPoint = reorderPoint;
 		this.reorderAmount = reorderAmount;
 		this.storageTemp = storageTemp;
+		setQuantity(0);
+	}
+	
+	public static Item createItem(String[] data) {
+
+		String itemName = data[0];
+		double manufacturingCost = Double.parseDouble(data[1]);
+		double sellPrice = Double.parseDouble(data[2]);
+		int reorderPoint = Integer.parseInt(data[3]);
+		int reorderAmount = Integer.parseInt(data[4]);
+		double storageTemp = 0;
+		if (data.length == 6) {
+			storageTemp = Double.parseDouble(data[5]);
+		}
+		
+		return new Item(itemName, manufacturingCost, sellPrice, reorderPoint, reorderAmount, storageTemp);
 	}
 
 	public String GetName() {
@@ -46,14 +63,22 @@ public class Item {
 	}
 	
 	public String toString() {
-		String output = itemName + 
-		manufacturingCost +
-		sellPrice + 
-		reorderPoint + 
-		reorderAmount +
+		String output = itemName + " " +
+		manufacturingCost + " " +
+		sellPrice +  " " +
+		reorderPoint +  " " +
+		reorderAmount + " " +
 		storageTemp;
 		return output;
 		
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 	
 }
