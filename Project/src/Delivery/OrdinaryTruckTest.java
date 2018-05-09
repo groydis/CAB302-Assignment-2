@@ -13,10 +13,11 @@ import Stock.Item;
 class OrdinaryTruckTest {
 
 	OrdinaryTruck testTruck;
-	double truckCost;
-	int truckCapacity;
+	double truckCost = 0;
+	int truckCapacity = 0;
 	List<String> truckCargo;
-	double truckTemperature;
+	double truckTemperature = 0;
+	
 
 	@Before
 	public void setupTruck() {
@@ -50,3 +51,5 @@ class OrdinaryTruckTest {
 		List<String> actualcargo = testTruck.GetCargo();
 		assertEquals(testcargo, actualcargo, 0.0);
 	}
+}
+
