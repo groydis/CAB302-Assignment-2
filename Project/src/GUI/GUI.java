@@ -223,6 +223,7 @@ public class GUI extends JFrame implements Observer, ActionListener
 		      int returnVal = exportChooser.showSaveDialog(GUI.this);
 		      if (returnVal == JFileChooser.APPROVE_OPTION) {
 		        File file = exportChooser.getSelectedFile();
+		        //Needs more actions
 		      }
 		}
 		else if (e.getSource() == manifestChooseButton) {
