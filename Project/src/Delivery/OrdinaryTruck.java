@@ -11,13 +11,13 @@ public class OrdinaryTruck extends Truck {
 	}
 	
 	@Override
-	public int Capacity() {
+	public int GetCapacity() {
 		// TODO Auto-generated method stub
 		return 1000;
 	}
 
 	@Override
-	public double Cost() {
+	public double GetCost() {
 		// TODO Cost in dollars equal to 750 + 0.25q where q is the total quantity 
 		// of items in the cargo.
 		double cost = 750 + (0.25 * Quantity());

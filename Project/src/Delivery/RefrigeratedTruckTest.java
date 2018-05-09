@@ -30,9 +30,9 @@ class RefrigeratedTruckTest {
 	@Test
 	public void testTruckCost() {
 		testTruck = new RefrigeratedTruck(truckCargo);
-		double testcost = truckCost;
+		double testcost = 900 + (200 * (0.7 * (testTruck.GetTemperature() /5)));
 		double actualcost = testTruck.GetCost();
-		assertEquals(testcost, actualcost, 0.0);
+		assertEquals(testcost, actualcost, 0.2);
 	}
 
 	@Test
@@ -48,6 +48,6 @@ class RefrigeratedTruckTest {
 		testTruck = new RefrigeratedTruck(truckCargo);
 		List<String> testcargo = truckCargo;
 		List<String> actualcargo = testTruck.GetCargo();
-		assertEquals(testcargo, actualcargo, 0.0);
+		assertEquals(testcargo, actualcargo);
 	}
 }

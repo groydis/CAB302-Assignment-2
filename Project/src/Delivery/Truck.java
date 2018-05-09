@@ -13,9 +13,9 @@ abstract public class Truck {
 		
 	}
 	
-	public abstract int Capacity();
+	public abstract int GetCapacity();
 		
-	public abstract double Cost();
+	public abstract double GetCost();
 	
 	public abstract List<String> GetCargo();
 		
