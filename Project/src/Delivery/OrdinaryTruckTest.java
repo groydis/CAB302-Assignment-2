@@ -37,7 +37,7 @@ class OrdinaryTruckTest {
 		testTruck = new OrdinaryTruck(truckCargo);
 		double testcost = 750 + 0.25 * (double)testTruck.Quantity();
 		double actualcost = (double)testTruck.GetCost();
-		assertEquals(testcost, actualcost, 0.0);
+		assertEquals(testcost, actualcost, "0.0");
 	}
 
 	@Test
@@ -53,7 +53,7 @@ class OrdinaryTruckTest {
 		testTruck = new OrdinaryTruck(truckCargo);
 		List<String> testcargo = truckCargo;
 		List<String> actualcargo = testTruck.GetCargo();
-		assertEquals(testcargo, actualcargo));
+		assertEquals(testcargo, actualcargo);
 	}
 }
 

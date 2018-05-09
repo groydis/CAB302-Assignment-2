@@ -32,7 +32,7 @@ class RefrigeratedTruckTest {
 		testTruck = new RefrigeratedTruck(truckCargo);
 		double testcost = 900 + (200 * (0.7 * (testTruck.GetTemperature() /5)));
 		double actualcost = testTruck.GetCost();
-		assertEquals(testcost, actualcost, 0.2);
+		assertEquals(testcost, actualcost, "0.2");
 	}
 
 	@Test
