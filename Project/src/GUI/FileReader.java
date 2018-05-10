@@ -17,10 +17,12 @@ import Stock.Stock;
  *
  */
 public class FileReader {
+	private static Stock storeInventory;
 	
 	public static void main(String... args) throws IOException {
-		List<Item> items = ReadItemProperties();
-		for (Item i: items) {
+		storeInventory = new Stock(ReadItemProperties());
+		LoadSalesLog();
+		for (Item i: storeInventory.inventory()) {
 			System.out.println(i.toString());
 		}
 	}
@@ -37,7 +39,7 @@ public class FileReader {
 			
 			while (line != null) {
 				String[] attributes = line.split(",");
-				Item item = Item.createItem(attributes);
+				Item item = Item.CreateItem(attributes);
 				items.add(item);
 				
 				line = br.readLine();
@@ -48,8 +50,9 @@ public class FileReader {
 		return items;
 	}
 	
-	public static void LoadSalesLog(String fileName) {
-		List<String> sales = new ArrayList<>();
+	public static void LoadSalesLog() {
+		String fileName = "./Files/sales_log_0.csv";
+		//List<String> salesLog = new ArrayList<>();
 		
 		Path pathToFile = Paths.get(fileName);
 		
@@ -58,14 +61,13 @@ public class FileReader {
 			
 			while (line != null) {
 				String[] attributes = line.split(",");
-				
-				Stock.updateInventory(attributes);
-				
+				storeInventory.updateSales(attributes);
 				line = br.readLine();
 			}
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
+		//return salesLog;
 	}
 	
 }

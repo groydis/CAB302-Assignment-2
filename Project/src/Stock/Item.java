@@ -79,7 +79,8 @@ public class Item {
 		sellPrice +  " " +
 		reorderPoint +  " " +
 		reorderAmount + " " +
-		storageTemp;
+		storageTemp + " " +
+		quantity;
 		return output;
 		
 	}
