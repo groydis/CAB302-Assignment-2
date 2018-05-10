@@ -16,9 +16,9 @@ import org.junit.jupiter.api.Test;
 public class Store {
 	
 	String storeName;
-	String capital;
+	double capital;
 	
-	public Store(String storeName, String capital) {
+	public Store(String storeName, double capital) {
 		this.storeName = storeName;
 		this.capital = capital;
 	}
@@ -27,11 +27,11 @@ public class Store {
 		return storeName;
 	}
 	
-	public void setCapital(String capital) {
+	public void setCapital(double capital) {
 		this.capital = capital;
 	}
 	
-	public String getCapital() {
+	public double getCapital() {
 		return capital;
 	}
 	

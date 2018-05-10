@@ -12,6 +12,7 @@ public class Item {
 	private int reorderPoint, reorderAmount;
 	private double storageTemp;
 	private int quantity = 0;
+	private Boolean reorder;
 	
 	public Item(String itemName, double manufacturingCost, double sellPrice, int reorderPoint, int reorderAmount, double storageTemp) {
 		this.itemName = itemName;
@@ -64,13 +65,20 @@ public class Item {
 	public int quantity() {
 		return this.quantity;
 	}
+	
+	public Boolean reorder() {
+		return this.reorder;
+	}
 
 	public void UpdateQuantity(int quantity) {
 		this.quantity = quantity;
 		if (quantity > this.reorderPoint) {
-			// TODO Flag for re-ordering
+			reorder = true;
+		} else {
+			reorder = false;
 		}
 	}
+	
 	
 	// CURRENTLY ONLY USED FOR TESTING
 	public String toString() {

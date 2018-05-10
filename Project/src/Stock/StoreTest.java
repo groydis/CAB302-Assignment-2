@@ -16,7 +16,7 @@ class StoreTest {
 	
 	Store testStore;
 	String storeName = "Test Store";
-	String capital = "$100,000.00";
+	double capital = 100000.00;
 	
 	
 	@Before 
@@ -43,10 +43,10 @@ class StoreTest {
 		// Not Sure if get Capital should return a string, 
 		// Totally making an assumption.
 		testStore = new Store(storeName, capital);
-		String testCapital = "$100,000.00";
-		testStore.setCapital("$100,000.00");
-		String actualCapital = testStore.getCapital();
-		assertEquals(testCapital, actualCapital);
+		double testCapital = 100000.00;
+		testStore.setCapital(100000.00);
+		double actualCapital = testStore.getCapital();
+		assertEquals(testCapital, actualCapital, "0.0");
 	}
 
 	@Test
@@ -54,9 +54,9 @@ class StoreTest {
 		// Get capital should return a string in the following format
 		// $100,000.00
 		testStore = new Store(storeName, capital);
-		String testCapital = "$100,000.00";
-		String actualCapital = testStore.getCapital();
-		assertEquals(testCapital, actualCapital);
+		double testCapital = 100000.00;
+		double actualCapital = testStore.getCapital();
+		assertEquals(testCapital, actualCapital, "0,0");
 	}
 	
 	public void testInventory() {

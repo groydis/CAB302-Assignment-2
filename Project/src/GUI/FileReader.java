@@ -52,7 +52,6 @@ public class FileReader {
 	
 	public static void LoadSalesLog() {
 		String fileName = "./Files/sales_log_0.csv";
-		//List<String> salesLog = new ArrayList<>();
 		
 		Path pathToFile = Paths.get(fileName);
 		
@@ -67,7 +66,6 @@ public class FileReader {
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
-		//return salesLog;
 	}
 	
 }
