@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Stock.Item;
+import Stock.Stock;
 
 /**
  * @author Greyden Scott
@@ -45,6 +46,26 @@ public class FileReader {
 			ioe.printStackTrace();
 		}
 		return items;
+	}
+	
+	public static void LoadSalesLog(String fileName) {
+		List<String> sales = new ArrayList<>();
+		
+		Path pathToFile = Paths.get(fileName);
+		
+		try (BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US_ASCII)) {
+			String line = br.readLine();
+			
+			while (line != null) {
+				String[] attributes = line.split(",");
+				
+				Stock.updateInventory(attributes);
+				
+				line = br.readLine();
+			}
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
 	}
 	
 }

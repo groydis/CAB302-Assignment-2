@@ -11,7 +11,7 @@ public class Item {
 	private double sellPrice;
 	private int reorderPoint, reorderAmount;
 	private double storageTemp;
-	private int quantity;
+	private int quantity = 0;
 	
 	public Item(String itemName, double manufacturingCost, double sellPrice, int reorderPoint, int reorderAmount, double storageTemp) {
 		this.itemName = itemName;
@@ -20,10 +20,9 @@ public class Item {
 		this.reorderPoint = reorderPoint;
 		this.reorderAmount = reorderAmount;
 		this.storageTemp = storageTemp;
-		setQuantity(0);
 	}
 	
-	public static Item createItem(String[] data) {
+	public static Item CreateItem(String[] data) {
 
 		String itemName = data[0];
 		double manufacturingCost = Double.parseDouble(data[1]);
@@ -38,30 +37,42 @@ public class Item {
 		return new Item(itemName, manufacturingCost, sellPrice, reorderPoint, reorderAmount, storageTemp);
 	}
 
-	public String GetName() {
-		return itemName;
+	public String name() {
+		return this.itemName;
 	}
 	
-	public double GetManufacturingCost() {
-		return manufacturingCost;
+	public double manufacturingcost() {
+		return this.manufacturingCost;
 	}
 	
-	public double GetSellPrice() {
-		return sellPrice;
+	public double sellprice() {
+		return this.sellPrice;
 	}
 	
-	public int GetReorderPoint() {
-		return reorderPoint;
+	public int reorderpoint() {
+		return this.reorderPoint;
 	}
 	
-	public int GetReorderAmount() {
-		return reorderAmount;
+	public int reorderammount() {
+		return this.reorderAmount;
 	}
 	
-	public double GetstorageTemp() {
-		return storageTemp;
+	public double storegetemp() {
+		return this.storageTemp;
+	}
+
+	public int quantity() {
+		return this.quantity;
+	}
+
+	public void UpdateQuantity(int quantity) {
+		this.quantity = quantity;
+		if (quantity > this.reorderPoint) {
+			// TODO Flag for re-ordering
+		}
 	}
 	
+	// CURRENTLY ONLY USED FOR TESTING
 	public String toString() {
 		String output = itemName + " " +
 		manufacturingCost + " " +
@@ -71,14 +82,6 @@ public class Item {
 		storageTemp;
 		return output;
 		
-	}
-
-	public int getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
 	}
 	
 }
