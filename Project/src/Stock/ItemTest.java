@@ -79,7 +79,7 @@ class ItemTest {
 	public void testReOrderAmount() {
 		testItem = Item.CreateItem(itemRice);
 		int testReOrderAmount = reorderAmount;
-		int actualReOrderAmount = testItem.reorderammount();
+		int actualReOrderAmount = testItem.reorderamount();
 		assertEquals(testReOrderAmount, actualReOrderAmount);
 	}
 	
@@ -87,7 +87,7 @@ class ItemTest {
 	public void testStorageTemp() {
 		testItem = Item.CreateItem(itemRice);
 		double testStorageTemp = storageTemp;
-		double actualStorageTemp = testItem.storegetemp();
+		double actualStorageTemp = testItem.storageTemp();
 		assertEquals(testStorageTemp, actualStorageTemp, 0.0);
 	}
 	
