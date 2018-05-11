@@ -1,6 +1,7 @@
 package Stock;
 
 public class Item {
+	
 	/**
 	 *
 	 * @author Alex Holm
@@ -19,7 +20,7 @@ public class Item {
 	 *
 	 * @param  itemName Name of the item
 	 * @param  manufacturingCost Cost to manufacture the item
-	 * @param  sellPrice {rice the item is sold for
+	 * @param  sellPrice Price the item is sold for
 	 * @param  reorderPoint Point in which a reorder is triggered
 	 * @param  reorderAmount Amount of items to reorder
 	 * @param  storageTemp Temperature in which the item must be stored

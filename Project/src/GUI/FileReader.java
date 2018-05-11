@@ -21,7 +21,13 @@ public class FileReader {
 	
 	public static void main(String... args) throws IOException {
 		storeInventory = new Stock(ReadItemProperties("./Files/item_properties.csv"));
+		
 		LoadSalesLog();
+		for (Item i: storeInventory.inventory()) {
+			System.out.println(i.toString());
+		}
+		
+		LoadManifest();
 		for (Item i: storeInventory.inventory()) {
 			System.out.println(i.toString());
 		}
@@ -80,8 +86,35 @@ public class FileReader {
 		}
 	}
 	
+	/**
+	 * This method parses a Manifest  and modifies the inventory of Items based 
+	 * on the numbers associated with the item in the manifest.
+	 *
+	 * @param  fileName  File location of the Manifest to be imported
+	 */
 	public static void LoadManifest() {
+		String fileName = "./Files/manifest.csv";
+
+		Path pathToFile = Paths.get(fileName);
 		
+		try (BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US_ASCII)) {
+			String line = br.readLine();
+			
+			while (line != null) {
+				String[] attributes = line.split(",");
+				for (Item item : storeInventory.inventory()) {
+					
+					if (item.name().equals(attributes[0])) {
+						
+						storeInventory.updateSales(attributes);
+					}
+				}
+				
+				line = br.readLine();
+			}
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
 	}
 	
 }
