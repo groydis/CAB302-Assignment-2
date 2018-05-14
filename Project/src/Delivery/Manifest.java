@@ -16,6 +16,7 @@ public class Manifest {
 	List<String> manifest;
 	List<String> coldStorage;
 	List<String> storage;
+	List<Item> inventory;
 
 	/**
 	 * Constructs a Manifest and initializes manifest, coldStorage and storage lists.
@@ -26,6 +27,7 @@ public class Manifest {
 		this.manifest = new ArrayList<>();
 		this.coldStorage = new ArrayList<>();
 		this.storage = new ArrayList<>();
+		this.inventory = inventory;
 	}
 	
 	
@@ -40,10 +42,13 @@ public class Manifest {
 	 * @param  inventory  List of items
 	 * @return      List<String> of a manifest to be processed into a .csv file
 	 */
-	public List<String>  GenerateManifest(List<Item> inventory) {
+	public List<String>  GenerateManifest() {
 		for (Item item: inventory) {
 			if (item.reorder()) {
+				System.out.println(item.name() + " on list");
 				add(item, item.reorderamount());
+			} else {
+				System.out.println(item.name() + " " + item.reorderpoint() + " " + item.quantity());
 			}
 		}
 		manifest.add(">Refrigerated");
@@ -72,6 +77,10 @@ public class Manifest {
 		} else {
 			storage.add(manifestItem);
 		}
+	}
+	
+	public List<String> manifest() {
+		return this.manifest;
 	}
 	
 	/**

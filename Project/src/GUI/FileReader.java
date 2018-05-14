@@ -1,6 +1,7 @@
 package GUI;
 
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -9,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import Delivery.Manifest;
 import Stock.Item;
 import Stock.Stock;
 
@@ -21,16 +23,24 @@ public class FileReader {
 	
 	public static void main(String... args) throws IOException {
 		storeInventory = new Stock(ReadItemProperties("./Files/item_properties.csv"));
+		for (Item i: storeInventory.inventory()) {
+			System.out.println(i.toString());
+		}
 		
 		LoadSalesLog();
 		for (Item i: storeInventory.inventory()) {
 			System.out.println(i.toString());
 		}
 		
+		Manifest manifest = new Manifest(storeInventory.inventory());
+		manifest.GenerateManifest();
+		WriteFile(manifest.manifest());
+		/*
 		LoadManifest();
 		for (Item i: storeInventory.inventory()) {
 			System.out.println(i.toString());
 		}
+		*/
 	}
 	
 	/**
@@ -69,7 +79,7 @@ public class FileReader {
 	 * @param  fileName  File location of the Sales Log to be imported
 	 */
 	public static void LoadSalesLog() {
-		String fileName = "./Files/sales_log_0.csv";
+		String fileName = "./Files/sales_log_3.csv";
 		
 		Path pathToFile = Paths.get(fileName);
 		
@@ -114,6 +124,19 @@ public class FileReader {
 			}
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
+		}
+	}
+	
+	public static void WriteFile(List<String> file) {
+		try {
+			FileWriter fileWriter = new FileWriter("./Files/test.csv");
+			for(String item: file) {
+				fileWriter.append(item + "\n");
+			}
+			fileWriter.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	

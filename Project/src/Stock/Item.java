@@ -137,7 +137,7 @@ public class Item {
 	 */
 	public void UpdateQuantity(int quantity) {
 		this.quantity = quantity;
-		if (quantity > this.reorderPoint) {
+		if (quantity < this.reorderPoint) {
 			reorder = true;
 		} else {
 			reorder = false;
