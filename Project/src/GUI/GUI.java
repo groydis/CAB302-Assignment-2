@@ -5,10 +5,17 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+import Stock.Item;
+import Stock.Stock;
 /**
  *  
  *@author Alex Holm
@@ -23,10 +30,18 @@ public class GUI extends JFrame implements Observer, ActionListener
 	**/
 	private static final long serialVersionUID = 4465181114406422996L;
 	
-	public static final int WIDTH = 500;
+	public static final int WIDTH = 800;
 
-	public static final int HEIGHT = 300;
-
+	public static final int HEIGHT = 600;
+	
+	public static String itemPropertiesFileName;
+	public static String importManifestFileName;
+	public static String exportManifestFileName;
+	public static String salesLogFileName;
+	
+	public static Stock storeInventory;
+	
+	
 	JFrame mainFrame = new JFrame();
 	JTabbedPane pane = new JTabbedPane();
 	
@@ -36,12 +51,11 @@ public class GUI extends JFrame implements Observer, ActionListener
 	//Inventory Variables
     JPanel inventoryTab  = new JPanel();
     String[] inventoryColumnNames
-    = {"Name", "Cost", "Price", "Reorder Point", "Reorder Amount", "Temperature"};
+    = {"Name", "Cost", "Price", "Reorder Point", "Reorder Amount", "Temperature", "Quantity"};
    
     public Object[][]data
-    = {
-    		{"Name", "Cost", "Price", "Reorder Point", "Reorder Amount", "Temperature"},
-    		};
+    = {{"Name", "Cost", "Price", "Reorder Point", "Reorder Amount", "Temperature", "Quantity"}};
+    
     JTable inventoryTable = new JTable(data, inventoryColumnNames);
     
     //Document Variables
@@ -52,29 +66,29 @@ public class GUI extends JFrame implements Observer, ActionListener
     
     //Items for the properties section. With A label, text area, a filechooser
     //icon and buttons
-    JLabel propLabel = new JLabel("Item Properties");
-    JTextArea propertiesTextArea = new JTextArea(1, 20);
-    JFileChooser propertiesChooser = new JFileChooser();
-    JButton propertiesChooseButton = new JButton(folderIcon);
-    JButton propertiesButton = new JButton("Load");
+    JLabel itemPropertiesLabel = new JLabel("Item Properties");
+    JTextArea itemPropertiesTextArea = new JTextArea(1, 20);
+    JFileChooser itemPropertiesChooser = new JFileChooser();
+    JButton itemPropertiesChooseButton = new JButton(folderIcon);
+    JButton itemPropertiesButton = new JButton("Load");
 
-    JLabel maniLabel = new JLabel("Manifests");
-    JTextArea manifestTextArea = new JTextArea(1, 20);
-    JFileChooser manifestChooser = new JFileChooser();
-    JButton manifestChooseButton = new JButton(folderIcon);
-    JButton manifestButton = new JButton("Load");
+    JLabel importManifestLabel = new JLabel("Manifests");
+    JTextArea importManifestTextArea = new JTextArea(1, 20);
+    JFileChooser importManifestChooser = new JFileChooser();
+    JButton importManifestChooseButton = new JButton(folderIcon);
+    JButton importManifestButton = new JButton("Load");
     
-    JLabel exportLabel = new JLabel("Export Manifest");
-    JTextArea exportTextArea = new JTextArea(1, 20);
-    JFileChooser exportChooser = new JFileChooser();
-    JButton exportChooseButton = new JButton(folderIcon);
-    JButton exportButton = new JButton("Export");
+    JLabel exportManifestLabel = new JLabel("Export Manifest");
+    JTextArea exportManifestTextArea = new JTextArea(1, 20);
+    JFileChooser exportManifestChooser = new JFileChooser();
+    JButton exportManifestChooseButton = new JButton(folderIcon);
+    JButton exportManifestButton = new JButton("Export");
     
-    JLabel salesLabel = new JLabel("Sales Log");
-    JTextArea salesTextArea = new JTextArea(1, 20);
-    JFileChooser salesChooser = new JFileChooser();
-    JButton salesChooseButton = new JButton(folderIcon);
-    JButton salesButton = new JButton("Load");
+    JLabel salesLogLabel = new JLabel("Sales Log");
+    JTextArea salesLogTextArea = new JTextArea(1, 20);
+    JFileChooser salesLogChooser = new JFileChooser();
+    JButton salesLogChooseButton = new JButton(folderIcon);
+    JButton salesLogButton = new JButton("Load");
     
 
     
@@ -106,26 +120,31 @@ public class GUI extends JFrame implements Observer, ActionListener
 
         pane.add("Documents", documentTab);
         
-        propertiesTextArea.setEditable(true);
-        exportTextArea.setEditable(true);
-        manifestTextArea.setEditable(true);
-        salesTextArea.setEditable(true);
+        itemPropertiesTextArea.setEditable(true);
+        exportManifestTextArea.setEditable(true);
+        importManifestTextArea.setEditable(true);
+        salesLogTextArea.setEditable(true);
         
         //This can change to files only or files and directories but i dunno what was a good choice
-        propertiesChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		exportChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		manifestChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		salesChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        itemPropertiesChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		exportManifestChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		importManifestChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		salesLogChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		//Sets the directory of the file choosers to Home
-	    propertiesChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-	    exportChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-	    manifestChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-        salesChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+	    itemPropertiesChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+	    exportManifestChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+	    importManifestChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        salesLogChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 	    //Make properties Text area and button to open file choose
-        propertiesChooseButton.addActionListener(this);
-        manifestChooseButton.addActionListener(this);
-        exportChooseButton.addActionListener(this);
-        salesChooseButton.addActionListener(this);
+        itemPropertiesChooseButton.addActionListener(this);
+        importManifestChooseButton.addActionListener(this);
+        exportManifestChooseButton.addActionListener(this);
+        salesLogChooseButton.addActionListener(this);
+        
+        itemPropertiesButton.addActionListener(this);
+        importManifestButton.addActionListener(this);
+        exportManifestButton.addActionListener(this);
+        salesLogButton.addActionListener(this);
         
         
         documentTab.setLayout(new GridBagLayout());
@@ -135,56 +154,43 @@ public class GUI extends JFrame implements Observer, ActionListener
 
         docuTabLayout.gridy = 0;
         docuTabLayout.gridx = 0;
-        documentTab.add(propLabel, docuTabLayout);
+        documentTab.add(itemPropertiesLabel, docuTabLayout);
         docuTabLayout.gridy = 1;
-        documentTab.add(propertiesTextArea, docuTabLayout);
+        documentTab.add(itemPropertiesTextArea, docuTabLayout);
         docuTabLayout.gridx = 1;
-        documentTab.add(propertiesChooseButton, docuTabLayout);
+        documentTab.add(itemPropertiesChooseButton, docuTabLayout);
         docuTabLayout.gridx = 2;
-        documentTab.add(propertiesButton, docuTabLayout);
+        documentTab.add(itemPropertiesButton, docuTabLayout);
         
         docuTabLayout.gridy = 2;
         docuTabLayout.gridx = 0;
-        documentTab.add(maniLabel, docuTabLayout);
+        documentTab.add(importManifestLabel, docuTabLayout);
         docuTabLayout.gridy = 3;
-        documentTab.add(manifestTextArea, docuTabLayout);
+        documentTab.add(importManifestTextArea, docuTabLayout);
         docuTabLayout.gridx = 1;
-        documentTab.add(manifestChooseButton, docuTabLayout);
+        documentTab.add(importManifestChooseButton, docuTabLayout);
         docuTabLayout.gridx = 2;
-        documentTab.add(manifestButton, docuTabLayout);
+        documentTab.add(importManifestButton, docuTabLayout);
 
         docuTabLayout.gridy = 4;
         docuTabLayout.gridx = 0;
-        documentTab.add(exportLabel, docuTabLayout);
+        documentTab.add(exportManifestLabel, docuTabLayout);
         docuTabLayout.gridy = 5;
-        documentTab.add(exportTextArea, docuTabLayout);
+        documentTab.add(exportManifestTextArea, docuTabLayout);
         docuTabLayout.gridx = 1;
-        documentTab.add(exportChooseButton, docuTabLayout);
+        documentTab.add(exportManifestChooseButton, docuTabLayout);
         docuTabLayout.gridx = 2;
-        documentTab.add(exportButton, docuTabLayout);
-        
-        docuTabLayout.gridy = 6;
-        docuTabLayout.gridx = 0;
-        documentTab.add(exportLabel, docuTabLayout);
-        docuTabLayout.gridy = 7;
-        documentTab.add(exportTextArea, docuTabLayout);
-        docuTabLayout.gridx = 1;
-        documentTab.add(exportChooseButton, docuTabLayout);
-        docuTabLayout.gridx = 2;
-        documentTab.add(exportButton, docuTabLayout);
+        documentTab.add(exportManifestButton, docuTabLayout);
         
         docuTabLayout.gridy = 8;
         docuTabLayout.gridx = 0;
-        documentTab.add(salesLabel, docuTabLayout);
+        documentTab.add(salesLogLabel, docuTabLayout);
         docuTabLayout.gridy = 9;
-        documentTab.add(salesTextArea, docuTabLayout);
+        documentTab.add(salesLogTextArea, docuTabLayout);
         docuTabLayout.gridx = 1;
-        documentTab.add(salesChooseButton, docuTabLayout);
+        documentTab.add(salesLogChooseButton, docuTabLayout);
         docuTabLayout.gridx = 2;
-        documentTab.add(salesButton, docuTabLayout);
-        
-        
-        
+        documentTab.add(salesLogButton, docuTabLayout);
         
         getContentPane().add(pane);
         
@@ -197,64 +203,98 @@ public class GUI extends JFrame implements Observer, ActionListener
         setLocation(new Point(100, 100));
         pack();
         setVisible(true);
-        
-/*        final JFileChooser fc = new JFileChooser();
-        int returnVal = fc.showOpenDialog(this);
-        if(returnVal==JFileChooser.APPROVE_OPTION) {
-        File file = fc.getSelectedFile();
-        String filename = file.getAbsolutePath();
-        } else if(returnVal==JFileChooser.CANCEL_OPTION) {
-        }*/
     }
 	
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == propertiesChooseButton) {
-			int returnVal = propertiesChooser.showOpenDialog(GUI.this);
+		if(e.getSource() == itemPropertiesChooseButton) {
+			int returnVal = itemPropertiesChooser.showOpenDialog(GUI.this);
 
 		      if (returnVal == JFileChooser.APPROVE_OPTION) {
-		        File file = propertiesChooser.getSelectedFile();
-		        String filename = file.getAbsolutePath();
-		        propertiesTextArea.setText("");
-		        propertiesTextArea.append(filename);
+		    	  // Maybe store filename as global?
+		    	  
+		        File file = itemPropertiesChooser.getSelectedFile();
+		        itemPropertiesFileName = file.getAbsolutePath();
+		        itemPropertiesTextArea.setText("");
+		        itemPropertiesTextArea.append(itemPropertiesFileName);
 		      }
 		}
 		//this SAVES a file
-		else if (e.getSource() == exportChooseButton) {
-		      int returnVal = exportChooser.showSaveDialog(GUI.this);
+		else if (e.getSource() == exportManifestChooseButton) {
+		      int returnVal = exportManifestChooser.showSaveDialog(GUI.this);
 		      if (returnVal == JFileChooser.APPROVE_OPTION) {
-		        File file = exportChooser.getSelectedFile();
+		        File file = exportManifestChooser.getSelectedFile();
+		        exportManifestFileName = file.getAbsolutePath();
+		        exportManifestTextArea.setText("");
+		        exportManifestTextArea.append(exportManifestFileName);
 		      }
 		}
-		else if (e.getSource() == manifestChooseButton) {
-			int returnVal = manifestChooser.showOpenDialog(GUI.this);
+		else if (e.getSource() == importManifestChooseButton) {
+			int returnVal = importManifestChooser.showOpenDialog(GUI.this);
 
 		      if (returnVal == JFileChooser.APPROVE_OPTION) {
-		        File file = manifestChooser.getSelectedFile();
-		        String filename = file.getAbsolutePath();
-		        manifestTextArea.setText("");
-		        manifestTextArea.append(filename);
+		        File file = importManifestChooser.getSelectedFile();
+		        importManifestFileName = file.getAbsolutePath();
+		        importManifestTextArea.setText("");
+		        importManifestTextArea.append(importManifestFileName);
 		      }
 		}
-		else if (e.getSource() == salesChooseButton) {
-			int returnVal = salesChooser.showOpenDialog(GUI.this);
+		else if (e.getSource() == salesLogChooseButton) {
+			int returnVal = salesLogChooser.showOpenDialog(GUI.this);
+			System.out.println("Alex is a little gay homo");
 
 		      if (returnVal == JFileChooser.APPROVE_OPTION) {
-		        File file = salesChooser.getSelectedFile();
-		        String filename = file.getAbsolutePath();
-		        salesTextArea.setText("");
-		        salesTextArea.append(filename);
+		        File file = salesLogChooser.getSelectedFile();
+		        salesLogFileName = file.getAbsolutePath();
+		        salesLogTextArea.setText("");
+		        salesLogTextArea.append(salesLogFileName);
 		      }
+		} 
+		else if (e.getSource() == itemPropertiesButton) {
+			if (itemPropertiesTextArea.getText() != "") {
+				System.out.println("This Occured");
+				List<Item> items = new ArrayList<>();
+				
+				try {
+					items = FileReader.ReadItemProperties(itemPropertiesTextArea.getText());
+					storeInventory = new Stock(items);
+					DefaultTableModel dtm = new DefaultTableModel(0, 0);
+					dtm.addColumn("Name");
+					dtm.addColumn("Manufacturing Cost");
+					dtm.addColumn("Price");
+					dtm.addColumn("Reorder Point");
+					dtm.addColumn("Reorder Amount");
+					dtm.addColumn("Storage Temp");
+					dtm.addColumn("Quantity");
+					
+					
+					for (Item item: storeInventory.inventory()) {
+						dtm.addRow(new Object[] { item.name(), item.manufacturingcost(), item.sellprice(),
+								item.reorderpoint(), item.reorderamount(), item.storageTemp(), item.quantity() });
+					}
+					inventoryTable.setModel(dtm);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					System.out.println("Did I poop?");
+					e1.printStackTrace();
+				}
+			}
+			
 		}
-		
-
-		        //This is where a real application would save the file.
-		        /*
-		        log.append("Saving: " + file.getName() + "." + newline);
-		      } else {
-		        log.append("Save command cancelled by user." + newline);
-		      }
-		      log.setCaretPosition(log.getDocument().getLength());
-		    }*/
+		else if (e.getSource() == importManifestButton) {
+			if (importManifestTextArea.getText() != null || importManifestTextArea.getText() != "") {
+				
+			}
+		}
+		else if (e.getSource() == exportManifestButton) {
+			if (exportManifestTextArea.getText() != null || exportManifestTextArea.getText() != "") {
+				
+			}
+		}
+		else if (e.getSource() == salesLogButton) {
+			if (salesLogTextArea.getText() != null || salesLogTextArea.getText() != "") {
+				
+			}
+		}
 	}
 	
 	  public static void main(String[] args) {
