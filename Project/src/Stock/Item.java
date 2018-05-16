@@ -32,6 +32,7 @@ public class Item {
 		this.reorderPoint = reorderPoint;
 		this.reorderAmount = reorderAmount;
 		this.storageTemp = storageTemp;
+		this.reorder = true;
 	}
 	
 	/**

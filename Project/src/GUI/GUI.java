@@ -14,6 +14,7 @@ import java.util.Observer;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import Delivery.Manifest;
 import Stock.Item;
 import Stock.Stock;
 /**
@@ -267,6 +268,7 @@ public class GUI extends JFrame implements Observer, ActionListener
 					dtm.addColumn("Quantity");
 					
 					dtm.addRow(new Object[] {"Name", "Cost", "Price", "Reorder Point", "Reorder Amount", "Temperature", "Quantity"});
+					
 					for (Item item: storeInventory.inventory()) {
 						dtm.addRow(new Object[] { item.name(), item.manufacturingcost(), item.sellprice(),
 								item.reorderpoint(), item.reorderamount(), item.storageTemp(), item.quantity() });
@@ -282,12 +284,20 @@ public class GUI extends JFrame implements Observer, ActionListener
 		}
 		else if (e.getSource() == importManifestButton) {
 			if (importManifestTextArea.getText() != "") {
-				
+				FileReader.LoadManifest(storeInventory, importManifestTextArea.getText());
+				int index = 1;
+				for (Item item : storeInventory.inventory()) {
+					
+					inventoryTable.getModel().setValueAt(item.quantity(), index, 6);
+					index++;
+				}
 			}
 		}
 		else if (e.getSource() == exportManifestButton) {
-			if (exportManifestTextArea.getText() != null || exportManifestTextArea.getText() != "") {
-				
+			if (exportManifestTextArea.getText() != "") {
+				Manifest manifest = new Manifest(storeInventory.inventory());
+				manifest.GenerateManifest();
+				FileReader.WriteFile(manifest.manifest(), exportManifestTextArea.getText());
 			}
 		}
 		else if (e.getSource() == salesLogButton) {

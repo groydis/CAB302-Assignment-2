@@ -34,9 +34,9 @@ public class FileReader {
 		
 		Manifest manifest = new Manifest(storeInventory.inventory());
 		manifest.GenerateManifest();
-		WriteFile(manifest.manifest());
+		WriteFile(manifest.manifest(), "./Files/test.csv");
 		/*
-		LoadManifest();
+		LoadManifest(Stock storeInventory, "./Files/manifest.csv");
 		for (Item i: storeInventory.inventory()) {
 			System.out.println(i.toString());
 		}
@@ -101,8 +101,7 @@ public class FileReader {
 	 *
 	 * @param  fileName  File location of the Manifest to be imported
 	 */
-	public static void LoadManifest() {
-		String fileName = "./Files/manifest.csv";
+	public static void LoadManifest(Stock storeInventory, String fileName) {
 
 		Path pathToFile = Paths.get(fileName);
 		
@@ -126,9 +125,9 @@ public class FileReader {
 		}
 	}
 	
-	public static void WriteFile(List<String> file) {
+	public static void WriteFile(List<String> file, String path) {
 		try {
-			FileWriter fileWriter = new FileWriter("./Files/test.csv");
+			FileWriter fileWriter = new FileWriter(path);
 			for(String item: file) {
 				fileWriter.append(item + "\n");
 			}
