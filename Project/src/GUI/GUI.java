@@ -41,6 +41,8 @@ public class GUI extends JFrame implements Observer, ActionListener
 	
 	public static Stock storeInventory;
 	
+	public List<Item> items;
+	
 	
 	JFrame mainFrame = new JFrame();
 	JTabbedPane pane = new JTabbedPane();
@@ -210,7 +212,6 @@ public class GUI extends JFrame implements Observer, ActionListener
 			int returnVal = itemPropertiesChooser.showOpenDialog(GUI.this);
 
 		      if (returnVal == JFileChooser.APPROVE_OPTION) {
-		    	  // Maybe store filename as global?
 		    	  
 		        File file = itemPropertiesChooser.getSelectedFile();
 		        itemPropertiesFileName = file.getAbsolutePath();
@@ -251,8 +252,7 @@ public class GUI extends JFrame implements Observer, ActionListener
 		} 
 		else if (e.getSource() == itemPropertiesButton) {
 			if (itemPropertiesTextArea.getText() != "") {
-				System.out.println("This Occured");
-				List<Item> items = new ArrayList<>();
+				items = new ArrayList<>();
 				
 				try {
 					items = FileReader.ReadItemProperties(itemPropertiesTextArea.getText());
@@ -266,7 +266,7 @@ public class GUI extends JFrame implements Observer, ActionListener
 					dtm.addColumn("Storage Temp");
 					dtm.addColumn("Quantity");
 					
-					
+					dtm.addRow(new Object[] {"Name", "Cost", "Price", "Reorder Point", "Reorder Amount", "Temperature", "Quantity"});
 					for (Item item: storeInventory.inventory()) {
 						dtm.addRow(new Object[] { item.name(), item.manufacturingcost(), item.sellprice(),
 								item.reorderpoint(), item.reorderamount(), item.storageTemp(), item.quantity() });
@@ -281,7 +281,7 @@ public class GUI extends JFrame implements Observer, ActionListener
 			
 		}
 		else if (e.getSource() == importManifestButton) {
-			if (importManifestTextArea.getText() != null || importManifestTextArea.getText() != "") {
+			if (importManifestTextArea.getText() != "") {
 				
 			}
 		}
@@ -291,7 +291,14 @@ public class GUI extends JFrame implements Observer, ActionListener
 			}
 		}
 		else if (e.getSource() == salesLogButton) {
-			if (salesLogTextArea.getText() != null || salesLogTextArea.getText() != "") {
+			if (salesLogTextArea.getText() != "") {
+				FileReader.LoadSalesLog(salesLogTextArea.getText(), storeInventory);
+				int index = 0;
+				for (Item item : storeInventory.inventory()) {
+					
+					inventoryTable.getModel().setValueAt(item.quantity(), index, 6);
+					index++;
+				}
 				
 			}
 		}

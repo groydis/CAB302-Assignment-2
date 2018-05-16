@@ -27,7 +27,7 @@ public class FileReader {
 			System.out.println(i.toString());
 		}
 		
-		LoadSalesLog();
+		LoadSalesLog("./Files/sales_log_3.csv", storeInventory);
 		for (Item i: storeInventory.inventory()) {
 			System.out.println(i.toString());
 		}
@@ -78,8 +78,7 @@ public class FileReader {
 	 *
 	 * @param  fileName  File location of the Sales Log to be imported
 	 */
-	public static void LoadSalesLog() {
-		String fileName = "./Files/sales_log_3.csv";
+	public static void LoadSalesLog(String fileName, Stock storeInventory) {
 		
 		Path pathToFile = Paths.get(fileName);
 		
