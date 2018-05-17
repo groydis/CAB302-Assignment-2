@@ -114,27 +114,18 @@ public class GUI extends JFrame implements Observer, ActionListener
 		
         pane.add("Store", inventoryTab);
         //inventoryTab.add(new JLabel("Please load in item properties"));
-        inventoryTab.setLayout(new GridBagLayout());
-        GridBagConstraints inventoryTabLayout = new GridBagConstraints();
-        inventoryTabLayout.fill = GridBagConstraints.VERTICAL;
-        inventoryTabLayout.anchor = GridBagConstraints.NORTHEAST;
-        inventoryTabLayout.gridwidth = GridBagConstraints.RELATIVE;
-        inventoryTabLayout.gridheight = GridBagConstraints.RELATIVE;
+        inventoryTab.setLayout(new GridLayout(10,10));
+        GridLayout inventoryTabLayout = new GridLayout();
         
-        inventoryTabLayout.gridx = 1;
-        inventoryTabLayout.gridy = 1;
+        inventoryTabLayout.setColumns(10);
+        inventoryTabLayout.setRows(10);
         inventoryTab.add(storeNameLabel, inventoryTabLayout);
-        
-        inventoryTabLayout.anchor = GridBagConstraints.FIRST_LINE_END;        
-        inventoryTabLayout.gridx = 10;
         inventoryTab.add(storeCapitalLabel, inventoryTabLayout);
-        inventoryTabLayout.anchor = GridBagConstraints.CENTER; 
-        inventoryTabLayout.gridy = 2;
-
-        inventoryTabLayout.gridwidth = GridBagConstraints.REMAINDER;
-        inventoryTabLayout.gridheight = GridBagConstraints.REMAINDER;
-        inventoryTab.add(inventoryTable, inventoryTabLayout);
+        
         inventoryTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        inventoryTab.add(inventoryTable, inventoryTabLayout);
+        
+        
 
         pane.add("Documents", documentTab);
         
