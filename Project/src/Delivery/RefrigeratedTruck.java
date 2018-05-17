@@ -1,46 +1,54 @@
 package Delivery;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import Stock.Item;
+import Stock.Stock;
+
 public class RefrigeratedTruck extends Truck {
-	private List<String> cargo;
-	private double temperature;
 	
-	public RefrigeratedTruck(List<String> cargo) {
-		this.cargo  = cargo;
-		SetTemperature();
+	private int temperature;
+	public RefrigeratedTruck (Stock cargo) {
+		super(cargo);
 	}
 	
-	@Override
-	public double GetCost() {
-		// TODO Cost in dollars equal to 900 + 200 × 0.7T/5 where T is the 
-		// truck’s temperature in °C.
-		double cost = 900 + (200 * (0.7 * (GetTemperature() / 5)));
-		return cost;
+	public int getTemperature() {	
+		return temperature;
+	}
+	
+	public void setTemperature() {
+		int temp = 10;
+		for (Item item : getInventory()) {
+			if (item.getStorageTemp() < 10) {
+				temp = item.getStorageTemp();
+			}
+		}
+		temperature = temp;
 	}
 
-	
 	@Override
-	public int GetCapacity() {
+	public int getCapacity() {
 		return 800;
 	}
 
+	@Override
+	public double getCost() {
+		// TODO Auto-generated method stub
+		return Math.pow((900 + 200) * 0.7, (getTemperature()/5));
+	}
 
 	@Override
-	public List<String> GetCargo() {
-		// TODO Auto-generated method stub
-		return cargo;
-	}
-	
-	private void SetTemperature() {
-		// TODO Temperature in °C that maintains a safe temperature for the truck’s cargo. 
-		// This is equal to the temperature of the item in the cargo with the coldest safe 
-		// temperature. The allowed temperature range is from -20°C inclusive to 10°C inclusive.
-		
-	}
-	
-	public double GetTemperature() {
-		return temperature;
+	public List<String> getCargo() {
+		List<String> cargoOutput = new ArrayList<String>();
+		cargoOutput.add(">Refrigerated Truck");
+		for (Item item : getInventory()) {
+			String output = item.name() + "," + cargo().totalItem(item);
+			if (!cargoOutput.contains(output)) {
+				cargoOutput.add(output);
+			}
+		}
+		return cargoOutput;
 	}
 
 }

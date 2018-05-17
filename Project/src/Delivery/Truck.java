@@ -1,23 +1,41 @@
 package Delivery;
-/** 
- * 
- * @author Greyden Scott
- *
- */
 
 import java.util.List;
 
-abstract public class Truck {
+import Stock.Item;
+import Stock.Stock;
+
+public abstract class Truck {
 	
-	public Truck() {
-		
+	private Stock cargo;
+	private List<Item> inventory;
+	
+	public Truck(Stock inventory) {
+		this.cargo = inventory;
+		this.inventory = inventory.inventory();
 	}
 	
-	public abstract int GetCapacity();
-		
-	public abstract double GetCost();
+	public List<Item> getInventory() {
+		return this.inventory;
+	}
 	
-	public abstract List<String> GetCargo();
+	public Stock cargo() {
+		return this.cargo;
+	}
+	
+	public int getQuantity() {
+		int qty = 0;
+		for(Item item : inventory) {
+			qty += item.getReorderAmount();
+		}
+		return qty;
+	}
+	
+	public abstract int getCapacity();
 		
+	public abstract double getCost();
+	
+	public abstract List<String> getCargo();
+	
 
 }

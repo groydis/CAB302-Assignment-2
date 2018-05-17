@@ -5,92 +5,86 @@ import java.util.List;
 
 import Stock.Item;
 import Stock.Stock;
-import Stock.Store;
 
-/** 
- * 
- * @author Greyden Scott
- *
- */
 public class Manifest {
-	List<String> manifest;
-	List<String> coldStorage;
-	List<String> storage;
-	List<Item> inventory;
-
-	/**
-	 * Constructs a Manifest and initializes manifest, coldStorage and storage lists.
-	 *
-	 * @param  inventory  List of items
-	 */
-	public Manifest(List<Item> inventory) {
-		this.manifest = new ArrayList<>();
-		this.coldStorage = new ArrayList<>();
-		this.storage = new ArrayList<>();
-		this.inventory = inventory;
-	}
 	
+	List<Truck> fleet;
 	
-	public void ReadManifest(List<String> manifestRecieved) {
+	Stock storeInventory;
+	
+	Stock coldItems = new Stock();
+	Stock ordinaryItems = new Stock();
+	
+	Stock cargo = new Stock();
+	
+	public Manifest(Stock storeInventory) {
+		this.storeInventory = storeInventory;
+		this.fleet = new ArrayList<>();
+		
+		for (Item item : storeInventory.inventory()) {
+			if(item.getStorageTemp() <= 10) {
+				coldItems.addItem(item);	
+			} else {
+				ordinaryItems.addItem(item);	
+			}
+		}
+		
+		for (Item item : coldItems.inventory()) {
+			cargo.addItem(item);
+			if (cargo.total() == 800) {
+				Truck coldTruck = new RefrigeratedTruck(cargo);
+				fleet.add(coldTruck);
+				cargo = new Stock();
+			}
+		}
+		if (cargo.total() != 800) {
+			for (Item item : ordinaryItems.inventory()) {
+				cargo.addItem(item);
+				if (cargo.total() == 800) {
+					Truck coldTruck = new RefrigeratedTruck(cargo);
+					fleet.add(coldTruck);
+					cargo = new Stock();
+				}
+			}
+		} else {
+			Truck coldTruck = new RefrigeratedTruck(cargo);
+			fleet.add(coldTruck);
+			cargo = new Stock();
+		}
+		for (Item item : ordinaryItems.inventory()) {
+			cargo.addItem(item);
+			if (cargo.total() == 1000) {
+				Truck ordinaryTruck = new OrdinaryTruck(cargo);
+				fleet.add(ordinaryTruck);
+				cargo = new Stock();
+			}
+		}
+		
+		for (Truck truck : fleet) {
+			List<String> cargos = truck.getCargo();
+			for (String output : cargos) {
+				System.out.println(output);
+			}
+		}
 		
 	}
 	
-	/**
-	 * Returns a List populated with manifest items categorized by whether
-	 * the items need to be transported in a Refrigerated Truck or Ordinary Truck.
-	 *
-	 * @param  inventory  List of items
-	 * @return      List<String> of a manifest to be processed into a .csv file
-	 */
-	public List<String>  GenerateManifest() {
-		for (Item item: inventory) {
-			if (item.reorder()) {
-				System.out.println(item.name() + " on list");
-				add(item, item.reorderamount());
-			} else {
-				System.out.println(item.name() + " " + item.reorderpoint() + " " + item.quantity());
-			}
-		}
-		manifest.add(">Refrigerated");
-		for (String item: coldStorage) {
-			manifest.add(item);
-		}
-		manifest.add(">Ordinary");
-		for (String item: storage) {
-			manifest.add(item);
-		}
-		return manifest;
+	public List<Truck> CreateFleet() {
+		return fleet;
+		
 	}
 	
-	/**
-	 * This method adds an item to a one of two list's depending on it's 
-	 * storage temperature.
-	 *
-	 * @param item  Item to be added to manifest
-	 * @param qty	number of items to be associated with the item being added
-	 */
-	public void add(Item item, int qty) {
-		String manifestItem;
-		manifestItem = item.name() + "," + qty;
-		if (item.storageTemp() <= 10) {
-			coldStorage.add(manifestItem);
-		} else {
-			storage.add(manifestItem);
-		}
+	public List<Truck> getFleet() {
+		return this.fleet;
 	}
 	
-	public List<String> manifest() {
-		return this.manifest;
+	public void addToFleet(Truck truck) {
+		this.fleet.add(truck);
 	}
-	
-	/**
-	 * This method removes all items from the manifest, coldStorage and 
-	 * storage List's.
-	 *
-	 */
-	public void clear() {
-		coldStorage.clear();
-		storage.clear();
-		manifest.clear();
+
+	public List<String> generateManifest() {
+		// TODO Auto-generated method stub
+		return null;
 	}
+
 }

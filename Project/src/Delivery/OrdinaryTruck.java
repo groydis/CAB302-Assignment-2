@@ -1,42 +1,41 @@
 package Delivery;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import Stock.Item;
+import Stock.Stock;
 
 public class OrdinaryTruck extends Truck {
 	
-	private List<String> cargo;
-	
-	public OrdinaryTruck(List<String> cargo) {
-		this.cargo  = cargo;
+	public OrdinaryTruck(Stock cargo) {
+		super(cargo);
 	}
-	
+
 	@Override
-	public int GetCapacity() {
+	public int getCapacity() {
 		// TODO Auto-generated method stub
 		return 1000;
 	}
 
 	@Override
-	public double GetCost() {
-		// TODO Cost in dollars equal to 750 + 0.25q where q is the total quantity 
-		// of items in the cargo.
-		double cost = 750 + (0.25 * Quantity());
-		return cost;
+	public double getCost() {
+		// TODO Auto-generated method stub
+		return 750 + 0.25 * getQuantity();
 	}
 
 	@Override
-	public List<String> GetCargo() {
-		// TODO Auto-generated method stub
-		// SET QUANITY
-		return cargo;
+	public List<String> getCargo() {
+		List<String> cargoOutput = new ArrayList<String>();
+		cargoOutput.add(">Ordinary Truck");
+		for (Item item : getInventory()) {
+			String output = item.name() + "," + cargo().totalItem(item);
+			if (!cargoOutput.contains(output)) {
+				cargoOutput.add(output);
+			}
+		}
+		return cargoOutput;
 	}
-	
-	public int Quantity() {
-		// Should return total count of items in inventory
-		// Should not exceed 1000/
-		
-		return 0;
-		
-	}
+
 
 }

@@ -20,27 +20,31 @@ import Stock.Stock;
  */
 public class FileReader {
 	private static Stock storeInventory;
+	private static Stock itemsToOrder;
 	
 	public static void main(String... args) throws IOException {
-		storeInventory = new Stock(ReadItemProperties("./Files/item_properties.csv"));
-		for (Item i: storeInventory.inventory()) {
-			System.out.println(i.toString());
+		storeInventory = new Stock();
+		itemsToOrder = new Stock();
+		
+		ImportItemProperties("./Files/item_properties.csv");
+		for (Item item: storeInventory.inventory()) {
+			System.out.println(item.toString());
+			if (item.reorder()) {
+				for (int i = 0; i < item.getReorderAmount(); i++) {
+					itemsToOrder.addItem(item);
+				}
+			}
 		}
 		
+		
+		Manifest manifest = new Manifest(itemsToOrder);
+		/*
 		LoadSalesLog("./Files/sales_log_3.csv", storeInventory);
 		for (Item i: storeInventory.inventory()) {
 			System.out.println(i.toString());
 		}
-		
-		Manifest manifest = new Manifest(storeInventory.inventory());
-		manifest.GenerateManifest();
-		WriteFile(manifest.manifest(), "./Files/test.csv");
-		/*
-		LoadManifest(Stock storeInventory, "./Files/manifest.csv");
-		for (Item i: storeInventory.inventory()) {
-			System.out.println(i.toString());
-		}
 		*/
+		
 	}
 	
 	/**
@@ -50,7 +54,7 @@ public class FileReader {
 	 * @return List of Items produces by the Item Properties Document
 	 * @see Item
 	 */
-	public static List<Item> ReadItemProperties(String fileName) throws IOException {
+	public static List<Item> ImportItemProperties(String fileName) throws IOException {
 		List<Item> items = new ArrayList<>();
 		
 		Path pathToFile = Paths.get(fileName);
@@ -61,9 +65,8 @@ public class FileReader {
 			
 			while (line != null) {
 				String[] attributes = line.split(",");
-				Item item = Item.CreateItem(attributes);
-				items.add(item);
-				
+				Item item = new Item(attributes);
+				storeInventory.addItem(item);
 				line = br.readLine();
 			}
 		} catch (IOException ioe) {

@@ -11,52 +11,31 @@ public class Item {
 	private double manufacturingCost; 
 	private double sellPrice;
 	private int reorderPoint, reorderAmount;
-	private double storageTemp;
+	private int storageTemp;
 	private int quantity = 0;
 	private Boolean reorder;
 	
 	/**
-	 * Constructs and item based on the passed parameters
-	 *
-	 * @param  itemName Name of the item
-	 * @param  manufacturingCost Cost to manufacture the item
-	 * @param  sellPrice Price the item is sold for
-	 * @param  reorderPoint Point in which a reorder is triggered
-	 * @param  reorderAmount Amount of items to reorder
-	 * @param  storageTemp Temperature in which the item must be stored
+	 * Constructs and item based on the array of parameters passed in from the 
+	 * item properties document.
+	 * 
+	 * @param  data Array of data parsed by the file reader
 	 */
-	public Item(String itemName, double manufacturingCost, double sellPrice, int reorderPoint, int reorderAmount, double storageTemp) {
-		this.itemName = itemName;
-		this.manufacturingCost = manufacturingCost;
-		this.sellPrice = sellPrice;
-		this.reorderPoint = reorderPoint;
-		this.reorderAmount = reorderAmount;
-		this.storageTemp = storageTemp;
+	public Item(String[] attirbutes) {
+		
+		this.itemName = attirbutes[0];
+		this.manufacturingCost = Double.parseDouble(attirbutes[1]);
+		this.sellPrice = Double.parseDouble(attirbutes[2]);
+		this.reorderPoint = Integer.parseInt(attirbutes[3]);
+		this.reorderAmount = Integer.parseInt(attirbutes[4]);
+		if (attirbutes.length == 6) {
+			storageTemp = Integer.parseInt(attirbutes[5]);
+		} else {
+			storageTemp = 24;
+		}
 		this.reorder = true;
 	}
 	
-	/**
-	 * Creates an item based on the array of parameters passed in from the 
-	 * item properties document.
-	 *
-	 * @param  data Array of data parsed by the file reader
-	 * @return Returns an Item using the class constructor
-	 * @see FileReader
-	 */
-	public static Item CreateItem(String[] data) {
-
-		String itemName = data[0];
-		double manufacturingCost = Double.parseDouble(data[1]);
-		double sellPrice = Double.parseDouble(data[2]);
-		int reorderPoint = Integer.parseInt(data[3]);
-		int reorderAmount = Integer.parseInt(data[4]);
-		double storageTemp = 30;
-		if (data.length == 6) {
-			storageTemp = Double.parseDouble(data[5]);
-		}
-		
-		return new Item(itemName, manufacturingCost, sellPrice, reorderPoint, reorderAmount, storageTemp);
-	}
 
 	/**
 	 * This method is used for returning the items name.
@@ -72,7 +51,7 @@ public class Item {
 	 *
 	 * @return Returns Item manufacturing cost
 	 */
-	public double manufacturingcost() {
+	public double getManufacturingcost() {
 		return this.manufacturingCost;
 	}
 	
@@ -81,7 +60,7 @@ public class Item {
 	 *
 	 * @return Returns Item sell price
 	 */
-	public double sellprice() {
+	public double getSellprice() {
 		return this.sellPrice;
 	}
 	
@@ -90,7 +69,7 @@ public class Item {
 	 *
 	 * @return Returns Item reorder point
 	 */
-	public int reorderpoint() {
+	public int getReorderpoint() {
 		return this.reorderPoint;
 	}
 	
@@ -99,7 +78,7 @@ public class Item {
 	 *
 	 * @return Returns Item reorder amount
 	 */
-	public int reorderamount() {
+	public int getReorderAmount() {
 		return this.reorderAmount;
 	}
 	
@@ -108,7 +87,7 @@ public class Item {
 	 *
 	 * @return Returns Item storage temperature
 	 */
-	public double storageTemp() {
+	public int getStorageTemp() {
 		return this.storageTemp;
 	}
 
@@ -117,8 +96,12 @@ public class Item {
 	 *
 	 * @return Returns the quantity of the item which is stored in the inventory.
 	 */
-	public int quantity() {
+	public int getQuantity() {
 		return this.quantity;
+	}
+	
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 	
 	/**
@@ -137,26 +120,20 @@ public class Item {
 	 * @see reorder
 	 */
 	public void UpdateQuantity(int quantity) {
-		this.quantity = quantity;
-		if (quantity < this.reorderPoint) {
+		setQuantity(quantity);
+		if (getQuantity() < this.reorderPoint) {
 			reorder = true;
 		} else {
 			reorder = false;
 		}
 	}
 	
+	/**
+	 * This is just testing
+	 */
 	
-	// CURRENTLY ONLY USED FOR TESTING
 	public String toString() {
-		String output = itemName + " " +
-		manufacturingCost + " " +
-		sellPrice +  " " +
-		reorderPoint +  " " +
-		reorderAmount + " " +
-		storageTemp + " " +
-		quantity;
-		return output;
-		
+		return this.name() + " " + this.getQuantity();
 	}
 	
 }
