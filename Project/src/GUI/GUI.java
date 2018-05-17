@@ -1,7 +1,6 @@
 package GUI;
 
 import java.awt.*;
-import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -48,11 +47,11 @@ public class GUI extends JFrame implements Observer, ActionListener
 	JFrame mainFrame = new JFrame();
 	JTabbedPane pane = new JTabbedPane();
 	
-	//Store Variables
-	JPanel storeTab = new JPanel(); 
 	
-	//Inventory Variables
+	//Store and Inventory Variables
     JPanel inventoryTab  = new JPanel();
+    JLabel storeNameLabel = new JLabel("Store Name : CityWok");
+    JLabel storeCapitalLabel = new JLabel("Capital : $100,000.00");
     String[] inventoryColumnNames
     = {"Name", "Cost", "Price", "Reorder Point", "Reorder Amount", "Temperature", "Quantity"};
    
@@ -111,14 +110,30 @@ public class GUI extends JFrame implements Observer, ActionListener
 		mainFrame.setSize(HEIGHT, WIDTH);		
 		mainFrame.setLayout(new GridBagLayout());
 		mainFrame.add(pane);
+	
 		
-
-        pane.add("Store", storeTab);
-        storeTab.add(new JLabel("Tab 1"));
-		
-        pane.add("Inventory", inventoryTab);
+        pane.add("Store", inventoryTab);
         //inventoryTab.add(new JLabel("Please load in item properties"));
-        inventoryTab.add(inventoryTable);
+        inventoryTab.setLayout(new GridBagLayout());
+        GridBagConstraints inventoryTabLayout = new GridBagConstraints();
+        inventoryTabLayout.fill = GridBagConstraints.VERTICAL;
+        inventoryTabLayout.anchor = GridBagConstraints.NORTHEAST;
+        inventoryTabLayout.gridwidth = GridBagConstraints.RELATIVE;
+        inventoryTabLayout.gridheight = GridBagConstraints.RELATIVE;
+        
+        inventoryTabLayout.gridx = 1;
+        inventoryTabLayout.gridy = 1;
+        inventoryTab.add(storeNameLabel, inventoryTabLayout);
+        
+        inventoryTabLayout.anchor = GridBagConstraints.FIRST_LINE_END;        
+        inventoryTabLayout.gridx = 10;
+        inventoryTab.add(storeCapitalLabel, inventoryTabLayout);
+        inventoryTabLayout.anchor = GridBagConstraints.CENTER; 
+        inventoryTabLayout.gridy = 2;
+
+        inventoryTabLayout.gridwidth = GridBagConstraints.REMAINDER;
+        inventoryTabLayout.gridheight = GridBagConstraints.REMAINDER;
+        inventoryTab.add(inventoryTable, inventoryTabLayout);
         inventoryTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
         pane.add("Documents", documentTab);
