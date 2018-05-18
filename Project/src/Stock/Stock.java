@@ -27,6 +27,10 @@ public class Stock {
 		return inventory.size();
 	}
 	
+	public int getSize() {
+		return inventory.size();
+	}
+	
 	public int totalItem(Item item) {
 		int total = 0;
 		if (inventory.contains(item)) {
@@ -43,7 +47,7 @@ public class Stock {
 		inventory.clear();
 	}
 	
-
+/*
 	public void updateSales(String[] data) {
 		int quantity = Integer.parseInt(data[1]);
 		for (Item item : inventory()) {
@@ -52,6 +56,6 @@ public class Stock {
 			}
 		}
 	}
-
+*/
 
 }

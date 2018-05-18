@@ -118,7 +118,7 @@ public class Item {
 	 * If the quantity falls below the reorder point for the item, sets reorder to true
 	 * 
 	 * @see reorder
-	 */
+	 
 	public void UpdateQuantity(int quantity) {
 		setQuantity(quantity);
 		if (getQuantity() < this.reorderPoint) {
@@ -127,13 +127,14 @@ public class Item {
 			reorder = false;
 		}
 	}
+	*/
 	
 	/**
 	 * This is just testing
 	 */
 	
 	public String toString() {
-		return this.name() + " " + this.getQuantity();
+		return this.name() + " " + this.getQuantity() + " " + this.getReorderAmount();
 	}
 	
 }

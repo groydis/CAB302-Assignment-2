@@ -8,8 +8,8 @@ package Stock;
 
 public class Store {
 	
-	String storeName;
-	double capital;
+	private String storeName;
+	private double capital;
 	
 	public Store(String storeName, double capital) {
 		this.storeName = storeName;
@@ -25,7 +25,7 @@ public class Store {
 	}
 	
 	public double getCapital() {
-		return capital;
+		return this.capital;
 	}
 	
 

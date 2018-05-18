@@ -11,8 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Delivery.Manifest;
+import Delivery.OrdinaryTruck;
+import Delivery.RefrigeratedTruck;
+import Delivery.Truck;
 import Stock.Item;
 import Stock.Stock;
+import Stock.Store;
 
 /**
  * @author Greyden Scott
@@ -21,29 +25,42 @@ import Stock.Stock;
 public class FileReader {
 	private static Stock storeInventory;
 	private static Stock itemsToOrder;
+	private static Store store;
+	
 	
 	public static void main(String... args) throws IOException {
+		
 		storeInventory = new Stock();
 		itemsToOrder = new Stock();
+		store = new Store("Test Store", 100000.00);
 		
-		ImportItemProperties("./Files/item_properties.csv");
+		
+		ImportItemProperties("./Files/item_properties.csv", storeInventory);
+		
 		for (Item item: storeInventory.inventory()) {
-			System.out.println(item.toString());
 			if (item.reorder()) {
 				for (int i = 0; i < item.getReorderAmount(); i++) {
 					itemsToOrder.addItem(item);
 				}
 			}
 		}
-		
+		//System.out.println("-------------");
 		
 		Manifest manifest = new Manifest(itemsToOrder);
+		
+		ExportManifest("./Files/test1.csv", manifest);
+		
+		LoadManifest("./Files/test1.csv", storeInventory);
+		
 		/*
 		LoadSalesLog("./Files/sales_log_3.csv", storeInventory);
+		
 		for (Item i: storeInventory.inventory()) {
 			System.out.println(i.toString());
 		}
 		*/
+		
+		
 		
 	}
 	
@@ -54,7 +71,7 @@ public class FileReader {
 	 * @return List of Items produces by the Item Properties Document
 	 * @see Item
 	 */
-	public static List<Item> ImportItemProperties(String fileName) throws IOException {
+	public static List<Item> ImportItemProperties(String fileName, Stock storeInventory) throws IOException {
 		List<Item> items = new ArrayList<>();
 		
 		Path pathToFile = Paths.get(fileName);
@@ -80,7 +97,7 @@ public class FileReader {
 	 * on the sales numbers.
 	 *
 	 * @param  fileName  File location of the Sales Log to be imported
-	 */
+	 *
 	public static void LoadSalesLog(String fileName, Stock storeInventory) {
 		
 		Path pathToFile = Paths.get(fileName);
@@ -97,6 +114,7 @@ public class FileReader {
 			ioe.printStackTrace();
 		}
 	}
+	*/
 	
 	/**
 	 * This method parses a Manifest  and modifies the inventory of Items based 
@@ -104,21 +122,71 @@ public class FileReader {
 	 *
 	 * @param  fileName  File location of the Manifest to be imported
 	 */
-	public static void LoadManifest(Stock storeInventory, String fileName) {
-
+	public static void LoadManifest(String fileName, Stock storeInventory) {
+		
+		double deduction = 0;
+		boolean isColdTruck = false;
+		
+		Stock cargo = new Stock();
+		
+		Truck coldTruck = new RefrigeratedTruck(cargo);
+		Truck ordinaryTruck = new OrdinaryTruck(cargo);
+		
+		List<Truck> incomingFleet = new ArrayList<>();
+		
 		Path pathToFile = Paths.get(fileName);
 		
 		try (BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US_ASCII)) {
 			String line = br.readLine();
 			
 			while (line != null) {
-				String[] attributes = line.split(",");
-				for (Item item : storeInventory.inventory()) {
+				if (line.equals(">Refrigerated Truck")) {
 					
-					if (item.name().equals(attributes[0])) {
-						
-						storeInventory.updateSales(attributes);
+					isColdTruck = true;
+					
+					cargo = new Stock();
+					
+					coldTruck = new RefrigeratedTruck(cargo);
+					
+					incomingFleet.add(coldTruck);
+					
+				} else if (line.equals(">Ordinary Truck")) {
+					
+					isColdTruck = false;
+					
+					cargo = new Stock();
+					
+					ordinaryTruck = new OrdinaryTruck(cargo);
+					
+					incomingFleet.add(ordinaryTruck);
+					
+				} else {
+					if (isColdTruck) {
+						String[] attributes = line.split(",");
+						for (Item item : storeInventory.inventory()) {
+							if (item.name().equals(attributes[0])) {
+								for (int i = 0; i < Integer.parseInt(attributes[1]); i++) {
+									coldTruck.cargo().addItem(item);
+									deduction += item.getManufacturingcost();
+								}
+								int qty = item.getQuantity();
+								item.setQuantity(Integer.parseInt(attributes[1]) + qty);
+							}
+						}
+					} else  {
+						String[] attributes = line.split(",");
+						for (Item item : storeInventory.inventory()) {
+							if (item.name().equals(attributes[0])) {
+								for (int i = 0; i < Integer.parseInt(attributes[1]); i++) {
+									ordinaryTruck.cargo().addItem(item);
+									deduction += item.getManufacturingcost();
+								}
+								int qty = item.getQuantity();
+								item.setQuantity(Integer.parseInt(attributes[1]) + qty);
+							}
+						}
 					}
+					
 				}
 				
 				line = br.readLine();
@@ -126,13 +194,34 @@ public class FileReader {
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
+		for (Truck truck : incomingFleet) {
+			/*
+			List<String> cargos = truck.getCargo();
+			
+			// Testing
+			System.out.println("-------------");
+			for (String output : cargos) {
+				System.out.println(output);
+			}
+			System.out.println(truck.getCost());
+			*/
+			deduction += truck.getCost();
+		}
+		System.out.println(store.getCapital() - deduction );
+		
 	}
 	
-	public static void WriteFile(List<String> file, String path) {
+	public static void ExportManifest(String path, Manifest manifest) {
+		List<Truck> fleet = manifest.getFleet();
 		try {
 			FileWriter fileWriter = new FileWriter(path);
-			for(String item: file) {
-				fileWriter.append(item + "\n");
+			
+			for (Truck truck : fleet) {
+				List<String> cargos = truck.getCargo();
+			
+				for (String output : cargos) {
+					fileWriter.append(output + "\n");
+				}
 			}
 			fileWriter.close();
 		} catch (IOException e) {

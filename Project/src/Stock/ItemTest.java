@@ -73,7 +73,7 @@ class ItemTest {
 	public void testReOrderAmount() {
 		testItem = new Item(itemRice);
 		int testReOrderAmount = reorderAmount;
-		int actualReOrderAmount = testItem.getReorderamount();
+		int actualReOrderAmount = testItem.getReorderAmount();
 		assertEquals(testReOrderAmount, actualReOrderAmount);
 	}
 	

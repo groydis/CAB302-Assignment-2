@@ -35,7 +35,8 @@ public class RefrigeratedTruck extends Truck {
 	@Override
 	public double getCost() {
 		// TODO Auto-generated method stub
-		return Math.pow((900 + 200) * 0.7, (getTemperature()/5));
+		setTemperature();
+		return 900 + 200 * Math.pow(.7, getTemperature()/5);
 	}
 
 	@Override

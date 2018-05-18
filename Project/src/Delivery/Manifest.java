@@ -18,8 +18,11 @@ public class Manifest {
 	Stock cargo = new Stock();
 	
 	public Manifest(Stock storeInventory) {
+		
 		this.storeInventory = storeInventory;
 		this.fleet = new ArrayList<>();
+		boolean fillingUpTruck = false;
+		
 		
 		for (Item item : storeInventory.inventory()) {
 			if(item.getStorageTemp() <= 10) {
@@ -37,36 +40,34 @@ public class Manifest {
 				cargo = new Stock();
 			}
 		}
+		
 		if (cargo.total() != 800) {
+			fillingUpTruck = true;
 			for (Item item : ordinaryItems.inventory()) {
-				cargo.addItem(item);
-				if (cargo.total() == 800) {
-					Truck coldTruck = new RefrigeratedTruck(cargo);
-					fleet.add(coldTruck);
-					cargo = new Stock();
+			
+				if (fillingUpTruck) {
+					cargo.addItem(item);
+					if (cargo.total() == 800) {
+						Truck coldTruck = new RefrigeratedTruck(cargo);
+						fleet.add(coldTruck);
+						cargo = new Stock();
+						fillingUpTruck = false;
+					}
+				} else {
+					cargo.addItem(item);
+					if (cargo.total() == 1000) {
+						Truck ordinaryTruck = new OrdinaryTruck(cargo);
+						fleet.add(ordinaryTruck);
+						cargo = new Stock();
+					}
 				}
 			}
-		} else {
-			Truck coldTruck = new RefrigeratedTruck(cargo);
-			fleet.add(coldTruck);
-			cargo = new Stock();
-		}
-		for (Item item : ordinaryItems.inventory()) {
-			cargo.addItem(item);
-			if (cargo.total() == 1000) {
-				Truck ordinaryTruck = new OrdinaryTruck(cargo);
-				fleet.add(ordinaryTruck);
-				cargo = new Stock();
-			}
 		}
 		
-		for (Truck truck : fleet) {
-			List<String> cargos = truck.getCargo();
-			for (String output : cargos) {
-				System.out.println(output);
-			}
+		if (cargo.total() != 1000) {
+			Truck ordinaryTruck = new OrdinaryTruck(cargo);
+			fleet.add(ordinaryTruck);
 		}
-		
 	}
 	
 	public List<Truck> CreateFleet() {
@@ -76,15 +77,6 @@ public class Manifest {
 	
 	public List<Truck> getFleet() {
 		return this.fleet;
-	}
-	
-	public void addToFleet(Truck truck) {
-		this.fleet.add(truck);
-	}
-
-	public List<String> generateManifest() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
