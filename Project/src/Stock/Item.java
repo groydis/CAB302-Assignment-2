@@ -7,13 +7,12 @@ public class Item {
 	 * @author Alex Holm
 	 * 
 	 */
-	private String itemName;
-	private double manufacturingCost; 
-	private double sellPrice;
-	private int reorderPoint, reorderAmount;
-	private int storageTemp;
+	String itemName;
+	int manufacturingCost; 
+	int sellPrice;
+	int reorderPoint, reorderAmount;
+	int storageTemp;
 	private int quantity = 0;
-	private Boolean reorder;
 	
 	/**
 	 * Constructs and item based on the array of parameters passed in from the 
@@ -24,8 +23,8 @@ public class Item {
 	public Item(String[] attirbutes) {
 		
 		this.itemName = attirbutes[0];
-		this.manufacturingCost = Double.parseDouble(attirbutes[1]);
-		this.sellPrice = Double.parseDouble(attirbutes[2]);
+		this.manufacturingCost = Integer.parseInt(attirbutes[1]);
+		this.sellPrice = Integer.parseInt(attirbutes[2]);
 		this.reorderPoint = Integer.parseInt(attirbutes[3]);
 		this.reorderAmount = Integer.parseInt(attirbutes[4]);
 		if (attirbutes.length == 6) {
@@ -33,7 +32,6 @@ public class Item {
 		} else {
 			storageTemp = 24;
 		}
-		this.reorder = true;
 	}
 	
 
@@ -110,7 +108,10 @@ public class Item {
 	 * @return Returns boolean value based on whether item needs ot be reordered
 	 */
 	public Boolean reorder() {
-		return this.reorder;
+		if (getQuantity() < this.reorderPoint) {
+			return true;
+		} 
+		return false;
 	}
 
 	/**
@@ -134,7 +135,15 @@ public class Item {
 	 */
 	
 	public String toString() {
-		return this.name() + " " + this.getQuantity() + " " + this.getReorderAmount();
+		String item = this.itemName + " " + 
+				this.manufacturingCost + " " +
+				this.sellPrice + " " +
+				this.reorderPoint + " " +
+				this.reorderAmount + " " +
+				this.storageTemp + " " +
+				this.getQuantity() + " "; 
+		
+		return item;
 	}
 	
 }

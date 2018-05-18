@@ -21,7 +21,7 @@ public class OrdinaryTruck extends Truck {
 	@Override
 	public double getCost() {
 		// TODO Auto-generated method stub
-		return 750 + 0.25 * getInventory().size();
+		return 750 + (0.25 * getInventory().size());
 	}
 
 	@Override

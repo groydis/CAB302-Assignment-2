@@ -16,8 +16,8 @@ class ItemTest {
 	
 	Item testItem;
 	String itemName = "rice";
-	double manufacturingCost = 2.0;
-	double sellPrice = 3.0;
+	int manufacturingCost = 2;
+	int sellPrice = 3;
 	int reorderPoint = 225;
 	int reorderAmount = 300;
 	int storageTemp = 0;

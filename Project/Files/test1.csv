@@ -1,45 +1,25 @@
 >Refrigerated Truck
-mushrooms,325
-tomatoes,400
-lettuce,75
->Refrigerated Truck
-lettuce,275
-grapes,225
-asparagus,275
-celery,25
->Refrigerated Truck
-celery,325
-chicken,425
-beef,50
->Refrigerated Truck
-beef,500
-fish,300
->Refrigerated Truck
-fish,175
-yoghurt,325
-milk,300
->Refrigerated Truck
-milk,125
-cheese,450
-ice cream,225
->Refrigerated Truck
-ice cream,25
-ice,325
-frozen meat,450
->Refrigerated Truck
-frozen meat,125
+ice cream,250
 frozen vegetable mix,325
+fish,225
+>Refrigerated Truck
+fish,250
+beef,550
+>Refrigerated Truck
+milk,425
+chicken,375
+>Refrigerated Truck
+chicken,50
+tomatoes,400
+lettuce,350
+>Refrigerated Truck
 rice,300
-beans,50
+beans,500
 >Ordinary Truck
-beans,475
+beans,25
 pasta,250
-biscuits,275
+biscuits,575
+nuts,150
 >Ordinary Truck
-biscuits,300
-nuts,250
-chips,200
-chocolate,250
->Ordinary Truck
-chocolate,125
-bread,200
+nuts,100
+chocolate,375

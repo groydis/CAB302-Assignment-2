@@ -1,6 +1,8 @@
 package Stock;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Stock {
@@ -9,7 +11,33 @@ public class Stock {
 	
 	public Stock () {
 		this.inventory = new ArrayList<Item>();
+		
+		
 	}
+	
+	public void sort() {
+		if (this.inventory.size() > 0) {
+			Collections.sort(this.inventory, new Comparator<Item>() {
+				@Override
+				public int compare(final Item object1, final Item object2) {
+					return  Integer.valueOf(object1.getStorageTemp()).compareTo(object2.getStorageTemp());
+				}
+			});
+		}
+		
+	}
+	public void sortAlpha() {
+		if (this.inventory.size() > 0) {
+			Collections.sort(this.inventory, new Comparator<Item>() {
+				@Override
+				public int compare(final Item object1, final Item object2) {
+					return  object1.name().compareTo(object2.name());
+				}
+			});
+		}
+		
+	}
+	
 	public void addItem(Item item) {
 		inventory.add(item);
 	}
@@ -47,15 +75,18 @@ public class Stock {
 		inventory.clear();
 	}
 	
-/*
+
 	public void updateSales(String[] data) {
 		int quantity = Integer.parseInt(data[1]);
+		
 		for (Item item : inventory()) {
 			if (item.name().equals(data[0])) {
-				item.UpdateQuantity(quantity);
+				int qty = item.getQuantity() - quantity;
+				item.setQuantity(qty);
 			}
 		}
+		
 	}
-*/
+
 
 }

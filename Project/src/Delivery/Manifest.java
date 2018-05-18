@@ -22,7 +22,8 @@ public class Manifest {
 		this.storeInventory = storeInventory;
 		this.fleet = new ArrayList<>();
 		boolean fillingUpTruck = false;
-		
+
+		this.storeInventory.sort();
 		
 		for (Item item : storeInventory.inventory()) {
 			if(item.getStorageTemp() <= 10) {
@@ -68,11 +69,21 @@ public class Manifest {
 			Truck ordinaryTruck = new OrdinaryTruck(cargo);
 			fleet.add(ordinaryTruck);
 		}
-	}
-	
-	public List<Truck> CreateFleet() {
-		return fleet;
-		
+		/*
+		for (Truck truck : fleet) {
+			
+			List<String> cargos = truck.getCargo();
+			
+			// Testing
+			System.out.println("-------------");
+			for (String output : cargos) {
+				System.out.println(output);
+				
+			}
+			System.out.println(truck.getCost());
+			System.out.println("-------------");
+		}
+		*/
 	}
 	
 	public List<Truck> getFleet() {
