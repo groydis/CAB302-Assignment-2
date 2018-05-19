@@ -285,7 +285,7 @@ public class GUI extends JFrame implements Observer, ActionListener
 					dtm.addRow(new Object[] {"Name", "Cost", "Price", "Reorder Point", "Reorder Amount", "Temperature", "Quantity"});
 					
 					for (Item item: storeInventory.inventory()) {
-						dtm.addRow(new Object[] { item.name(), item.getManufacturingcost(), item.getSellprice(),
+						dtm.addRow(new Object[] { item.name(), item.getManufacturingcost(), item.getSellPrice(),
 								item.getReorderpoint(), item.getReorderAmount(), item.getStorageTemp(), item.getQuantity() });
 					}
 					

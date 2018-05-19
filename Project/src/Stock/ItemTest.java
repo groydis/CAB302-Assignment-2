@@ -7,6 +7,8 @@ import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
 /**
+ * This class tests the Item class and ensures that all functions associated with
+ * the Item class work as intended.
  * 
  * @author Greyden Scott
  *
@@ -15,16 +17,9 @@ import org.junit.jupiter.api.Test;
 class ItemTest {
 	
 	Item testItem;
-	String itemName = "rice";
-	int manufacturingCost = 2;
-	int sellPrice = 3;
-	int reorderPoint = 225;
-	int reorderAmount = 300;
-	int storageTemp = 0;
 	
-	int quantity = 250;
-	
-	String itemRice[] = {"rice", "2.0", "3.0", "225", "300", "0"};
+	String itemRice[] = {"rice", "2", "3", "225", "300"};
+	String itemBoogers[] = {"boogers", "2", "3", "225", "300", "-10"};
 	
 	@Before
 	public void setupItem() {
@@ -40,59 +35,67 @@ class ItemTest {
 	@Test
 	public void testItemName() {
 		testItem = new Item(itemRice);
-		String testName = itemName;
-		String actualName = testItem.name();
-		assertEquals(testName, actualName);
+		assertEquals("rice", testItem.name());
 	}
 	
 	@Test
 	public void testManufacturingCost() {
 		testItem = new Item(itemRice);
-		double testCost = manufacturingCost;
-		double actualCost = testItem.getManufacturingcost();
-		assertEquals(testCost, actualCost, 0.0);
+		assertEquals(2, testItem.getManufacturingcost());
 	}
 	
 	@Test
 	public void testSellPrice() {
 		testItem = new Item(itemRice);
-		double testSellPrice = sellPrice;
-		double actualSellPrice = testItem.getSellprice();
-		assertEquals(testSellPrice, actualSellPrice, 0.0);
+		assertEquals(3, testItem.getSellPrice());
 	}
 	
 	@Test
 	public void testReOrderPoint() {
 		testItem = new Item(itemRice);
-		int testReOrderPoint = reorderPoint;
-		int actualReOrderPoint = testItem.getReorderpoint();
-		assertEquals(testReOrderPoint, actualReOrderPoint);
+		assertEquals(225, testItem.getReorderpoint());
 	}
 	
 	@Test
 	public void testReOrderAmount() {
 		testItem = new Item(itemRice);
-		int testReOrderAmount = reorderAmount;
-		int actualReOrderAmount = testItem.getReorderAmount();
-		assertEquals(testReOrderAmount, actualReOrderAmount);
+
+		assertEquals(300, testItem.getReorderAmount());
 	}
 	
 	@Test
-	public void testStorageTemp() {
+	public void testStorageTempNormalItem() {
 		testItem = new Item(itemRice);
-		int testStorageTemp = storageTemp;
+
 		int actualStorageTemp = testItem.getStorageTemp();
-		assertEquals(testStorageTemp, actualStorageTemp);
+		assertEquals(24, actualStorageTemp);
+	}
+	
+	@Test
+	public void testStorageTempColdItem() {
+		testItem = new Item(itemBoogers);
+		assertEquals(-10, testItem.getStorageTemp());
 	}
 	
 	@Test
 	public void testQuantity() {
 		testItem = new Item(itemRice);
-		testItem.setQuantity(quantity);
-		int testQuanity = quantity;
-		int actualQuantity = testItem.getQuantity();
-		assertEquals(testQuanity, actualQuantity);
 		
+		testItem.setQuantity(50);
+
+		assertEquals(50, testItem.getQuantity());
+		
+	}
+	
+	public void testReorderFalse() {
+		testItem = new Item(itemRice);
+		testItem.setQuantity(500);
+		assertEquals(false, testItem.reorder());
+	}
+	
+	public void testReorderTrue() {
+		testItem = new Item(itemRice);
+		assertEquals(true, testItem.reorder());
 	}
 
 }

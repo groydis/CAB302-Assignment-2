@@ -250,7 +250,7 @@ public class FileReader {
 					if (item.name().equals(attributes[0])) {
 						// TODO : Increase capital.
 						for (int i = 0; i < Integer.parseInt(attributes[1]); i++) {
-							profit += item.getSellprice();
+							profit += item.getSellPrice();
 						}
 						int qty = item.getQuantity() - Integer.parseInt(attributes[1]);
 						item.setQuantity(qty);

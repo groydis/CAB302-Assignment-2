@@ -7,6 +7,8 @@ import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
 /**
+ * This class tests the Store class and ensures that all functions associated with
+ * the Store class work as intended.
  * 
  * @author Greyden Scott
  *
@@ -20,14 +22,13 @@ class StoreTest {
 	
 	
 	@Before 
-	public void setupStore() {
+	public void Initialize() {
 		testStore = null;
 	}
 	
 	@Test
 	public void testConstruction() {
 		testStore = new Store(storeName, capital);
-		// TODO: Add invenstory to store
 	}
 	
 	@Test
@@ -40,28 +41,28 @@ class StoreTest {
 	
 	@Test
 	public void testSetCapital() {
-		// Not Sure if get Capital should return a string, 
-		// Totally making an assumption.
 		testStore = new Store(storeName, capital);
-		double testCapital = 100000.00;
-		testStore.setCapital(100000.00);
+		double testCapital = 80000.00;
+		testStore.setCapital(80000.00);
 		double actualCapital = testStore.getCapital();
 		assertEquals(testCapital, actualCapital, "0.0");
 	}
 
 	@Test
 	public void testGetCapital() {
-		// Get capital should return a string in the following format
-		// $100,000.00
+
 		testStore = new Store(storeName, capital);
 		double testCapital = 100000.00;
 		double actualCapital = testStore.getCapital();
 		assertEquals(testCapital, actualCapital, "0,0");
 	}
 	
-	public void testInventory() {
-		// TODO: Test Inventory
-		fail("Not yet implemented");
+	@Test 
+	public void testCapitalToString() {
+		testStore = new Store(storeName, capital);
+		String testString = "100,000.00";
+		String actualString = testStore.capitalToString();
+		assertEquals(testString, actualString);
 	}
 
 }

@@ -1,12 +1,13 @@
 package Stock;
 
+/**
+*
+* @author Alex Holm
+* 
+*/
+
 public class Item {
-	
-	/**
-	 *
-	 * @author Alex Holm
-	 * 
-	 */
+
 	String itemName;
 	int manufacturingCost; 
 	int sellPrice;
@@ -49,7 +50,7 @@ public class Item {
 	 *
 	 * @return Returns Item manufacturing cost
 	 */
-	public double getManufacturingcost() {
+	public int getManufacturingcost() {
 		return this.manufacturingCost;
 	}
 	
@@ -58,7 +59,7 @@ public class Item {
 	 *
 	 * @return Returns Item sell price
 	 */
-	public double getSellprice() {
+	public int getSellPrice() {
 		return this.sellPrice;
 	}
 	
@@ -98,14 +99,21 @@ public class Item {
 		return this.quantity;
 	}
 	
+	/**
+	 * This method is used for setting the items quantity.
+	 *
+	 * @param quantity to be associated with the item.
+	 */
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
 	
 	/**
-	 * This method is used for returning the whether an item needs to be reordered
+	 * This method is used for returning the whether an item needs to be reordered,
+	 * which is based off wether the items quantity is above or below the reorder point for 
+	 * the item.
 	 *
-	 * @return Returns boolean value based on whether item needs ot be reordered
+	 * @return Returns boolean value based on whether item needs to be reordered
 	 */
 	public Boolean reorder() {
 		if (getQuantity() < this.reorderPoint) {
@@ -113,22 +121,6 @@ public class Item {
 		} 
 		return false;
 	}
-
-	/**
-	 * This method updates the quantity of the item in the inventory
-	 * If the quantity falls below the reorder point for the item, sets reorder to true
-	 * 
-	 * @see reorder
-	 
-	public void UpdateQuantity(int quantity) {
-		setQuantity(quantity);
-		if (getQuantity() < this.reorderPoint) {
-			reorder = true;
-		} else {
-			reorder = false;
-		}
-	}
-	*/
 	
 	/**
 	 * This is just testing
