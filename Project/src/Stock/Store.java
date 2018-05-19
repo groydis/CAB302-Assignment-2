@@ -1,5 +1,7 @@
 package Stock;
 
+import java.text.DecimalFormat;
+
 /** 
  * 
  * @author Greyden Scott
@@ -26,6 +28,12 @@ public class Store {
 	
 	public double getCapital() {
 		return this.capital;
+	}
+	
+	public String capitalToString() {
+		DecimalFormat decimalFormat = new DecimalFormat("#00,000.00");
+		String capital = decimalFormat.format(this.capital);
+		return capital;
 	}
 	
 

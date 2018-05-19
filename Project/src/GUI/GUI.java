@@ -13,8 +13,10 @@ import java.util.Observer;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import Delivery.Manifest;
 import Stock.Item;
 import Stock.Stock;
+import Stock.Store;
 /**
  *  
  *@author Alex Holm
@@ -38,9 +40,11 @@ public class GUI extends JFrame implements Observer, ActionListener
 	public static String exportManifestFileName;
 	public static String salesLogFileName;
 	
-	public static Stock storeInventory;
+	private static Stock storeInventory;
+	private static Stock itemsToOrder;
+	private static Store store;
+	private static Manifest manifest;
 	
-	public List<Item> items;
 	
 	
 	JFrame mainFrame = new JFrame();
@@ -49,8 +53,8 @@ public class GUI extends JFrame implements Observer, ActionListener
 	
 	//Store and Inventory Variables
     JPanel inventoryTab  = new JPanel();
-    JLabel storeNameLabel = new JLabel("Store Name : CityWok");
-    JLabel storeCapitalLabel = new JLabel("Capital : $100,000.00");
+    private static JLabel storeNameLabel = new JLabel("Store Name : CityWok");
+    private static JLabel storeCapitalLabel = new JLabel("Capital : $999,999.99");
     String[] inventoryColumnNames
     = {"Name", "Cost", "Price", "Reorder Point", "Reorder Amount", "Temperature", "Quantity"};
    
@@ -257,11 +261,18 @@ public class GUI extends JFrame implements Observer, ActionListener
 		} 
 		else if (e.getSource() == itemPropertiesButton) {
 			if (itemPropertiesTextArea.getText() != "") {
-				items = new ArrayList<>();
 				
 				try {
-					items = FileReader.ReadItemProperties(itemPropertiesTextArea.getText());
-					storeInventory = new Stock(items);
+					FileReader.ImportItemProperties(itemPropertiesTextArea.getText(), storeInventory);
+					itemsToOrder =  new Stock();
+					for (Item item: storeInventory.inventory()) {
+						if (item.reorder()) {
+							for (int i = 0; i < item.getReorderAmount(); i++) {
+								itemsToOrder.addItem(item);
+							}
+						}
+					}
+					
 					DefaultTableModel dtm = new DefaultTableModel(0, 0);
 					dtm.addColumn("Name");
 					dtm.addColumn("Manufacturing Cost");
@@ -274,43 +285,69 @@ public class GUI extends JFrame implements Observer, ActionListener
 					dtm.addRow(new Object[] {"Name", "Cost", "Price", "Reorder Point", "Reorder Amount", "Temperature", "Quantity"});
 					
 					for (Item item: storeInventory.inventory()) {
-						dtm.addRow(new Object[] { item.name(), item.manufacturingcost(), item.sellprice(),
-								item.reorderpoint(), item.reorderamount(), item.storageTemp(), item.quantity() });
+						dtm.addRow(new Object[] { item.name(), item.getManufacturingcost(), item.getSellprice(),
+								item.getReorderpoint(), item.getReorderAmount(), item.getStorageTemp(), item.getQuantity() });
 					}
+					
 					inventoryTable.setModel(dtm);
+					
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					System.out.println("Did I poop?");
+
 					e1.printStackTrace();
 				}
 			}
+			storeCapitalLabel.setText("$" + store.capitalToString());
 			
 		}
 		else if (e.getSource() == importManifestButton) {
 			if (importManifestTextArea.getText() != "") {
-
+				FileReader.LoadManifest(importManifestTextArea.getText(), storeInventory, store);
+				int index = 1;
+				for (Item item : storeInventory.inventory()) {
+					inventoryTable.getModel().setValueAt(item.getQuantity(), index, 6);
+					index++;
+				}
 			}
+			storeCapitalLabel.setText("$" + store.capitalToString());
 		}
 		else if (e.getSource() == exportManifestButton) {
 			if (exportManifestTextArea.getText() != "") {
-
+				if (itemsToOrder == null) {
+					for (Item item: storeInventory.inventory()) {
+						if (item.reorder()) {
+							for (int i = 0; i < item.getReorderAmount(); i++) {
+								itemsToOrder.addItem(item);
+							}
+						}
+					}
+					manifest = new Manifest(itemsToOrder);
+					FileReader.ExportManifest(exportManifestTextArea.getText(), manifest);
+				} else {
+					manifest = new Manifest(itemsToOrder);
+					FileReader.ExportManifest(exportManifestTextArea.getText(), manifest);
+				}
 			}
+			storeCapitalLabel.setText("$" + store.capitalToString());
 		}
 		else if (e.getSource() == salesLogButton) {
 			if (salesLogTextArea.getText() != "") {
-				FileReader.LoadSalesLog(salesLogTextArea.getText(), storeInventory);
-				int index = 0;
+				FileReader.LoadSalesLog(salesLogTextArea.getText(), storeInventory, store);
+				int index = 1;
 				for (Item item : storeInventory.inventory()) {
-					
-					inventoryTable.getModel().setValueAt(item.quantity(), index, 6);
+					inventoryTable.getModel().setValueAt(item.getQuantity(), index, 6);
 					index++;
 				}
+				storeCapitalLabel.setText("$" + store.capitalToString());
 				
 			}
 		}
 	}
 	
 	  public static void main(String[] args) {
+		  	store = new Store("SuperMart", 100000.00);
+		  	storeInventory = new Stock();
+		  	storeNameLabel.setText("Store Name: " + store.getStoreName());
+		  	storeCapitalLabel.setText("$" + store.capitalToString());
 	        JFrame.setDefaultLookAndFeelDecorated(true);
 	        new GUI();
 	    }

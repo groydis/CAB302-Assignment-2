@@ -1,17 +1,18 @@
 >Refrigerated Truck
-ice cream,250
-frozen vegetable mix,325
-fish,225
->Refrigerated Truck
-fish,250
-beef,550
->Refrigerated Truck
-milk,425
-chicken,375
->Refrigerated Truck
-chicken,50
 tomatoes,400
 lettuce,350
+chicken,50
+>Refrigerated Truck
+chicken,375
+beef,425
+>Refrigerated Truck
+beef,125
+fish,475
+milk,200
+>Refrigerated Truck
+milk,225
+ice cream,250
+frozen vegetable mix,325
 >Refrigerated Truck
 rice,300
 beans,500

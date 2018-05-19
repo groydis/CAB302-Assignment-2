@@ -23,14 +23,6 @@ public abstract class Truck {
 		return this.cargo;
 	}
 	
-	public int getQuantity() {
-		int qty = 0;
-		for(Item item : inventory) {
-			qty += item.getReorderAmount();
-		}
-		return qty;
-	}
-	
 	public abstract int getCapacity();
 		
 	public abstract double getCost();

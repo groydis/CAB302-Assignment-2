@@ -23,7 +23,8 @@ public class Manifest {
 		this.fleet = new ArrayList<>();
 		boolean fillingUpTruck = false;
 
-		this.storeInventory.sort();
+		//this.storeInventory.sort();
+		//this.storeInventory.sortAlpha();
 		
 		for (Item item : storeInventory.inventory()) {
 			if(item.getStorageTemp() <= 10) {

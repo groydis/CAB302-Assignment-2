@@ -88,7 +88,7 @@ class ItemTest {
 	@Test
 	public void testQuantity() {
 		testItem = new Item(itemRice);
-		testItem.UpdateQuantity(quantity);
+		testItem.setQuantity(quantity);
 		int testQuanity = quantity;
 		int actualQuantity = testItem.getQuantity();
 		assertEquals(testQuanity, actualQuantity);

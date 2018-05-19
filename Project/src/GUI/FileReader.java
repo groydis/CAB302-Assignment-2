@@ -60,20 +60,22 @@ public class FileReader {
 				}
 			}
 		}
+		System.out.println(store.getCapital());
 		System.out.println("---------------------");
 		
 		//2. Generate a manifest and load it back in.
 		manifest = new Manifest(itemsToOrder);
 		ExportManifest("./Files/test1.csv", manifest);
-		LoadManifest("./Files/test1.csv", storeInventory);
+		LoadManifest("./Files/test1.csv", storeInventory, store);
 		
 		for (Item item : storeInventory.inventory()) {
 			System.out.println(item.toString());
 		}
+		System.out.println(store.getCapital());
 		System.out.println("---------------------");
 		
 		//3. Load in sales_log_0.csv
-		LoadSalesLog("./Files/sales_log_0.csv", storeInventory);
+		LoadSalesLog("./Files/sales_log_0.csv", storeInventory, store);
 		
 		itemsToOrder = new Stock();
 		for (Item item: storeInventory.inventory()) {
@@ -83,20 +85,22 @@ public class FileReader {
 				}
 			}
 		}
+		System.out.println(store.getCapital());
 		System.out.println("---------------------");
 		
 		//2. Generate a manifest and load it back in.
 		manifest = new Manifest(itemsToOrder);
 		ExportManifest("./Files/test1.csv", manifest);
-		LoadManifest("./Files/test1.csv", storeInventory);
+		LoadManifest("./Files/test1.csv", storeInventory, store);
 		
 		for (Item item : storeInventory.inventory()) {
 			System.out.println(item.toString());
 		}
+		System.out.println(store.getCapital());
 		System.out.println("---------------------");
 		
 		//3. Load in sales_log_0.csv
-		LoadSalesLog("./Files/sales_log_1.csv", storeInventory);
+		LoadSalesLog("./Files/sales_log_1.csv", storeInventory, store);
 		
 		itemsToOrder = new Stock();
 		for (Item item: storeInventory.inventory()) {
@@ -106,20 +110,22 @@ public class FileReader {
 				}
 			}
 		}
+		System.out.println(store.getCapital());
 		System.out.println("---------------------");
 		
 		//2. Generate a manifest and load it back in.
 		manifest = new Manifest(itemsToOrder);
 		ExportManifest("./Files/test1.csv", manifest);
-		LoadManifest("./Files/test1.csv", storeInventory);
+		LoadManifest("./Files/test1.csv", storeInventory, store);
 		
 		for (Item item : storeInventory.inventory()) {
 			System.out.println(item.toString());
 		}
+		System.out.println(store.getCapital());
 		System.out.println("---------------------");
 		
 		//3. Load in sales_log_0.csv
-		LoadSalesLog("./Files/sales_log_2.csv", storeInventory);
+		LoadSalesLog("./Files/sales_log_2.csv", storeInventory, store);
 		
 		itemsToOrder = new Stock();
 		for (Item item: storeInventory.inventory()) {
@@ -129,20 +135,22 @@ public class FileReader {
 				}
 			}
 		}
+		System.out.println(store.getCapital());
 		System.out.println("---------------------");
 		
 		//2. Generate a manifest and load it back in.
 		manifest = new Manifest(itemsToOrder);
 		ExportManifest("./Files/test1.csv", manifest);
-		LoadManifest("./Files/test1.csv", storeInventory);
+		LoadManifest("./Files/test1.csv", storeInventory, store);
 		
 		for (Item item : storeInventory.inventory()) {
 			System.out.println(item.toString());
 		}
+		System.out.println(store.getCapital());
 		System.out.println("---------------------");
 		
 		//3. Load in sales_log_0.csv
-		LoadSalesLog("./Files/sales_log_3.csv", storeInventory);
+		LoadSalesLog("./Files/sales_log_3.csv", storeInventory, store);
 		
 		itemsToOrder = new Stock();
 		for (Item item: storeInventory.inventory()) {
@@ -152,20 +160,22 @@ public class FileReader {
 				}
 			}
 		}
+		System.out.println(store.getCapital());
 		System.out.println("---------------------");
 		
 		//2. Generate a manifest and load it back in.
 		manifest = new Manifest(itemsToOrder);
 		ExportManifest("./Files/test1.csv", manifest);
-		LoadManifest("./Files/test1.csv", storeInventory);
+		LoadManifest("./Files/test1.csv", storeInventory, store);
 		
 		for (Item item : storeInventory.inventory()) {
 			System.out.println(item.toString());
 		}
+		System.out.println(store.getCapital());
 		System.out.println("---------------------");
 		
 		//3. Load in sales_log_0.csv
-		LoadSalesLog("./Files/sales_log_4.csv", storeInventory);
+		LoadSalesLog("./Files/sales_log_4.csv", storeInventory, store);
 		
 		itemsToOrder = new Stock();
 		for (Item item: storeInventory.inventory()) {
@@ -175,18 +185,21 @@ public class FileReader {
 				}
 			}
 		}
+		System.out.println(store.getCapital());
 		System.out.println("---------------------");
 		
 		//2. Generate a manifest and load it back in.
 		manifest = new Manifest(itemsToOrder);
 		ExportManifest("./Files/test1.csv", manifest);
-		LoadManifest("./Files/test1.csv", storeInventory);
+		LoadManifest("./Files/test1.csv", storeInventory, store);
 
 			
 		//storeInventory.sortAlpha();
 		for (Item item : storeInventory.inventory()) {
 			System.out.println(item.toString());
 		}
+		
+		System.out.println(store.getCapital());
 		
 	}
 	
@@ -224,8 +237,8 @@ public class FileReader {
 	 *
 	 * @param  fileName  File location of the Sales Log to be imported
 	 */
-	public static void LoadSalesLog(String fileName, Stock storeInventory) {
-		
+	public static void LoadSalesLog(String fileName, Stock storeInventory, Store store) {
+		double profit = 0;
 		Path pathToFile = Paths.get(fileName);
 		
 		try (BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US_ASCII)) {
@@ -236,6 +249,9 @@ public class FileReader {
 				for (Item item : storeInventory.inventory()) {
 					if (item.name().equals(attributes[0])) {
 						// TODO : Increase capital.
+						for (int i = 0; i < Integer.parseInt(attributes[1]); i++) {
+							profit += item.getSellprice();
+						}
 						int qty = item.getQuantity() - Integer.parseInt(attributes[1]);
 						item.setQuantity(qty);
 					}
@@ -246,6 +262,7 @@ public class FileReader {
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
+		store.setCapital(store.getCapital() + profit);
 	}
 	
 	
@@ -255,7 +272,7 @@ public class FileReader {
 	 *
 	 * @param  fileName  File location of the Manifest to be imported
 	 */
-	public static void LoadManifest(String fileName, Stock storeInventory) {
+	public static void LoadManifest(String fileName, Stock storeInventory, Store store) {
 		
 		double deduction = 0;
 		boolean isColdTruck = false;
