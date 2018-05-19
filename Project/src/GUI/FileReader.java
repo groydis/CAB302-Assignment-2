@@ -34,21 +34,6 @@ public class FileReader {
 		storeInventory = new Stock();
 		itemsToOrder = new Stock();
 		store = new Store("Test Store", 100000.00);
-		/*
-		ImportItemProperties("./Files/item_properties.csv", storeInventory);
-		
-		for (Item item: storeInventory.inventory()) {
-			if (item.reorder()) {
-				for (int i = 0; i < item.getReorderAmount(); i++) {
-					itemsToOrder.addItem(item);
-				}
-			}
-		}
-		
-		manifest = new Manifest(itemsToOrder);
-		ExportManifest("./Files/test1.csv", manifest);
-		LoadManifest("./Files/test1.csv", storeInventory);
-		*/
 		
 		//1. Load in item_properties.csv
 		ImportItemProperties("./Files/item_properties.csv", storeInventory);
@@ -60,7 +45,7 @@ public class FileReader {
 				}
 			}
 		}
-		System.out.println(store.getCapital());
+		System.out.println(store.capitalToString());
 		System.out.println("---------------------");
 		
 		//2. Generate a manifest and load it back in.
@@ -71,7 +56,7 @@ public class FileReader {
 		for (Item item : storeInventory.inventory()) {
 			System.out.println(item.toString());
 		}
-		System.out.println(store.getCapital());
+		System.out.println(store.capitalToString());
 		System.out.println("---------------------");
 		
 		//3. Load in sales_log_0.csv
@@ -85,7 +70,7 @@ public class FileReader {
 				}
 			}
 		}
-		System.out.println(store.getCapital());
+		System.out.println(store.capitalToString());
 		System.out.println("---------------------");
 		
 		//2. Generate a manifest and load it back in.
@@ -96,7 +81,7 @@ public class FileReader {
 		for (Item item : storeInventory.inventory()) {
 			System.out.println(item.toString());
 		}
-		System.out.println(store.getCapital());
+		System.out.println(store.capitalToString());
 		System.out.println("---------------------");
 		
 		//3. Load in sales_log_0.csv
@@ -110,7 +95,7 @@ public class FileReader {
 				}
 			}
 		}
-		System.out.println(store.getCapital());
+		System.out.println(store.capitalToString());
 		System.out.println("---------------------");
 		
 		//2. Generate a manifest and load it back in.
@@ -121,7 +106,7 @@ public class FileReader {
 		for (Item item : storeInventory.inventory()) {
 			System.out.println(item.toString());
 		}
-		System.out.println(store.getCapital());
+		System.out.println(store.capitalToString());
 		System.out.println("---------------------");
 		
 		//3. Load in sales_log_0.csv
@@ -135,7 +120,7 @@ public class FileReader {
 				}
 			}
 		}
-		System.out.println(store.getCapital());
+		System.out.println(store.capitalToString());
 		System.out.println("---------------------");
 		
 		//2. Generate a manifest and load it back in.
@@ -146,7 +131,7 @@ public class FileReader {
 		for (Item item : storeInventory.inventory()) {
 			System.out.println(item.toString());
 		}
-		System.out.println(store.getCapital());
+		System.out.println(store.capitalToString());
 		System.out.println("---------------------");
 		
 		//3. Load in sales_log_0.csv
@@ -160,7 +145,7 @@ public class FileReader {
 				}
 			}
 		}
-		System.out.println(store.getCapital());
+		System.out.println(store.capitalToString());
 		System.out.println("---------------------");
 		
 		//2. Generate a manifest and load it back in.
@@ -171,7 +156,7 @@ public class FileReader {
 		for (Item item : storeInventory.inventory()) {
 			System.out.println(item.toString());
 		}
-		System.out.println(store.getCapital());
+		System.out.println(store.capitalToString());
 		System.out.println("---------------------");
 		
 		//3. Load in sales_log_0.csv
@@ -185,7 +170,7 @@ public class FileReader {
 				}
 			}
 		}
-		System.out.println(store.getCapital());
+		System.out.println(store.capitalToString());
 		System.out.println("---------------------");
 		
 		//2. Generate a manifest and load it back in.
@@ -199,7 +184,7 @@ public class FileReader {
 			System.out.println(item.toString());
 		}
 		
-		System.out.println(store.getCapital());
+		System.out.println(store.capitalToString());
 		
 	}
 	
@@ -290,7 +275,7 @@ public class FileReader {
 			String line = br.readLine();
 			
 			while (line != null) {
-				if (line.equals(">Refrigerated Truck")) {
+				if (line.equals(">Refrigerated")) {
 					
 					isColdTruck = true;
 					
@@ -300,7 +285,7 @@ public class FileReader {
 					
 					incomingFleet.add(coldTruck);
 					
-				} else if (line.equals(">Ordinary Truck")) {
+				} else if (line.equals(">Ordinary")) {
 					
 					isColdTruck = false;
 					
