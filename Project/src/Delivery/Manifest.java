@@ -38,10 +38,10 @@ public class Manifest {
 		this.fleet = new ArrayList<>();
 		boolean fillingUpTruck = false;
 
-		this.storeInventory.sort();
+		this.storeInventory.sortByTemp();
 		//this.storeInventory.sortAlpha();
 		
-		for (Item item : storeInventory.inventory()) {
+		for (Item item : storeInventory.getItems()) {
 			if(item.getStorageTemp() <= 10) {
 				coldItems.addItem(item);	
 			} else {
@@ -49,22 +49,22 @@ public class Manifest {
 			}
 		}
 		
-		for (Item item : coldItems.inventory()) {
+		for (Item item : coldItems.getItems()) {
 			cargo.addItem(item);
-			if (cargo.total() == 800) {
+			if (cargo.getTotal() == 800) {
 				Truck coldTruck = new RefrigeratedTruck(cargo);
 				fleet.add(coldTruck);
 				cargo = new Stock();
 			}
 		}
 		
-		if (cargo.total() != 800) {
+		if (cargo.getTotal() != 800) {
 			fillingUpTruck = true;
-			for (Item item : ordinaryItems.inventory()) {
+			for (Item item : ordinaryItems.getItems()) {
 			
 				if (fillingUpTruck) {
 					cargo.addItem(item);
-					if (cargo.total() == 800) {
+					if (cargo.getTotal() == 800) {
 						Truck coldTruck = new RefrigeratedTruck(cargo);
 						fleet.add(coldTruck);
 						cargo = new Stock();
@@ -72,7 +72,7 @@ public class Manifest {
 					}
 				} else {
 					cargo.addItem(item);
-					if (cargo.total() == 1000) {
+					if (cargo.getTotal() == 1000) {
 						Truck ordinaryTruck = new OrdinaryTruck(cargo);
 						fleet.add(ordinaryTruck);
 						cargo = new Stock();
@@ -81,7 +81,7 @@ public class Manifest {
 			}
 		}
 		
-		if (cargo.total() != 1000) {
+		if (cargo.getTotal() != 1000) {
 			Truck ordinaryTruck = new OrdinaryTruck(cargo);
 			fleet.add(ordinaryTruck);
 		}

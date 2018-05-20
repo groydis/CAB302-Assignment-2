@@ -29,7 +29,7 @@ public class Stock {
 	/**
 	 * Sorts the items based on the Temperature from lowest (eg -20) to highest (10).
 	 */
-	public void sort() {
+	public void sortByTemp() {
 		if (this.inventory.size() > 0) {
 			Collections.sort(this.inventory, new Comparator<Item>() {
 				@Override
@@ -48,7 +48,7 @@ public class Stock {
 			Collections.sort(this.inventory, new Comparator<Item>() {
 				@Override
 				public int compare(final Item object1, final Item object2) {
-					return  object1.name().compareTo(object2.name());
+					return  object1.getName().compareTo(object2.getName());
 				}
 			});
 		}
@@ -64,15 +64,6 @@ public class Stock {
 		inventory.add(item);
 	}
 	
-	/**
-	 * Removes an item.
-	 * 
-	 * @param item The Item to be removed.
-	 */
-	public void removeItem(Item item) {
-		inventory.remove(item);
-	}
-	
 	
 	/**
 	 * This function provides access to the List<Item> that the items are stored in in the event
@@ -80,7 +71,7 @@ public class Stock {
 	 * 
 	 * @return The list that the inventory is stored in.
 	 */
-	public List<Item> inventory() {
+	public List<Item> getItems() {
 		return this.inventory;
 		
 	}
@@ -90,7 +81,7 @@ public class Stock {
 	 *  
 	 * @return Int Total number of items in the Stock
 	 */
-	public int total() {
+	public int getTotal() {
 		return inventory.size();
 	}
 	
@@ -102,25 +93,17 @@ public class Stock {
 	 * 
 	 * @return the number of items of found.
 	 */
-	public int totalItem(Item item) {
+	public int getTotalItem(Item item) {
 		int total = 0;
 		if (inventory.contains(item)) {
 			for (Item i : inventory) {
-				if (i.name() == item.name()) {
+				if (i.getName() == item.getName()) {
 					total++;
 				}
 			}
 		}
 		return total;
 	}
-	
-	/**
-	 * Removes all items from the Stock
-	 */
-	public void clear() {
-		inventory.clear();
-	}
-	
 
 	/**
 	 * Update the quantity of all items based on the passed in data
@@ -130,8 +113,8 @@ public class Stock {
 	public void updateSales(String[] data) {
 		int quantity = Integer.parseInt(data[1]);
 		
-		for (Item item : inventory()) {
-			if (item.name().equals(data[0])) {
+		for (Item item : getItems()) {
+			if (item.getName().equals(data[0])) {
 				int qty = item.getQuantity() - quantity;
 				item.setQuantity(qty);
 			}

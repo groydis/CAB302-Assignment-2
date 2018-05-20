@@ -52,7 +52,7 @@ class ManifestTest {
 		testStoreInvetory.addItem(itemRice);
 		testStoreInvetory.addItem(itemBiscuits);
 		
-		for (Item item: testStoreInvetory.inventory()) {
+		for (Item item: testStoreInvetory.getItems()) {
 			if (item.reorder()) {
 				for (int i = 0; i < item.getReorderAmount(); i++) {
 					itemsToOrder.addItem(item);

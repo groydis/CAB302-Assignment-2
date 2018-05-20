@@ -38,7 +38,7 @@ public class FileReader {
 		//1. Load in item_properties.csv
 		ImportItemProperties("./Files/item_properties.csv", storeInventory);
 		
-		for (Item item: storeInventory.inventory()) {
+		for (Item item: storeInventory.getItems()) {
 			if (item.reorder()) {
 				for (int i = 0; i < item.getReorderAmount(); i++) {
 					itemsToOrder.addItem(item);
@@ -53,7 +53,7 @@ public class FileReader {
 		ExportManifest("./Files/test1.csv", manifest);
 		LoadManifest("./Files/test1.csv", storeInventory, store);
 		
-		for (Item item : storeInventory.inventory()) {
+		for (Item item : storeInventory.getItems()) {
 			System.out.println(item.toString());
 		}
 		System.out.println(store.capitalToString());
@@ -63,7 +63,7 @@ public class FileReader {
 		LoadSalesLog("./Files/sales_log_0.csv", storeInventory, store);
 		
 		itemsToOrder = new Stock();
-		for (Item item: storeInventory.inventory()) {
+		for (Item item: storeInventory.getItems()) {
 			if (item.reorder()) {
 				for (int i = 0; i < item.getReorderAmount(); i++) {
 					itemsToOrder.addItem(item);
@@ -78,7 +78,7 @@ public class FileReader {
 		ExportManifest("./Files/test1.csv", manifest);
 		LoadManifest("./Files/test1.csv", storeInventory, store);
 		
-		for (Item item : storeInventory.inventory()) {
+		for (Item item : storeInventory.getItems()) {
 			System.out.println(item.toString());
 		}
 		System.out.println(store.capitalToString());
@@ -88,7 +88,7 @@ public class FileReader {
 		LoadSalesLog("./Files/sales_log_1.csv", storeInventory, store);
 		
 		itemsToOrder = new Stock();
-		for (Item item: storeInventory.inventory()) {
+		for (Item item: storeInventory.getItems()) {
 			if (item.reorder()) {
 				for (int i = 0; i < item.getReorderAmount(); i++) {
 					itemsToOrder.addItem(item);
@@ -103,7 +103,7 @@ public class FileReader {
 		ExportManifest("./Files/test1.csv", manifest);
 		LoadManifest("./Files/test1.csv", storeInventory, store);
 		
-		for (Item item : storeInventory.inventory()) {
+		for (Item item : storeInventory.getItems()) {
 			System.out.println(item.toString());
 		}
 		System.out.println(store.capitalToString());
@@ -113,7 +113,7 @@ public class FileReader {
 		LoadSalesLog("./Files/sales_log_2.csv", storeInventory, store);
 		
 		itemsToOrder = new Stock();
-		for (Item item: storeInventory.inventory()) {
+		for (Item item: storeInventory.getItems()) {
 			if (item.reorder()) {
 				for (int i = 0; i < item.getReorderAmount(); i++) {
 					itemsToOrder.addItem(item);
@@ -128,7 +128,7 @@ public class FileReader {
 		ExportManifest("./Files/test1.csv", manifest);
 		LoadManifest("./Files/test1.csv", storeInventory, store);
 		
-		for (Item item : storeInventory.inventory()) {
+		for (Item item : storeInventory.getItems()) {
 			System.out.println(item.toString());
 		}
 		System.out.println(store.capitalToString());
@@ -138,7 +138,7 @@ public class FileReader {
 		LoadSalesLog("./Files/sales_log_3.csv", storeInventory, store);
 		
 		itemsToOrder = new Stock();
-		for (Item item: storeInventory.inventory()) {
+		for (Item item: storeInventory.getItems()) {
 			if (item.reorder()) {
 				for (int i = 0; i < item.getReorderAmount(); i++) {
 					itemsToOrder.addItem(item);
@@ -153,7 +153,7 @@ public class FileReader {
 		ExportManifest("./Files/test1.csv", manifest);
 		LoadManifest("./Files/test1.csv", storeInventory, store);
 		
-		for (Item item : storeInventory.inventory()) {
+		for (Item item : storeInventory.getItems()) {
 			System.out.println(item.toString());
 		}
 		System.out.println(store.capitalToString());
@@ -163,7 +163,7 @@ public class FileReader {
 		LoadSalesLog("./Files/sales_log_4.csv", storeInventory, store);
 		
 		itemsToOrder = new Stock();
-		for (Item item: storeInventory.inventory()) {
+		for (Item item: storeInventory.getItems()) {
 			if (item.reorder()) {
 				for (int i = 0; i < item.getReorderAmount(); i++) {
 					itemsToOrder.addItem(item);
@@ -180,7 +180,7 @@ public class FileReader {
 
 			
 		//storeInventory.sortAlpha();
-		for (Item item : storeInventory.inventory()) {
+		for (Item item : storeInventory.getItems()) {
 			System.out.println(item.toString());
 		}
 		
@@ -231,8 +231,8 @@ public class FileReader {
 			
 			while (line != null) {
 				String[] attributes = line.split(",");
-				for (Item item : storeInventory.inventory()) {
-					if (item.name().equals(attributes[0])) {
+				for (Item item : storeInventory.getItems()) {
+					if (item.getName().equals(attributes[0])) {
 						// TODO : Increase capital.
 						for (int i = 0; i < Integer.parseInt(attributes[1]); i++) {
 							profit += item.getSellPrice();
@@ -298,11 +298,11 @@ public class FileReader {
 				} else {
 					if (isColdTruck) {
 						String[] attributes = line.split(",");
-						for (Item item : storeInventory.inventory()) {
-							if (item.name().equals(attributes[0])) {
+						for (Item item : storeInventory.getItems()) {
+							if (item.getName().equals(attributes[0])) {
 								for (int i = 0; i < Integer.parseInt(attributes[1]); i++) {
 									coldTruck.cargo().addItem(item);
-									deduction += item.getManufacturingcost();
+									deduction += item.getManufacturingCost();
 								}
 								int qty = item.getQuantity() + Integer.parseInt(attributes[1]);
 								item.setQuantity(qty);
@@ -310,11 +310,11 @@ public class FileReader {
 						}
 					} else  {
 						String[] attributes = line.split(",");
-						for (Item item : storeInventory.inventory()) {
-							if (item.name().equals(attributes[0])) {
+						for (Item item : storeInventory.getItems()) {
+							if (item.getName().equals(attributes[0])) {
 								for (int i = 0; i < Integer.parseInt(attributes[1]); i++) {
 									ordinaryTruck.cargo().addItem(item);
-									deduction += item.getManufacturingcost();
+									deduction += item.getManufacturingCost();
 								}
 								int qty = item.getQuantity() + Integer.parseInt(attributes[1]);
 								item.setQuantity(qty);
@@ -336,10 +336,10 @@ public class FileReader {
 		store.setCapital(store.getCapital() - deduction );
 	}
 	
-	public static void ExportManifest(String path, Manifest manifest) {
+	public static void ExportManifest(String fileName, Manifest manifest) {
 		List<Truck> fleet = manifest.getFleet();
 		try {
-			FileWriter fileWriter = new FileWriter(path);
+			FileWriter fileWriter = new FileWriter(fileName);
 			
 			for (Truck truck : fleet) {
 				List<String> cargos = truck.getCargo();

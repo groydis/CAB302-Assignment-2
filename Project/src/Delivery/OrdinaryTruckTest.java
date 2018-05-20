@@ -47,7 +47,7 @@ class OrdinaryTruckTest {
 		
 		truck = new OrdinaryTruck(cargo);
 		
-		double cost = 750 + (0.25 * cargo.inventory().size());
+		double cost = 750 + (0.25 * cargo.getItems().size());
 		
 		assertEquals(cost, truck.getCost());
 	}

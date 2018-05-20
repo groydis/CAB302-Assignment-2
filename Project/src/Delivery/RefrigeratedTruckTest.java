@@ -48,7 +48,7 @@ class RefrigeratedTruckTest {
 		truck = new RefrigeratedTruck(cargo);
 		
 		int temp = 10;
-		for (Item item : cargo.inventory()) {
+		for (Item item : cargo.getItems()) {
 			if (item.getStorageTemp() < temp) {
 				temp = item.getStorageTemp();
 			}

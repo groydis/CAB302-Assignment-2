@@ -33,23 +33,7 @@ class StockTest {
 		rice = new Item(itemRice);
 		testStock.addItem(rice);
 		
-		assertEquals(1, testStock.total());
-	}
-	
-	@Test
-	void testRemoveItem() {
-		testStock = new Stock();
-		
-		rice = new Item(itemRice);
-		
-		testStock.addItem(rice);
-		testStock.addItem(rice);
-		testStock.addItem(rice);
-		testStock.addItem(rice);
-		testStock.addItem(rice);
-		testStock.removeItem(rice);
-		
-		assertEquals(4, testStock.total());
+		assertEquals(1, testStock.getTotal());
 	}
 	
 	@Test
@@ -69,7 +53,7 @@ class StockTest {
 		testInventory.add(cake);
 		testInventory.add(boogers);	
 		
-		assertEquals(testInventory, testStock.inventory());
+		assertEquals(testInventory, testStock.getItems());
 	}
 	
 	@Test
@@ -83,7 +67,7 @@ class StockTest {
 		testStock.addItem(rice);
 		testStock.addItem(cake);
 		testStock.addItem(boogers);
-		assertEquals(3, testStock.total());
+		assertEquals(3, testStock.getTotal());
 	}
 	
 	@Test
@@ -97,23 +81,8 @@ class StockTest {
 		testStock.addItem(rice);
 		testStock.addItem(rice);
 		testStock.addItem(rice);
-		assertEquals(3, testStock.totalItem(rice));
+		assertEquals(3, testStock.getTotalItem(rice));
 
-	}
-	
-	@Test
-	void testClear() {
-		testStock = new Stock();
-		
-		rice = new Item(itemRice);
-		cake = new Item(itemCake);
-		boogers = new Item(itemBoogers);
-		
-		testStock.addItem(rice);
-		testStock.addItem(rice);
-		testStock.addItem(rice);
-		testStock.clear();
-		assertEquals(0, testStock.total());
 	}
 	
 	@Test

@@ -265,7 +265,7 @@ public class GUI extends JFrame implements Observer, ActionListener
 				try {
 					FileReader.ImportItemProperties(itemPropertiesTextArea.getText(), storeInventory);
 					itemsToOrder =  new Stock();
-					for (Item item: storeInventory.inventory()) {
+					for (Item item: storeInventory.getItems()) {
 						if (item.reorder()) {
 							for (int i = 0; i < item.getReorderAmount(); i++) {
 								itemsToOrder.addItem(item);
@@ -284,8 +284,8 @@ public class GUI extends JFrame implements Observer, ActionListener
 					
 					dtm.addRow(new Object[] {"Name", "Cost", "Price", "Reorder Point", "Reorder Amount", "Temperature", "Quantity"});
 					
-					for (Item item: storeInventory.inventory()) {
-						dtm.addRow(new Object[] { item.name(), item.getManufacturingcost(), item.getSellPrice(),
+					for (Item item: storeInventory.getItems()) {
+						dtm.addRow(new Object[] { item.getName(), item.getManufacturingCost(), item.getSellPrice(),
 								item.getReorderpoint(), item.getReorderAmount(), item.getStorageTemp(), item.getQuantity() });
 					}
 					
@@ -303,7 +303,7 @@ public class GUI extends JFrame implements Observer, ActionListener
 			if (importManifestTextArea.getText() != "") {
 				FileReader.LoadManifest(importManifestTextArea.getText(), storeInventory, store);
 				int index = 1;
-				for (Item item : storeInventory.inventory()) {
+				for (Item item : storeInventory.getItems()) {
 					inventoryTable.getModel().setValueAt(item.getQuantity(), index, 6);
 					index++;
 				}
@@ -313,7 +313,7 @@ public class GUI extends JFrame implements Observer, ActionListener
 		else if (e.getSource() == exportManifestButton) {
 			if (exportManifestTextArea.getText() != "") {
 				if (itemsToOrder == null) {
-					for (Item item: storeInventory.inventory()) {
+					for (Item item: storeInventory.getItems()) {
 						if (item.reorder()) {
 							for (int i = 0; i < item.getReorderAmount(); i++) {
 								itemsToOrder.addItem(item);
@@ -333,7 +333,7 @@ public class GUI extends JFrame implements Observer, ActionListener
 			if (salesLogTextArea.getText() != "") {
 				FileReader.LoadSalesLog(salesLogTextArea.getText(), storeInventory, store);
 				int index = 1;
-				for (Item item : storeInventory.inventory()) {
+				for (Item item : storeInventory.getItems()) {
 					inventoryTable.getModel().setValueAt(item.getQuantity(), index, 6);
 					index++;
 				}

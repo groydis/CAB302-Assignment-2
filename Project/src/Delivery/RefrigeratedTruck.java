@@ -86,7 +86,7 @@ public class RefrigeratedTruck extends Truck {
 		List<String> cargoOutput = new ArrayList<String>();
 		cargoOutput.add(">Refrigerated");
 		for (Item item : getInventory()) {
-			String output = item.name() + "," + cargo().totalItem(item);
+			String output = item.getName() + "," + cargo().getTotalItem(item);
 			if (!cargoOutput.contains(output)) {
 				cargoOutput.add(output);
 			}

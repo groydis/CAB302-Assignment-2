@@ -35,13 +35,13 @@ class ItemTest {
 	@Test
 	public void testItemName() {
 		testItem = new Item(itemRice);
-		assertEquals("rice", testItem.name());
+		assertEquals("rice", testItem.getName());
 	}
 	
 	@Test
 	public void testManufacturingCost() {
 		testItem = new Item(itemRice);
-		assertEquals(2, testItem.getManufacturingcost());
+		assertEquals(2, testItem.getManufacturingCost());
 	}
 	
 	@Test

@@ -41,7 +41,7 @@ public class Item {
 	 *
 	 * @return Returns Item name
 	 */
-	public String name() {
+	public String getName() {
 		return this.itemName;
 	}
 	
@@ -50,7 +50,7 @@ public class Item {
 	 *
 	 * @return Returns Item manufacturing cost
 	 */
-	public int getManufacturingcost() {
+	public int getManufacturingCost() {
 		return this.manufacturingCost;
 	}
 	

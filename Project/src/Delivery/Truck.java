@@ -24,7 +24,7 @@ public abstract class Truck {
 	 */
 	public Truck(Stock inventory) {
 		this.cargo = inventory;
-		this.inventory = inventory.inventory();
+		this.inventory = inventory.getItems();
 	}
 	
 	/**
