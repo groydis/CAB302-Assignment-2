@@ -55,6 +55,7 @@ public class GUI extends JFrame implements Observer, ActionListener
     JPanel inventoryTab  = new JPanel();
     private static JLabel storeNameLabel = new JLabel("Store Name : CityWok");
     private static JLabel storeCapitalLabel = new JLabel("Capital : $999,999.99");
+    
     String[] inventoryColumnNames
     = {"Name", "Cost", "Price", "Reorder Point", "Reorder Amount", "Temperature", "Quantity"};
    
@@ -107,7 +108,6 @@ public class GUI extends JFrame implements Observer, ActionListener
 	//this is to initialize components
 	
 	private void initComponents() {
-		//THis can be directories only but CEEB'd doing that rn
 		
 		mainFrame = new JFrame("Title");
 		mainFrame.setSize(HEIGHT, WIDTH);		
@@ -116,17 +116,14 @@ public class GUI extends JFrame implements Observer, ActionListener
 	
 		
         pane.add("Store", inventoryTab);
-        //inventoryTab.add(new JLabel("Please load in item properties"));
-        inventoryTab.setLayout(new GridLayout(10,10));
-        GridLayout inventoryTabLayout = new GridLayout();
+        inventoryTab.setLayout(new BorderLayout());
+
         
-        inventoryTabLayout.setColumns(10);
-        inventoryTabLayout.setRows(10);
-        inventoryTab.add(storeNameLabel, inventoryTabLayout);
-        inventoryTab.add(storeCapitalLabel, inventoryTabLayout);
+        inventoryTab.add(storeNameLabel, BorderLayout.PAGE_START);
+        inventoryTab.add(storeCapitalLabel, BorderLayout.PAGE_END);
         
-        inventoryTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        inventoryTab.add(inventoryTable, inventoryTabLayout);
+        inventoryTable.setEnabled(false);
+        inventoryTab.add(inventoryTable, BorderLayout.CENTER);
         
         
 
@@ -344,7 +341,7 @@ public class GUI extends JFrame implements Observer, ActionListener
 	}
 	
 	  public static void main(String[] args) {
-		  	store = new Store("SuperMart", 100000.00);
+		  	store = new Store();
 		  	storeInventory = new Stock();
 		  	storeNameLabel.setText("Store Name: " + store.getStoreName());
 		  	storeCapitalLabel.setText("$" + store.capitalToString());
