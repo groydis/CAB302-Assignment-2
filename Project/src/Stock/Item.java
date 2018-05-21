@@ -37,7 +37,7 @@ public class Item {
 				storageTemp = 24;
 			}
 		} catch (NumberFormatException e) {
-			throw new StockException("Error Creating Item");
+			throw new StockException("Error Creating Item : Invalid data passed to constructor.");
 		}
 	}
 	

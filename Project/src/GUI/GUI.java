@@ -214,8 +214,8 @@ public class GUI extends JFrame implements Observer, ActionListener
         setVisible(true);
     }
 	
-	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == itemPropertiesChooseButton) {
+	public void actionPerformed(ActionEvent action) {
+		if(action.getSource() == itemPropertiesChooseButton) {
 			int returnVal = itemPropertiesChooser.showOpenDialog(GUI.this);
 
 		      if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -227,7 +227,7 @@ public class GUI extends JFrame implements Observer, ActionListener
 		      }
 		}
 		//this SAVES a file
-		else if (e.getSource() == exportManifestChooseButton) {
+		else if (action.getSource() == exportManifestChooseButton) {
 		      int returnVal = exportManifestChooser.showSaveDialog(GUI.this);
 		      if (returnVal == JFileChooser.APPROVE_OPTION) {
 		        File file = exportManifestChooser.getSelectedFile();
@@ -236,7 +236,7 @@ public class GUI extends JFrame implements Observer, ActionListener
 		        exportManifestTextArea.append(exportManifestFileName);
 		      }
 		}
-		else if (e.getSource() == importManifestChooseButton) {
+		else if (action.getSource() == importManifestChooseButton) {
 			int returnVal = importManifestChooser.showOpenDialog(GUI.this);
 
 		      if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -246,7 +246,7 @@ public class GUI extends JFrame implements Observer, ActionListener
 		        importManifestTextArea.append(importManifestFileName);
 		      }
 		}
-		else if (e.getSource() == salesLogChooseButton) {
+		else if (action.getSource() == salesLogChooseButton) {
 			int returnVal = salesLogChooser.showOpenDialog(GUI.this);
 
 		      if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -256,7 +256,7 @@ public class GUI extends JFrame implements Observer, ActionListener
 		        salesLogTextArea.append(salesLogFileName);
 		      }
 		} 
-		else if (e.getSource() == itemPropertiesButton) {
+		else if (action.getSource() == itemPropertiesButton) {
 			if (itemPropertiesTextArea.getText().trim().length() != 0) {
 				try {
 					FileReader.ImportItemProperties(itemPropertiesTextArea.getText(), storeInventory);
@@ -288,14 +288,14 @@ public class GUI extends JFrame implements Observer, ActionListener
 					}
 					
 					inventoryTable.setModel(dtm);
-				} catch (IOException e1) {
-					ShowError("Import Items Properties Error", "Invalid File or No File Selected.");
+				} catch (IOException e) {
+					ShowError("Import Items Properties Error", e.toString());
 					
-				} catch (CSVFormatException e1) {
-					ShowError("Import Items Properties Error", "CSV Format Error, data is not compatible.");
+				} catch (CSVFormatException e) {
+					ShowError("Import Items Properties Error", e.toString());
 					
-				} catch (StockException e1) {
-					ShowError("Import Items Properties Error", "Error creating item, incompatiable data supplied");
+				} catch (StockException e) {
+					ShowError("Import Items Properties Error", e.toString());
 				}
 
 			} else {
@@ -304,7 +304,7 @@ public class GUI extends JFrame implements Observer, ActionListener
 			storeCapitalLabel.setText("$" + store.capitalToString());
 			
 		}
-		else if (e.getSource() == importManifestButton) {
+		else if (action.getSource() == importManifestButton) {
 			if (importManifestTextArea.getText().trim().length() != 0) {
 				try {
 					FileReader.LoadManifest(importManifestTextArea.getText(), storeInventory, store);
@@ -315,48 +315,29 @@ public class GUI extends JFrame implements Observer, ActionListener
 						index++;
 					}
 					storeCapitalLabel.setText("$" + store.capitalToString());
-				} catch (DeliveryException e1) {
-					ShowError("Import Manifest Error", "CSV Format Error, data is not compatible.");
+				} catch (DeliveryException e) {
+					ShowError("Import Manifest Error", e.toString());
 				}
 			} else {
 				ShowError("Import Manifest Error", "No file Selected");
 			}
 			
 		}
-		else if (e.getSource() == exportManifestButton) {
+		else if (action.getSource() == exportManifestButton) {
 			if (exportManifestTextArea.getText().trim().length() != 0) {
-				if (itemsToOrder == null) {
-					for (Item item: storeInventory.getItems()) {
-						if (item.reorder()) {
-							for (int i = 0; i < item.getReorderAmount(); i++) {
-								itemsToOrder.addItem(item);
-							}
-						}
-					}
-					manifest = new Manifest(itemsToOrder);
-					try {
-						FileReader.ExportManifest(exportManifestTextArea.getText(), manifest);
-					} catch (StockException e1) {
-						ShowError("Export Manifest Error", "Stock");
-					} catch (DeliveryException e1) {
-						ShowError("Export Manifest Error", "Delivery");
-					}
-				} else {
-					manifest = new Manifest(itemsToOrder);
-					try {
-						FileReader.ExportManifest(exportManifestTextArea.getText(), manifest);
-					} catch (StockException e1) {
-						ShowError("Export Manifest Error", "Stock");
-					} catch (DeliveryException e1) {
-						ShowError("Export Manifest Error", "Delivery");
-					}
+				try {
+					FileReader.ExportManifest(exportManifestTextArea.getText(), storeInventory);
+				} catch (StockException e) {
+					ShowError("Export Manifest Error", e.toString());
+				} catch (DeliveryException e) {
+					ShowError("Export Manifest Error", e.toString());
 				}
 			} else {
 				ShowError("Export Manifest Error", "No file Selected");
 			}
 			storeCapitalLabel.setText("$" + store.capitalToString());
 		}
-		else if (e.getSource() == salesLogButton) {
+		else if (action.getSource() == salesLogButton) {
 			if (salesLogTextArea.getText().trim().length() != 0) {
 				try {
 					FileReader.LoadSalesLog(salesLogTextArea.getText(), storeInventory, store);
@@ -367,8 +348,8 @@ public class GUI extends JFrame implements Observer, ActionListener
 						index++;
 					}
 					storeCapitalLabel.setText("$" + store.capitalToString());
-				} catch (CSVFormatException e1) {
-					ShowError("Import Sales Log Error", "CSV Format Error, data is not compatible.");
+				} catch (CSVFormatException e) {
+					ShowError("Import Sales Log Error", e.toString());
 				}
 				
 			} else {
