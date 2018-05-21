@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 class StoreTest {
 	
 	Store testStore;
-	String storeName = "Test Store";
+	String storeName = "SuperMart";
 	double capital = 100000.00;
 	
 	
@@ -28,12 +28,12 @@ class StoreTest {
 	
 	@Test
 	public void testConstruction() {
-		testStore = new Store(storeName, capital);
+		testStore = new Store();
 	}
 	
 	@Test
 	public void testName() {
-		testStore = new Store(storeName, capital);
+		testStore = new Store();
 		String testName = storeName;
 		String actualName = testStore.getStoreName();
 		assertEquals(testName, actualName);
@@ -41,7 +41,7 @@ class StoreTest {
 	
 	@Test
 	public void testSetCapital() {
-		testStore = new Store(storeName, capital);
+		testStore = new Store();
 		double testCapital = 80000.00;
 		testStore.setCapital(80000.00);
 		double actualCapital = testStore.getCapital();
@@ -51,7 +51,7 @@ class StoreTest {
 	@Test
 	public void testGetCapital() {
 
-		testStore = new Store(storeName, capital);
+		testStore = new Store();
 		double testCapital = 100000.00;
 		double actualCapital = testStore.getCapital();
 		assertEquals(testCapital, actualCapital, "0,0");
@@ -59,7 +59,7 @@ class StoreTest {
 	
 	@Test 
 	public void testCapitalToString() {
-		testStore = new Store(storeName, capital);
+		testStore = new Store();
 		String testString = "100,000.00";
 		String actualString = testStore.capitalToString();
 		assertEquals(testString, actualString);

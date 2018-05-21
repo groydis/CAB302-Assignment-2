@@ -21,9 +21,9 @@ public class Store {
 	 * @param storeName The name of the store.
 	 * @param capital The total starting capital allocated to the store.
 	 */
-	public Store(String storeName, double capital) {
-		this.storeName = storeName;
-		this.capital = capital;
+	public Store() {
+		this.storeName = "SuperMart";
+		this.capital = 100000;
 	}
 	
 	/**
