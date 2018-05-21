@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import java.util.List;
 
+import GUI.StockException;
 import Stock.Item;
 import Stock.Stock;
 
@@ -51,9 +52,10 @@ public class OrdinaryTruck extends Truck {
 	 * Cargo. Temperature controlled items cannot be stored in an ordinary truck’s cargo, only dry goods.
 	 * 
 	 * @return returns a List of constructed strings to be processed into a manifest file. The strings are the item names and quantity to be reordered.
+	 * @throws StockException 
 	 */
 	@Override
-	public List<String> getCargo() {
+	public List<String> getCargo() throws StockException {
 		List<String> cargoOutput = new ArrayList<String>();
 		cargoOutput.add(">Ordinary");
 		for (Item item : getInventory()) {

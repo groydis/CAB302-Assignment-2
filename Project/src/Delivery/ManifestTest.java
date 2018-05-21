@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import GUI.CSVFormatException;
+import GUI.StockException;
 import Stock.Item;
 import Stock.Stock;
 
@@ -27,7 +29,7 @@ class ManifestTest {
 	
 	
 	@Test
-	void testConstructManifest() {
+	void testConstructManifest() throws CSVFormatException, StockException {
 		
 		
 		List<String> testResults = new ArrayList<>();

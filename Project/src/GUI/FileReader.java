@@ -29,14 +29,20 @@ public class FileReader {
 	private static Manifest manifest;
 	
 	
-	public static void main(String... args) throws IOException {
+	public static void main(String... args)  {
 		
 		storeInventory = new Stock();
 		itemsToOrder = new Stock();
-		store = new Store("Test Store", 100000.00);
+		store = new Store();
 		
 		//1. Load in item_properties.csv
-		ImportItemProperties("./Files/item_properties.csv", storeInventory);
+
+		try {
+			ImportItemProperties("./Files/Errors/item_properties.csv", storeInventory);
+		} catch (IOException | CSVFormatException | StockException e) {
+			System.out.println(e);
+		}
+
 		
 		for (Item item: storeInventory.getItems()) {
 			if (item.reorder()) {
@@ -51,7 +57,17 @@ public class FileReader {
 		//2. Generate a manifest and load it back in.
 		manifest = new Manifest(itemsToOrder);
 		ExportManifest("./Files/test1.csv", manifest);
-		LoadManifest("./Files/test1.csv", storeInventory, store);
+		try {
+			ExportManifest("./Files/Errors/test1.csv", manifest);
+		} catch (StockException | DeliveryException e) {
+			System.out.println(e);
+		}
+		
+		try {
+			LoadManifest("./Files/Errors/test1.csv", storeInventory, store);
+		} catch (DeliveryException e) {
+			System.out.println(e);
+		}
 		
 		for (Item item : storeInventory.getItems()) {
 			System.out.println(item.toString());
@@ -60,8 +76,12 @@ public class FileReader {
 		System.out.println("---------------------");
 		
 		//3. Load in sales_log_0.csv
-		LoadSalesLog("./Files/sales_log_0.csv", storeInventory, store);
-		
+		try {
+			LoadSalesLog("./Files/Errors/sales_log_0.csv", storeInventory, store);
+		} catch (CSVFormatException e) {
+			System.out.println(e);
+		}
+		/*
 		itemsToOrder = new Stock();
 		for (Item item: storeInventory.getItems()) {
 			if (item.reorder()) {
@@ -183,7 +203,7 @@ public class FileReader {
 		for (Item item : storeInventory.getItems()) {
 			System.out.println(item.toString());
 		}
-		
+		*/
 		System.out.println(store.capitalToString());
 		
 	}
@@ -193,9 +213,11 @@ public class FileReader {
 	 *
 	 * @param  fileName  File location to read Item Properties from
 	 * @return List of Items produces by the Item Properties Document
+	 * @throws CSVFormatException 
+	 * @throws StockException 
 	 * @see Item
 	 */
-	public static List<Item> ImportItemProperties(String fileName, Stock storeInventory) throws IOException {
+	public static List<Item> ImportItemProperties(String fileName, Stock storeInventory) throws IOException, CSVFormatException, StockException {
 		List<Item> items = new ArrayList<>();
 		
 		Path pathToFile = Paths.get(fileName);
@@ -210,9 +232,11 @@ public class FileReader {
 				storeInventory.addItem(item);
 				line = br.readLine();
 			}
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
+		} catch (IOException e) {
+			throw new CSVFormatException("Import Item Properties Error");
 		}
+			
+		
 		return items;
 	}
 	
@@ -221,8 +245,9 @@ public class FileReader {
 	 * on the sales numbers.
 	 *
 	 * @param  fileName  File location of the Sales Log to be imported
+	 * @throws CSVFormatException 
 	 */
-	public static void LoadSalesLog(String fileName, Stock storeInventory, Store store) {
+	public static void LoadSalesLog(String fileName, Stock storeInventory, Store store) throws CSVFormatException {
 		double profit = 0;
 		Path pathToFile = Paths.get(fileName);
 		
@@ -233,7 +258,6 @@ public class FileReader {
 				String[] attributes = line.split(",");
 				for (Item item : storeInventory.getItems()) {
 					if (item.getName().equals(attributes[0])) {
-						// TODO : Increase capital.
 						for (int i = 0; i < Integer.parseInt(attributes[1]); i++) {
 							profit += item.getSellPrice();
 						}
@@ -241,11 +265,14 @@ public class FileReader {
 						item.setQuantity(qty);
 					}
 				}
-				//storeInventory.updateSales(attributes);
 				line = br.readLine();
 			}
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
+		} catch (IOException e) {
+			throw new CSVFormatException("Sales Log File Format Error");
+		} catch (NumberFormatException e) {
+			throw new CSVFormatException("Sales Log Value Error");
+		} catch (ArrayIndexOutOfBoundsException e) {
+			throw new CSVFormatException("Sales Log Missing Values");
 		}
 		store.setCapital(store.getCapital() + profit);
 	}
@@ -256,8 +283,10 @@ public class FileReader {
 	 * on the numbers associated with the item in the manifest.
 	 *
 	 * @param  fileName  File location of the Manifest to be imported
+	 * @throws CSVFormatException 
+	 * @throws DeliveryException 
 	 */
-	public static void LoadManifest(String fileName, Stock storeInventory, Store store) {
+	public static void LoadManifest(String fileName, Stock storeInventory, Store store) throws DeliveryException {
 		
 		double deduction = 0;
 		boolean isColdTruck = false;
@@ -296,30 +325,35 @@ public class FileReader {
 					incomingFleet.add(ordinaryTruck);
 					
 				} else {
-					if (isColdTruck) {
-						String[] attributes = line.split(",");
-						for (Item item : storeInventory.getItems()) {
-							if (item.getName().equals(attributes[0])) {
-								for (int i = 0; i < Integer.parseInt(attributes[1]); i++) {
-									coldTruck.cargo().addItem(item);
-									deduction += item.getManufacturingCost();
+					try {
+						if (isColdTruck) {
+							String[] attributes = line.split(",");
+							for (Item item : storeInventory.getItems()) {
+								if (item.getName().equals(attributes[0])) {
+									for (int i = 0; i < Integer.parseInt(attributes[1]); i++) {
+										coldTruck.cargo().addItem(item);
+										deduction += item.getManufacturingCost();
+									}
+									int qty = item.getQuantity() + Integer.parseInt(attributes[1]);
+									item.setQuantity(qty);
 								}
-								int qty = item.getQuantity() + Integer.parseInt(attributes[1]);
-								item.setQuantity(qty);
+							}
+						} else  {
+							String[] attributes = line.split(",");
+							for (Item item : storeInventory.getItems()) {
+								if (item.getName().equals(attributes[0])) {
+									for (int i = 0; i < Integer.parseInt(attributes[1]); i++) {
+										ordinaryTruck.cargo().addItem(item);
+										deduction += item.getManufacturingCost();
+									}
+									int qty = item.getQuantity() + Integer.parseInt(attributes[1]);
+									item.setQuantity(qty);
+								}
 							}
 						}
-					} else  {
-						String[] attributes = line.split(",");
-						for (Item item : storeInventory.getItems()) {
-							if (item.getName().equals(attributes[0])) {
-								for (int i = 0; i < Integer.parseInt(attributes[1]); i++) {
-									ordinaryTruck.cargo().addItem(item);
-									deduction += item.getManufacturingCost();
-								}
-								int qty = item.getQuantity() + Integer.parseInt(attributes[1]);
-								item.setQuantity(qty);
-							}
-						}
+					} catch (NumberFormatException e) {
+						throw new DeliveryException("Import Manifest Error");
+						
 					}
 					
 				}
@@ -336,7 +370,7 @@ public class FileReader {
 		store.setCapital(store.getCapital() - deduction );
 	}
 	
-	public static void ExportManifest(String fileName, Manifest manifest) {
+	public static void ExportManifest(String fileName, Manifest manifest) throws StockException, DeliveryException {
 		List<Truck> fleet = manifest.getFleet();
 		try {
 			FileWriter fileWriter = new FileWriter(fileName);
@@ -350,8 +384,7 @@ public class FileReader {
 			}
 			fileWriter.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new DeliveryException("Export Manifest Error");
 		}
 	}
 	

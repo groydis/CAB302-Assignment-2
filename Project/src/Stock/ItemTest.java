@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
+import GUI.CSVFormatException;
+import GUI.StockException;
+
 /**
  * This class tests the Item class and ensures that all functions associated with
  * the Item class work as intended.
@@ -27,44 +30,44 @@ class ItemTest {
 	}
 	
 	@Test
-	public void testConstruction() {
+	public void testConstruction() throws StockException {
 		testItem = new Item(itemRice);
 	}
 
 	
 	@Test
-	public void testItemName() {
+	public void testItemName() throws StockException {
 		testItem = new Item(itemRice);
 		assertEquals("rice", testItem.getName());
 	}
 	
 	@Test
-	public void testManufacturingCost() {
+	public void testManufacturingCost() throws StockException {
 		testItem = new Item(itemRice);
 		assertEquals(2, testItem.getManufacturingCost());
 	}
 	
 	@Test
-	public void testSellPrice() {
+	public void testSellPrice() throws StockException {
 		testItem = new Item(itemRice);
 		assertEquals(3, testItem.getSellPrice());
 	}
 	
 	@Test
-	public void testReOrderPoint() {
+	public void testReOrderPoint() throws StockException {
 		testItem = new Item(itemRice);
 		assertEquals(225, testItem.getReorderpoint());
 	}
 	
 	@Test
-	public void testReOrderAmount() {
+	public void testReOrderAmount() throws StockException {
 		testItem = new Item(itemRice);
 
 		assertEquals(300, testItem.getReorderAmount());
 	}
 	
 	@Test
-	public void testStorageTempNormalItem() {
+	public void testStorageTempNormalItem() throws StockException {
 		testItem = new Item(itemRice);
 
 		int actualStorageTemp = testItem.getStorageTemp();
@@ -72,13 +75,13 @@ class ItemTest {
 	}
 	
 	@Test
-	public void testStorageTempColdItem() {
+	public void testStorageTempColdItem() throws StockException {
 		testItem = new Item(itemBoogers);
 		assertEquals(-10, testItem.getStorageTemp());
 	}
 	
 	@Test
-	public void testQuantity() {
+	public void testQuantity() throws StockException {
 		testItem = new Item(itemRice);
 		
 		testItem.setQuantity(50);
@@ -87,13 +90,13 @@ class ItemTest {
 		
 	}
 	
-	public void testReorderFalse() {
+	public void testReorderFalse() throws StockException {
 		testItem = new Item(itemRice);
 		testItem.setQuantity(500);
 		assertEquals(false, testItem.reorder());
 	}
 	
-	public void testReorderTrue() {
+	public void testReorderTrue() throws StockException {
 		testItem = new Item(itemRice);
 		assertEquals(true, testItem.reorder());
 	}

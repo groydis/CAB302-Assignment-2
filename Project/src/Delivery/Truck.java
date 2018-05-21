@@ -2,6 +2,7 @@ package Delivery;
 
 import java.util.List;
 
+import GUI.StockException;
 import Stock.Item;
 import Stock.Stock;
 
@@ -64,7 +65,7 @@ public abstract class Truck {
 	 * 
 	 * @return List<String> of cargo
 	 */
-	public abstract List<String> getCargo();
+	public abstract List<String> getCargo() throws StockException;
 	
 
 }

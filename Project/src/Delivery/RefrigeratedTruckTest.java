@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import GUI.CSVFormatException;
+import GUI.StockException;
 import Stock.Item;
 import Stock.Stock;
 
@@ -26,9 +28,6 @@ class RefrigeratedTruckTest {
 	String itemCake[] = {"cake", "4", "1", "300", "400", "5"};
 	String itemBoogers[] = {"boogers", "5", "4", "400", "500", "-10"};
 	
-	Item rice = new Item(itemRice);
-	Item cake = new Item(itemCake);
-	Item boogers = new Item(itemBoogers);
 	
 	List<String> testCargoOutput = new ArrayList<>();
 	
@@ -40,7 +39,11 @@ class RefrigeratedTruckTest {
 	}
 	
 	@Test
-	void testGetTemperature() {
+	void testGetTemperature() throws StockException {
+		Item rice = new Item(itemRice);
+		Item cake = new Item(itemCake);
+		Item boogers = new Item(itemBoogers);
+		
 		cargo.addItem(rice);
 		cargo.addItem(cake);
 		cargo.addItem(boogers);
@@ -59,7 +62,11 @@ class RefrigeratedTruckTest {
 	
 	
 	@Test
-	void testGetCost() {
+	void testGetCost() throws StockException {
+		Item rice = new Item(itemRice);
+		Item cake = new Item(itemCake);
+		Item boogers = new Item(itemBoogers);
+		
 		cargo.addItem(rice);
 		cargo.addItem(cake);
 		cargo.addItem(boogers);
@@ -73,7 +80,12 @@ class RefrigeratedTruckTest {
 
 	
 	@Test 
-	void testGetCargo() {
+	void testGetCargo() throws CSVFormatException, StockException {
+		
+		Item rice = new Item(itemRice);
+		Item cake = new Item(itemCake);
+		Item boogers = new Item(itemBoogers);
+		
 		cargo.addItem(rice);
 		cargo.addItem(cake);
 		cargo.addItem(boogers);

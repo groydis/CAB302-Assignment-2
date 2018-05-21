@@ -7,6 +7,9 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import GUI.CSVFormatException;
+import GUI.StockException;
+
 /**
  * This class tests the Stock class and ensures that all functions associated with
  * the Stock class work as intended.
@@ -28,7 +31,7 @@ class StockTest {
 
 	
 	@Test
-	void testAddItem() {
+	void testAddItem() throws StockException {
 		testStock = new Stock();
 		rice = new Item(itemRice);
 		testStock.addItem(rice);
@@ -37,7 +40,7 @@ class StockTest {
 	}
 	
 	@Test
-	void testInventory() {
+	void testInventory() throws StockException {
 		testStock = new Stock();
 		testInventory = new ArrayList<>();
 		
@@ -57,7 +60,7 @@ class StockTest {
 	}
 	
 	@Test
-	void testTotal() {
+	void testTotal() throws StockException {
 		testStock = new Stock();
 		
 		rice = new Item(itemRice);
@@ -71,7 +74,7 @@ class StockTest {
 	}
 	
 	@Test
-	void testTotalItem() {
+	void testTotalItem() throws StockException {
 		testStock = new Stock();
 		
 		rice = new Item(itemRice);
@@ -86,7 +89,7 @@ class StockTest {
 	}
 	
 	@Test
-	void testUpdateSales() {
+	void testUpdateSales() throws StockException, CSVFormatException {
 		testStock = new Stock();
 		
 		rice = new Item(itemRice);

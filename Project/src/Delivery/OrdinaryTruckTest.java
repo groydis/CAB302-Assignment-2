@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import GUI.CSVFormatException;
+import GUI.StockException;
 import Stock.Item;
 import Stock.Stock;
 
@@ -26,21 +28,25 @@ class OrdinaryTruckTest {
 	String itemCake[] = {"cake", "4", "1", "300", "400", "0", "5"};
 	String itemBoogers[] = {"boogers", "5", "4", "400", "500", "0", "-10"};
 	
-	Item rice = new Item(itemRice);
-	Item cake = new Item(itemCake);
-	Item boogers = new Item(itemBoogers);
 	
 	List<String> testCargoOutput = new ArrayList<>();
 	
 
 	@Test
-	void testGetCapacity() {
+	void testGetCapacity() throws StockException {
+		Item rice = new Item(itemRice);
+		Item cake = new Item(itemCake);
+		Item boogers = new Item(itemBoogers);
 		truck = new OrdinaryTruck(cargo);
 		assertEquals(1000, truck.getCapacity());
 	}
 	
 	@Test
-	void testGetCost() {
+	void testGetCost() throws StockException {
+		Item rice = new Item(itemRice);
+		Item cake = new Item(itemCake);
+		Item boogers = new Item(itemBoogers);
+		
 		cargo.addItem(rice);
 		cargo.addItem(cake);
 		cargo.addItem(boogers);
@@ -54,7 +60,11 @@ class OrdinaryTruckTest {
 
 	
 	@Test 
-	void testGetCargo() {
+	void testGetCargo() throws CSVFormatException, StockException {
+		Item rice = new Item(itemRice);
+		Item cake = new Item(itemCake);
+		Item boogers = new Item(itemBoogers);
+		
 		cargo.addItem(rice);
 		cargo.addItem(cake);
 		cargo.addItem(boogers);

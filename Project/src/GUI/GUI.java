@@ -257,10 +257,10 @@ public class GUI extends JFrame implements Observer, ActionListener
 		      }
 		} 
 		else if (e.getSource() == itemPropertiesButton) {
-			if (itemPropertiesTextArea.getText() != "") {
-				
+			if (itemPropertiesTextArea.getText().trim().length() != 0) {
 				try {
 					FileReader.ImportItemProperties(itemPropertiesTextArea.getText(), storeInventory);
+				
 					itemsToOrder =  new Stock();
 					for (Item item: storeInventory.getItems()) {
 						if (item.reorder()) {
@@ -269,6 +269,7 @@ public class GUI extends JFrame implements Observer, ActionListener
 							}
 						}
 					}
+					
 					
 					DefaultTableModel dtm = new DefaultTableModel(0, 0);
 					dtm.addColumn("Name");
@@ -287,28 +288,43 @@ public class GUI extends JFrame implements Observer, ActionListener
 					}
 					
 					inventoryTable.setModel(dtm);
-					
 				} catch (IOException e1) {
-
-					e1.printStackTrace();
+					ShowError("Import Items Properties Error", "Invalid File or No File Selected.");
+					
+				} catch (CSVFormatException e1) {
+					ShowError("Import Items Properties Error", "CSV Format Error, data is not compatible.");
+					
+				} catch (StockException e1) {
+					ShowError("Import Items Properties Error", "Error creating item, incompatiable data supplied");
 				}
+
+			} else {
+				ShowError("Import Items Properties Error", "No file Selected");
 			}
 			storeCapitalLabel.setText("$" + store.capitalToString());
 			
 		}
 		else if (e.getSource() == importManifestButton) {
-			if (importManifestTextArea.getText() != "") {
-				FileReader.LoadManifest(importManifestTextArea.getText(), storeInventory, store);
-				int index = 1;
-				for (Item item : storeInventory.getItems()) {
-					inventoryTable.getModel().setValueAt(item.getQuantity(), index, 6);
-					index++;
+			if (importManifestTextArea.getText().trim().length() != 0) {
+				try {
+					FileReader.LoadManifest(importManifestTextArea.getText(), storeInventory, store);
+				
+					int index = 1;
+					for (Item item : storeInventory.getItems()) {
+						inventoryTable.getModel().setValueAt(item.getQuantity(), index, 6);
+						index++;
+					}
+					storeCapitalLabel.setText("$" + store.capitalToString());
+				} catch (DeliveryException e1) {
+					ShowError("Import Manifest Error", "CSV Format Error, data is not compatible.");
 				}
+			} else {
+				ShowError("Import Manifest Error", "No file Selected");
 			}
-			storeCapitalLabel.setText("$" + store.capitalToString());
+			
 		}
 		else if (e.getSource() == exportManifestButton) {
-			if (exportManifestTextArea.getText() != "") {
+			if (exportManifestTextArea.getText().trim().length() != 0) {
 				if (itemsToOrder == null) {
 					for (Item item: storeInventory.getItems()) {
 						if (item.reorder()) {
@@ -318,41 +334,69 @@ public class GUI extends JFrame implements Observer, ActionListener
 						}
 					}
 					manifest = new Manifest(itemsToOrder);
-					FileReader.ExportManifest(exportManifestTextArea.getText(), manifest);
+					try {
+						FileReader.ExportManifest(exportManifestTextArea.getText(), manifest);
+					} catch (StockException e1) {
+						ShowError("Export Manifest Error", "Stock");
+					} catch (DeliveryException e1) {
+						ShowError("Export Manifest Error", "Delivery");
+					}
 				} else {
 					manifest = new Manifest(itemsToOrder);
-					FileReader.ExportManifest(exportManifestTextArea.getText(), manifest);
+					try {
+						FileReader.ExportManifest(exportManifestTextArea.getText(), manifest);
+					} catch (StockException e1) {
+						ShowError("Export Manifest Error", "Stock");
+					} catch (DeliveryException e1) {
+						ShowError("Export Manifest Error", "Delivery");
+					}
 				}
+			} else {
+				ShowError("Export Manifest Error", "No file Selected");
 			}
 			storeCapitalLabel.setText("$" + store.capitalToString());
 		}
 		else if (e.getSource() == salesLogButton) {
-			if (salesLogTextArea.getText() != "") {
-				FileReader.LoadSalesLog(salesLogTextArea.getText(), storeInventory, store);
-				int index = 1;
-				for (Item item : storeInventory.getItems()) {
-					inventoryTable.getModel().setValueAt(item.getQuantity(), index, 6);
-					index++;
-				}
-				storeCapitalLabel.setText("$" + store.capitalToString());
+			if (salesLogTextArea.getText().trim().length() != 0) {
+				try {
+					FileReader.LoadSalesLog(salesLogTextArea.getText(), storeInventory, store);
 				
+					int index = 1;
+					for (Item item : storeInventory.getItems()) {
+						inventoryTable.getModel().setValueAt(item.getQuantity(), index, 6);
+						index++;
+					}
+					storeCapitalLabel.setText("$" + store.capitalToString());
+				} catch (CSVFormatException e1) {
+					ShowError("Import Sales Log Error", "CSV Format Error, data is not compatible.");
+				}
+				
+			} else {
+				ShowError("Sales Log Error", "No file Selected");
 			}
 		}
 	}
 	
-	  public static void main(String[] args) {
-		  	store = new Store();
-		  	storeInventory = new Stock();
-		  	storeNameLabel.setText("Store Name: " + store.getStoreName());
-		  	storeCapitalLabel.setText("$" + store.capitalToString());
-	        JFrame.setDefaultLookAndFeelDecorated(true);
-	        new GUI();
-	    }
+  public static void main(String[] args) {
+	  	store = new Store();
+	  	storeInventory = new Stock();
+	  	storeNameLabel.setText("Store Name: " + store.getStoreName());
+	  	storeCapitalLabel.setText("$" + store.capitalToString());
+        JFrame.setDefaultLookAndFeelDecorated(true);
+        new GUI();
+    }
 
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void ShowError(String title, String error) {
+		JOptionPane.showMessageDialog(mainFrame,
+			    error,
+			    title,
+			    JOptionPane.WARNING_MESSAGE);
 	}
+}
 

@@ -3,6 +3,7 @@ package Delivery;
 import java.util.ArrayList;
 import java.util.List;
 
+import GUI.StockException;
 import Stock.Item;
 import Stock.Stock;
 
@@ -80,9 +81,10 @@ public class RefrigeratedTruck extends Truck {
 	 * Temperature in °C that maintains a safe temperature for the truck’s cargo. This is equal to the temperature of the item in the cargo with the coldest safe temperature. The allowed temperature range is from -20°C inclusive to 10°C inclusive.
 	 * 
 	 * @return returns a List of constructed strings to be processed into a manifest file. The strings are the item names and quantity to be reordered.
+	 * @throws StockException 
 	 */
 	@Override
-	public List<String> getCargo() {
+	public List<String> getCargo() throws StockException {
 		List<String> cargoOutput = new ArrayList<String>();
 		cargoOutput.add(">Refrigerated");
 		for (Item item : getInventory()) {

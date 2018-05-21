@@ -1,5 +1,8 @@
 package Stock;
 
+import GUI.CSVFormatException;
+import GUI.StockException;
+
 /**
 *
 * @author Alex Holm
@@ -21,17 +24,20 @@ public class Item {
 	 * 
 	 * @param  data Array of data parsed by the file reader
 	 */
-	public Item(String[] attirbutes) {
-		
-		this.itemName = attirbutes[0];
-		this.manufacturingCost = Integer.parseInt(attirbutes[1]);
-		this.sellPrice = Integer.parseInt(attirbutes[2]);
-		this.reorderPoint = Integer.parseInt(attirbutes[3]);
-		this.reorderAmount = Integer.parseInt(attirbutes[4]);
-		if (attirbutes.length == 6) {
-			storageTemp = Integer.parseInt(attirbutes[5]);
-		} else {
-			storageTemp = 24;
+	public Item(String[] attirbutes) throws StockException {
+		try {
+			this.itemName = attirbutes[0];
+			this.manufacturingCost = Integer.parseInt(attirbutes[1]);
+			this.sellPrice = Integer.parseInt(attirbutes[2]);
+			this.reorderPoint = Integer.parseInt(attirbutes[3]);
+			this.reorderAmount = Integer.parseInt(attirbutes[4]);
+			if (attirbutes.length == 6) {
+				storageTemp = Integer.parseInt(attirbutes[5]);
+			} else {
+				storageTemp = 24;
+			}
+		} catch (NumberFormatException e) {
+			throw new StockException("Error Creating Item");
 		}
 	}
 	

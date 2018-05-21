@@ -3,7 +3,8 @@ package Stock;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
+import java.util.List;import GUI.CSVFormatException;
+import GUI.StockException;
 
 /** 
  * This class is used to represent A collection of items. 
@@ -35,20 +36,6 @@ public class Stock {
 				@Override
 				public int compare(final Item object1, final Item object2) {
 					return  Integer.valueOf(object1.getStorageTemp()).compareTo(object2.getStorageTemp());
-				}
-			});
-		}
-		
-	}
-	/**
-	 * Sorts the items alphabetically based on name.
-	 */
-	public void sortAlpha() {
-		if (this.inventory.size() > 0) {
-			Collections.sort(this.inventory, new Comparator<Item>() {
-				@Override
-				public int compare(final Item object1, final Item object2) {
-					return  object1.getName().compareTo(object2.getName());
 				}
 			});
 		}
@@ -92,8 +79,9 @@ public class Stock {
 	 * @param item The item in which to find the number of.
 	 * 
 	 * @return the number of items of found.
+	 * @throws StockException 
 	 */
-	public int getTotalItem(Item item) {
+	public int getTotalItem(Item item) throws StockException {
 		int total = 0;
 		if (inventory.contains(item)) {
 			for (Item i : inventory) {
@@ -101,6 +89,8 @@ public class Stock {
 					total++;
 				}
 			}
+		} else {
+			throw new StockException("Stock error: No item exists");
 		}
 		return total;
 	}
@@ -109,16 +99,22 @@ public class Stock {
 	 * Update the quantity of all items based on the passed in data
 	 * 
 	 * @param data An array of data Name, QTY
+	 * @throws CSVFormatException 
 	 */
-	public void updateSales(String[] data) {
-		int quantity = Integer.parseInt(data[1]);
-		
-		for (Item item : getItems()) {
-			if (item.getName().equals(data[0])) {
-				int qty = item.getQuantity() - quantity;
-				item.setQuantity(qty);
+	public void updateSales(String[] data) throws CSVFormatException {
+		try {
+			int quantity = Integer.parseInt(data[1]);
+			
+			for (Item item : getItems()) {
+				if (item.getName().equals(data[0])) {
+					int qty = item.getQuantity() - quantity;
+					item.setQuantity(qty);
+				}
 			}
+		} catch (NumberFormatException e) {
+			throw new CSVFormatException("Error Updating Sales");
 		}
+		
 		
 	}
 
