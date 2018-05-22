@@ -31,10 +31,11 @@ public class GUI extends JFrame implements Observer, ActionListener
 	**/
 	private static final long serialVersionUID = 4465181114406422996L;
 	
+	//Height and Width of the application window
 	public static final int WIDTH = 800;
-
 	public static final int HEIGHT = 600;
 	
+	//The File Name of particular files
 	public static String itemPropertiesFileName;
 	public static String importManifestFileName;
 	public static String exportManifestFileName;
@@ -53,12 +54,13 @@ public class GUI extends JFrame implements Observer, ActionListener
 	
 	//Store and Inventory Variables
     JPanel inventoryTab  = new JPanel();
-    private static JLabel storeNameLabel = new JLabel("Store Name : CityWok");
-    private static JLabel storeCapitalLabel = new JLabel("Capital : $999,999.99");
+    private static JLabel storeNameLabel = new JLabel();
+    private static JLabel storeCapitalLabel = new JLabel();
     
+    //Names of the columns in the Table 
     String[] inventoryColumnNames
     = {"Name", "Cost", "Price", "Reorder Point", "Reorder Amount", "Temperature", "Quantity"};
-   
+   //Array of Data for items
     public Object[][]data
     = {{"Name", "Cost", "Price", "Reorder Point", "Reorder Amount", "Temperature", "Quantity"}};
     
@@ -100,67 +102,77 @@ public class GUI extends JFrame implements Observer, ActionListener
     
     
 	public GUI() {
-        super("Title");
+        super("N9918205 + N9935924 CAB302 Assingment 2");
         loadLayout();
 	}
 	
 
-	//this is to initialize components
-	
+	//this is to initialize components and build the GUI
 	private void initComponents() {
 		
-		mainFrame = new JFrame("Title");
+		//Create main frame
+		mainFrame = new JFrame("N9918205 + N9935924 CAB302 Assingment 2");
 		mainFrame.setSize(HEIGHT, WIDTH);		
 		mainFrame.setLayout(new GridBagLayout());
+		//adding a pane to add tabs to
 		mainFrame.add(pane);
 	
-		
-        pane.add("Store", inventoryTab);
+		//the Inventory Tab which shows the Store's name and capital.
+		//It will also display a table of items when the item properties are added
+		pane.add("Store", inventoryTab);
+      
         inventoryTab.setLayout(new BorderLayout());
-
         
+        //Store name and capital labels
         inventoryTab.add(storeNameLabel, BorderLayout.PAGE_START);
         inventoryTab.add(storeCapitalLabel, BorderLayout.PAGE_END);
         
+        //Makes the table unable to be editable 
         inventoryTable.setEnabled(false);
         inventoryTab.add(inventoryTable, BorderLayout.CENTER);
         
-        
-
+     
+        //Creates another Tab, primarily used for
         pane.add("Documents", documentTab);
         
+        //Allows the Text Areas to be editable
         itemPropertiesTextArea.setEditable(true);
         exportManifestTextArea.setEditable(true);
         importManifestTextArea.setEditable(true);
         salesLogTextArea.setEditable(true);
         
-        //This can change to files only or files and directories but i dunno what was a good choice
+        //Sets the FileChoosers to navigate throguh files and directories
         itemPropertiesChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		exportManifestChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		importManifestChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		salesLogChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		//Sets the directory of the file choosers to Home
+		
+		//Sets the directory of the file choosers to the Home directory
 	    itemPropertiesChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 	    exportManifestChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 	    importManifestChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         salesLogChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-	    //Make properties Text area and button to open file choose
+        
+	    //Adds and action listens. These action listeners should open the file chooser
         itemPropertiesChooseButton.addActionListener(this);
         importManifestChooseButton.addActionListener(this);
         exportManifestChooseButton.addActionListener(this);
         salesLogChooseButton.addActionListener(this);
-        
+      
+        //These action listeners should read and load information. Aside from Export which saves files
         itemPropertiesButton.addActionListener(this);
         importManifestButton.addActionListener(this);
         exportManifestButton.addActionListener(this);
         salesLogButton.addActionListener(this);
         
-        
+        //Document Tab Layout setup. Layout done as a GridBag
         documentTab.setLayout(new GridBagLayout());
         GridBagConstraints docuTabLayout = new GridBagConstraints();
         docuTabLayout.fill = GridBagConstraints.HORIZONTAL;
         docuTabLayout.anchor = GridBagConstraints.WEST;
 
+        //Setting the grid x and y coordinates to 0 and changing as required
+        //0,0 is top left
         docuTabLayout.gridy = 0;
         docuTabLayout.gridx = 0;
         documentTab.add(itemPropertiesLabel, docuTabLayout);
@@ -191,10 +203,10 @@ public class GUI extends JFrame implements Observer, ActionListener
         docuTabLayout.gridx = 2;
         documentTab.add(exportManifestButton, docuTabLayout);
         
-        docuTabLayout.gridy = 8;
+        docuTabLayout.gridy = 6;
         docuTabLayout.gridx = 0;
         documentTab.add(salesLogLabel, docuTabLayout);
-        docuTabLayout.gridy = 9;
+        docuTabLayout.gridy = 7;
         documentTab.add(salesLogTextArea, docuTabLayout);
         docuTabLayout.gridx = 1;
         documentTab.add(salesLogChooseButton, docuTabLayout);
@@ -204,6 +216,11 @@ public class GUI extends JFrame implements Observer, ActionListener
         getContentPane().add(pane);
         
 	}
+	/*
+	 * 
+	 * This function sets height and width, while also loading the layout. Calling initComponents()
+	 * 
+	 */
 	
 	private void loadLayout() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -213,7 +230,13 @@ public class GUI extends JFrame implements Observer, ActionListener
         pack();
         setVisible(true);
     }
-	
+	/*
+	 * 
+	 * Action Listener. When buttons are clicked, it does things.
+	 * Such as opening FileChoosers, Saving/ Loading data
+	 * Showing errors if the file is not selected or not appropriate
+	 * 
+	 */
 	public void actionPerformed(ActionEvent action) {
 		if(action.getSource() == itemPropertiesChooseButton) {
 			int returnVal = itemPropertiesChooser.showOpenDialog(GUI.this);
@@ -358,6 +381,9 @@ public class GUI extends JFrame implements Observer, ActionListener
 		}
 	}
 	
+	/*
+	 * The main function. Creates a store, creates inventory and gets the name and capital
+	 */
   public static void main(String[] args) {
 	  	store = new Store();
 	  	storeInventory = new Stock();
@@ -372,7 +398,9 @@ public class GUI extends JFrame implements Observer, ActionListener
 		// TODO Auto-generated method stub
 		
 	}
-	
+	/*
+	 * Used to show errors and display exceptions
+	 */
 	public void ShowError(String title, String error) {
 		JOptionPane.showMessageDialog(mainFrame,
 			    error,
