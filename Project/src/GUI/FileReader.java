@@ -258,7 +258,7 @@ public class FileReader {
 		} catch (IOException e) {
 			throw new CSVFormatException("Sales Log File Error : Invalid format.");
 		} catch (NumberFormatException e) {
-			throw new CSVFormatException("Sales Log File Error : Invlaid data provided.");
+			throw new CSVFormatException("Sales Log File Error : Invalid data provided.");
 		} catch (ArrayIndexOutOfBoundsException e) {
 			throw new CSVFormatException("Sales Log File Error : Missing Values in Sales Log File.");
 		}
