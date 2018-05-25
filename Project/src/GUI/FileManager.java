@@ -19,21 +19,28 @@ import Stock.Stock;
 import Stock.Store;
 
 /**
+ * File Manager imports, exports manifests. Loads sales logs and Item Properties.
+ * 
  * @author Greyden Scott
  *
  */
-public class FileReader {
+public class FileManager {
+	
+	// Variables for testing
 	private static Stock storeInventory;
 	private static Store store;
-	private static Manifest manifest;
 	
-	
+	/**
+	 * Main function used purely for testing.
+	 * Will remove prior to submissions.
+	 * 
+	 * @param args
+	 */
 	public static void main(String... args)  {
 		
 		storeInventory = new Stock();
 		store = new Store();
 		
-		//1. Load in item_properties.csv
 
 		try {
 			ImportItemProperties("./Files/item_properties.csv", storeInventory);
@@ -44,7 +51,6 @@ public class FileReader {
 		System.out.println(store.capitalToString());
 		System.out.println("---------------------");
 		
-		//2. Generate a manifest and load it back in.
 		try {
 			ExportManifest("./Files/test1.csv", storeInventory);
 		} catch (StockException | DeliveryException e) {
@@ -63,28 +69,29 @@ public class FileReader {
 		System.out.println(store.capitalToString());
 		System.out.println("---------------------");
 		
-		//3. Load in sales_log_0.csv
+		
 		try {
 			LoadSalesLog("./Files/sales_log_0.csv", storeInventory, store);
 		} catch (CSVFormatException e) {
 			System.out.println(e);
 		}
-		/*
-		itemsToOrder = new Stock();
-		for (Item item: storeInventory.getItems()) {
-			if (item.reorder()) {
-				for (int i = 0; i < item.getReorderAmount(); i++) {
-					itemsToOrder.addItem(item);
-				}
-			}
-		}
+		
 		System.out.println(store.capitalToString());
 		System.out.println("---------------------");
 		
-		//2. Generate a manifest and load it back in.
-		manifest = new Manifest(itemsToOrder);
-		ExportManifest("./Files/test1.csv", manifest);
-		LoadManifest("./Files/test1.csv", storeInventory, store);
+		try {
+			ExportManifest("./Files/test1.csv", storeInventory);
+		} catch (StockException | DeliveryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			LoadManifest("./Files/test1.csv", storeInventory, store);
+		} catch (DeliveryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		for (Item item : storeInventory.getItems()) {
 			System.out.println(item.toString());
@@ -92,24 +99,31 @@ public class FileReader {
 		System.out.println(store.capitalToString());
 		System.out.println("---------------------");
 		
-		//3. Load in sales_log_0.csv
-		LoadSalesLog("./Files/sales_log_1.csv", storeInventory, store);
 		
-		itemsToOrder = new Stock();
-		for (Item item: storeInventory.getItems()) {
-			if (item.reorder()) {
-				for (int i = 0; i < item.getReorderAmount(); i++) {
-					itemsToOrder.addItem(item);
-				}
-			}
+		try {
+			LoadSalesLog("./Files/sales_log_1.csv", storeInventory, store);
+		} catch (CSVFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
 		System.out.println(store.capitalToString());
 		System.out.println("---------------------");
 		
-		//2. Generate a manifest and load it back in.
-		manifest = new Manifest(itemsToOrder);
-		ExportManifest("./Files/test1.csv", manifest);
-		LoadManifest("./Files/test1.csv", storeInventory, store);
+		
+		try {
+			ExportManifest("./Files/test1.csv", storeInventory);
+		} catch (StockException | DeliveryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			LoadManifest("./Files/test1.csv", storeInventory, store);
+		} catch (DeliveryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		for (Item item : storeInventory.getItems()) {
 			System.out.println(item.toString());
@@ -117,24 +131,34 @@ public class FileReader {
 		System.out.println(store.capitalToString());
 		System.out.println("---------------------");
 		
-		//3. Load in sales_log_0.csv
-		LoadSalesLog("./Files/sales_log_2.csv", storeInventory, store);
 		
-		itemsToOrder = new Stock();
-		for (Item item: storeInventory.getItems()) {
-			if (item.reorder()) {
-				for (int i = 0; i < item.getReorderAmount(); i++) {
-					itemsToOrder.addItem(item);
-				}
-			}
+		try {
+			LoadSalesLog("./Files/sales_log_2.csv", storeInventory, store);
+		} catch (CSVFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
 		System.out.println(store.capitalToString());
 		System.out.println("---------------------");
 		
-		//2. Generate a manifest and load it back in.
-		manifest = new Manifest(itemsToOrder);
-		ExportManifest("./Files/test1.csv", manifest);
-		LoadManifest("./Files/test1.csv", storeInventory, store);
+		
+		try {
+			ExportManifest("./Files/test1.csv", storeInventory);
+		} catch (StockException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DeliveryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			LoadManifest("./Files/test1.csv", storeInventory, store);
+		} catch (DeliveryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		for (Item item : storeInventory.getItems()) {
 			System.out.println(item.toString());
@@ -142,24 +166,30 @@ public class FileReader {
 		System.out.println(store.capitalToString());
 		System.out.println("---------------------");
 		
-		//3. Load in sales_log_0.csv
-		LoadSalesLog("./Files/sales_log_3.csv", storeInventory, store);
 		
-		itemsToOrder = new Stock();
-		for (Item item: storeInventory.getItems()) {
-			if (item.reorder()) {
-				for (int i = 0; i < item.getReorderAmount(); i++) {
-					itemsToOrder.addItem(item);
-				}
-			}
+		try {
+			LoadSalesLog("./Files/sales_log_3.csv", storeInventory, store);
+		} catch (CSVFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
 		System.out.println(store.capitalToString());
 		System.out.println("---------------------");
 		
-		//2. Generate a manifest and load it back in.
-		manifest = new Manifest(itemsToOrder);
-		ExportManifest("./Files/test1.csv", manifest);
-		LoadManifest("./Files/test1.csv", storeInventory, store);
+		
+		try {
+			ExportManifest("./Files/test1.csv", storeInventory);
+		} catch (StockException | DeliveryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			LoadManifest("./Files/test1.csv", storeInventory, store);
+		} catch (DeliveryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		for (Item item : storeInventory.getItems()) {
 			System.out.println(item.toString());
@@ -167,31 +197,35 @@ public class FileReader {
 		System.out.println(store.capitalToString());
 		System.out.println("---------------------");
 		
-		//3. Load in sales_log_0.csv
-		LoadSalesLog("./Files/sales_log_4.csv", storeInventory, store);
-		
-		itemsToOrder = new Stock();
-		for (Item item: storeInventory.getItems()) {
-			if (item.reorder()) {
-				for (int i = 0; i < item.getReorderAmount(); i++) {
-					itemsToOrder.addItem(item);
-				}
-			}
+		try {
+			LoadSalesLog("./Files/sales_log_4.csv", storeInventory, store);
+		} catch (CSVFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
 		System.out.println(store.capitalToString());
 		System.out.println("---------------------");
 		
-		//2. Generate a manifest and load it back in.
-		manifest = new Manifest(itemsToOrder);
-		ExportManifest("./Files/test1.csv", manifest);
-		LoadManifest("./Files/test1.csv", storeInventory, store);
 
-			
-		//storeInventory.sortAlpha();
+		try {
+			ExportManifest("./Files/test1.csv", storeInventory);
+		} catch (StockException | DeliveryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			LoadManifest("./Files/test1.csv", storeInventory, store);
+		} catch (DeliveryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		for (Item item : storeInventory.getItems()) {
 			System.out.println(item.toString());
 		}
-		*/
+		
 		System.out.println(store.capitalToString());
 		
 	}
@@ -203,7 +237,6 @@ public class FileReader {
 	 * @return List of Items produces by the Item Properties Document
 	 * @throws CSVFormatException 
 	 * @throws StockException 
-	 * @see Item
 	 */
 	public static List<Item> ImportItemProperties(String fileName, Stock storeInventory) throws IOException, CSVFormatException, StockException {
 		List<Item> items = new ArrayList<>();
@@ -271,6 +304,7 @@ public class FileReader {
 	 * on the numbers associated with the item in the manifest.
 	 *
 	 * @param  fileName  File location of the Manifest to be imported
+	 * 
 	 * @throws CSVFormatException 
 	 * @throws DeliveryException 
 	 */
@@ -368,6 +402,16 @@ public class FileReader {
 		store.setCapital(store.getCapital() - deduction );
 	}
 	
+	/**
+	 * This method parses a Manifest  and modifies the inventory of Items based 
+	 * on the numbers associated with the item in the manifest.
+	 *
+	 * @param  fileName  File location of the Manifest to be exported
+	 * @param storeInventory inventory of the store
+	 * 
+	 * @throws StockException 
+	 * @throws DeliveryException 
+	 */
 	public static void ExportManifest(String fileName, Stock storeInventory) throws StockException, DeliveryException {
 		List<Truck> fleet;
 		if (storeInventory.getTotal() == 0) {
@@ -381,7 +425,7 @@ public class FileReader {
 					}
 				}
 			}
-			manifest = new Manifest(itemsToOrder);
+			Manifest manifest = new Manifest(itemsToOrder);
 			fleet = manifest.getFleet();
 			
 			try {
