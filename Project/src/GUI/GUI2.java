@@ -55,7 +55,7 @@ public class GUI2 extends JFrame implements Observer, ActionListener
     = {{"Name", "Cost", "Price", "Reorder Point", "Reorder Amount", "Temperature", "Quantity"}};
     
     JTable inventoryTable = new JTable(data, inventoryColumnNames);
-    
+ 
     //Document Variables
     JPanel documentTab = new JPanel();
     
